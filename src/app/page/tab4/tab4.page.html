@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Danh sách Sinh Viên
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <h4>Danh sách sinh viên</h4>
+  <ion-list>
+    <ion-item *ngFor = 'let sv of listsinhvien'>
+      <ion-label>
+        {{sv.tensv}}
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

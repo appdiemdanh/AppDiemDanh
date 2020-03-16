@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Lớp</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <h4>Danh sách lớp</h4>
+  <ion-list>
+    <ion-item *ngFor='let listlop of listlop'>
+      <ion-label>
+        {{listlop.tenlop}}
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

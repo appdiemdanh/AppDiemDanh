@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+  <ion-title>
+    App Điểm Danh
+  </ion-title>
+</ion-toolbar>
+</ion-header>
+
+<ion-content class="content">
+<ion-text class="main">
+  <h3>App Điểm Danh</h3>
+</ion-text>
+<ion-item>
+  <ion-label position="stacked" >User</ion-label>
+  <ion-input id="user" type="text" placeholder="Nhập tên tài khoản" [(ngModel)]="user"></ion-input>
+</ion-item>
+<ion-item>
+  <ion-label position="stacked">Pass Word</ion-label>
+  <ion-input id="password"  type="password" placeholder="Nhập mật khẩu" (keyup)="getPassword($event);"></ion-input>
+</ion-item>
+<ion-text class="text">
+  <a class="quenmatkhau" href="/quenmatkhau" routerDirection="forward">Quên mật khẩu?</a>
+</ion-text>
+<ion-list class="ion-list">
+  <ion-radio-group value="biff">
+    <ion-list-header>
+      <ion-label>Bạn là</ion-label>
+    </ion-list-header>
+
+    <ion-item>
+      <ion-label>Giảng viên</ion-label>
+      <ion-radio slot="start" value="biff" id="rd_gv" (ionFocus)="getId($event);"></ion-radio>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Đào Tạo</ion-label>
+      <ion-radio slot="start" value="griff" id="rd_dt" (ionFocus)="getId($event);"></ion-radio>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Công tác sinh viên</ion-label>
+      <ion-radio slot="start" value="buford" id="rd_ctsv" (ionFocus)="getId($event);"></ion-radio>
+    </ion-item>
+  </ion-radio-group>
+</ion-list>
+<ion-text class="btn-dn-dk">
+  <ion-button color="dark" (click)='eventLogin()'>Đăng nhập</ion-button>
+  <ion-button href="/dangky" color="dark" routerDirection="forward">Đăng ký</ion-button>
+</ion-text>
+<!--footer-->
+<ion-text class="banquyen">
+  <p>Bản quyền thuộc về nhóm ?  |  © 2020</p>
+</ion-text>
+</ion-content>

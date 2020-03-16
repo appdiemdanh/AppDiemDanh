@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Quản lý giáo viên</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <h4>Danh sách giáo viên</h4>
+  <ion-list>
+    <ion-item *ngFor='let gv of listgv'>
+      <ion-label>
+        {{gv.tengv}} 
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>
