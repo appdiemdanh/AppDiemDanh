@@ -20,7 +20,7 @@
           <ion-button type="submit" (click)="authService.SendVerificationMail()" expand="block">
           Gửi lại email
         </ion-button>-->
-        <ion-button type="submit" [routerLink]="['/dangnhap']" expand="block">
+        <ion-button type="submit" (click)="backLogin()" expand="block">
           Tôi đã nhận được email
         </ion-button>
         <ion-button type="submit" (click)="reSendEmail()" expand="block">

@@ -2,7 +2,9 @@ import { Component, OnInit, OnDestroy, AfterViewInit} from '@angular/core';
 import { app } from 'firebase';
 import { Router, Navigation } from '@angular/router';
 
-import { Platform } from '@ionic/angular'
+
+import { Platform, AlertController } from '@ionic/angular'
+import { AuthenticationService } from '../shared/authenticatin-Service'
 
 
 @Component({
@@ -14,16 +16,29 @@ export class WelcomPage implements OnInit {
 
   backButtonSubscription;
   registerBackButtonAction;
-  public static chucvu = 'giangvien'
-  constructor(private platform : Platform) {
-    //this.navigator = navigator
+  public chucvu = ''
+  
+  constructor(
+    private platform : Platform,
+    public router : Router,
+    public authService : AuthenticationService
+    ) {
+  
    }
 
   ngOnInit() {
   }
-  getChucvu(event)
+  
+  getId(event)
   {
-    WelcomPage.chucvu = event.target.id
+    this.chucvu = event.target.id
+    console.log(this.chucvu)
+  }
+  readyApp()
+  {
+    this.authService.setChucvu(this.chucvu + "")  
+    this.router.navigate(['dangnhap'])
+    //console.log(this.getChucvu())
     //console.log(this.chucvu)
   }
   exitApp()

@@ -4,6 +4,8 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-button color="dark" href="/dangnhap" routerDirection="backward">Đăng Xuất</ion-button>
+<ion-content >
+  <ion-button type="submit" (click)='logOut()' >Đăng Xuất</ion-button>
+  <ion-button type="submit" (click)='getData()' expand='block'>Get Data</ion-button>
+  <p>data : </p>
 </ion-content>

@@ -14,6 +14,18 @@ import { AlertController, LoadingController } from '@ionic/angular';
 
 export class AuthenticationService {
 
+  chucvu : string = ''
+
+  // getter and setter
+  getChucvu()
+  {
+    return this.chucvu
+  }
+  setChucvu(cv : string)
+  {
+    this.chucvu = cv
+  }
+
   // tạo mảng user
   public userData: any;
 
@@ -24,7 +36,7 @@ export class AuthenticationService {
     public router: Router,  
     public ngZone: NgZone,
     public alert : AlertController ,
-    public loadingController : LoadingController
+    public loadingController : LoadingController,
   ) {
     // kiểm tra xem có user trên database hay chưa
     this.ngFireAuth.authState.subscribe(user => {
@@ -67,10 +79,10 @@ export class AuthenticationService {
     await alert.present();
   }
   //loading
-  async presentLoading() {
+  async presentLoading(msg : string, miligiay : number) {
     const loading = await this.loadingController.create({
-      message: 'Vui lòng chờ...',
-      duration: 2500
+      message: msg,
+      duration: miligiay
     });
     await loading.present();
 
@@ -179,13 +191,14 @@ export class AuthenticationService {
     })
   }
 
-  // Lưu trữ mảng user 
+  // set du lieu cho mang user 
   SetUserData(user) {
+    this.chucvu = this.getChucvu()
     const userRef: AngularFirestoreDocument<any> = this.afStore.doc(`users/${user.uid}`);
     const userData: User = {
       uid: user.uid,
       email: user.email,
-      displayName: user.displayName,
+      displayName: this.chucvu,
       photoURL: user.photoURL,
       emailVerified: user.emailVerified
     }
@@ -198,7 +211,7 @@ export class AuthenticationService {
   SignOut() {
     return this.ngFireAuth.auth.signOut().then(() => {
       localStorage.removeItem('user');
-      this.router.navigate(['login']);
+      this.router.navigate(['dangnhap']);
     })
   }
 

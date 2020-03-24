@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from './../shared/authenticatin-Service';
+import { IonApp, NavController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-verify-email',
@@ -8,8 +10,11 @@ import { AuthenticationService } from './../shared/authenticatin-Service';
 })
 export class VerifyEmailPage implements OnInit {
 
+  public static clickBack : boolean = false
   constructor(
-    public authService : AuthenticationService
+    public authService : AuthenticationService,
+    public appCtrl : IonApp,
+    public router : Router,
   ) { }
 
   ngOnInit() {
@@ -19,5 +24,13 @@ export class VerifyEmailPage implements OnInit {
   {
     this.authService.SendVerificationMail();
     alert('Đã gửi lại email thành công')
+  }
+  backLogin()
+  {
+    VerifyEmailPage.clickBack = true
+    this.router.navigate(['dangnhap'])
+    this.router.navigateByUrl('/verify-email', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['dangnhap']);
+  }); 
   }
 }

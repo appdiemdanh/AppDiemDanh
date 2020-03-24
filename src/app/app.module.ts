@@ -18,6 +18,10 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 
 import { AuthenticationService } from './page_login/shared/authenticatin-Service';
+import { DangnhapPage } from './page_login/dangnhap/dangnhap.page'
+import { WelcomPage } from './page_login/welcome/welcom.page'
+import { AngularFireDatabase } from '@angular/fire/database';
+
 
 @NgModule({
   declarations: [AppComponent,
@@ -27,14 +31,18 @@ import { AuthenticationService } from './page_login/shared/authenticatin-Service
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFireDatabaseModule,
-    AngularFirestoreModule],
+    AngularFirestoreModule,
+  ],
   providers: [
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     //add 
     AuthenticationService,
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    DangnhapPage,
+    WelcomPage,
+    AngularFireDatabase
   ],
   bootstrap: [AppComponent]
 })
