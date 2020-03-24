@@ -7,11 +7,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class Tab4Page implements OnInit {
 
+  isChecked = ""
+  id = ""
   constructor() {
     this.Sapxepkitu();
    }
 
   ngOnInit() {
+  }
+  //
+  getValues(event)
+  {
+    this.isChecked = event.detail.checked;
+    this.id = event.target.id;
+    console.log(this.id);
+    console.log(this.isChecked);
   }
   //
   Sapxepkitu()
@@ -32,7 +42,7 @@ export class Tab4Page implements OnInit {
        }
      }
     
-     console.log(newsinhvien);
+     //console.log(newsinhvien);
    }
   //
   listsinhvien = 

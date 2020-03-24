@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>welcome</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="main">
+  <h3>Chào mừng bạn đến với app</h3>
+  <ion-list class="ion-list">
+    <ion-radio-group value="biff">
+      <ion-list-header>
+        <ion-label>Bạn là</ion-label>
+      </ion-list-header>
+  
+      <ion-item>
+        <ion-label>Giảng viên</ion-label>
+        <ion-radio slot="start" value="biff" id="giangvien" (ionFocus)="getChucvu($event);"></ion-radio>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label>Đào Tạo</ion-label>
+        <ion-radio slot="start" value="griff" id="daotao" (ionFocus)="getChucvu($event);"></ion-radio>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label>Công tác sinh viên</ion-label>
+        <ion-radio slot="start" value="buford" id="congtacsinhvien" (ionFocus)="getChucvu($event);"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+  <ion-row class="btn">
+    <ion-col>
+      <ion-button type="submit" expant="block" [routerLink]="['/dangnhap']" >Tiếp tục</ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button type="submit" color="danger" expant="block" (click)="exitApp()">Thoát</ion-button>
+    </ion-col>
+  </ion-row>  
+</ion-content>

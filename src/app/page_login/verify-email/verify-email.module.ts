@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { DangnhapPageRoutingModule } from './dangnhap-routing.module';
+import { VerifyEmailPageRoutingModule } from './verify-email-routing.module';
 
-import { DangnhapPage } from './dangnhap.page';
+import { VerifyEmailPage } from './verify-email.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    DangnhapPageRoutingModule
+    VerifyEmailPageRoutingModule
   ],
-  declarations: [DangnhapPage]
+  declarations: [VerifyEmailPage]
 })
-export class DangnhapPageModule {}
+export class VerifyEmailPageModule {}

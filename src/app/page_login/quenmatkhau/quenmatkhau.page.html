@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="dangnhap"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Quên mật khẩu</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item lines="full">
+    <ion-label position="floating">Email</ion-label>
+    <ion-input type="email" [(ngModel)]="email"></ion-input>
+  </ion-item>
+  <ion-row>
+    <ion-col>
+      <ion-button type="submit" color="danger" (click)='resetPassword()' expand="block">Gửi</ion-button>
+    </ion-col>
+  </ion-row>
+  <small>
+     Vui lòng nhập email mà bạn đăng nhập vào đây và bấm Gửi để chúng tôi khôi phục lại mật khẩu cho bạn.
+  </small>
+</ion-content>

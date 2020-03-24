@@ -8,10 +8,7 @@ import { TabsPageRoutingModule } from './tabs-routing.module';
 
 import { TabsPage } from './tabs.page';
 import { Routes, RouterModule } from '@angular/router';
-import { DangkyPage } from '../dangky/dangky.page';
-import { QuenmatkhauPage } from '../quenmatkhau/quenmatkhau.page';
-import { DangkyPageModule } from '../dangky/dangky.module';
-import { QuenmatkhauPageModule } from '../quenmatkhau/quenmatkhau.module';
+
 
 
 @NgModule({

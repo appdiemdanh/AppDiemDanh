@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Đăng Nhập</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="content">
+  <ion-item class="ion-item">
+    <ion-label position="stacked" >Email</ion-label>
+    <ion-input id="user" type="text" placeholder="Nhập email" [(ngModel)]="email"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Mật khẩu</ion-label>
+    <ion-input id="password" type="password" placeholder="Nhập mật khẩu" [(ngModel)]="password"></ion-input>
+  </ion-item><br>
+      <a class="quenmatkhau" [routerLink]="['/quenmatkhau']">Quên mật khẩu?</a><br><br><br>
+  <ion-row>
+    <ion-col>
+      <ion-text>
+        <ion-button class="btnDangnhap" (click)='logIn()'>Đăng nhập</ion-button>
+        <ion-button [routerLink]="['/dangky']">Đăng ký</ion-button>
+      </ion-text>
+    </ion-col>
+  </ion-row>
+  <br><br>
+  <span class="divider line one-line">Hoặc</span>
+  <p>Đăng nhập với google</p>
+  <ion-icon name="logo-google" class="icon" (click)="loginGoogle()"></ion-icon>
+  <!--footer-->
+  
+</ion-content>
