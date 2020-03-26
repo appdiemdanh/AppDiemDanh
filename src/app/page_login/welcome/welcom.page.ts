@@ -23,7 +23,7 @@ export class WelcomPage implements OnInit {
     public router : Router,
     public authService : AuthenticationService
     ) {
-  
+      console.log(this.authService.userData)
    }
 
   ngOnInit() {
@@ -36,8 +36,15 @@ export class WelcomPage implements OnInit {
   }
   readyApp()
   {
-    this.authService.setChucvu(this.chucvu + "")  
-    this.router.navigate(['dangnhap'])
+    if(this.chucvu !== '')
+    {
+      this.authService.setChucvu(this.chucvu + "")  
+      this.router.navigate(['dangnhap'])
+    }
+    else
+    {
+      alert('Bạn chưa chọn chức vụ của mình!')
+    }
     //console.log(this.getChucvu())
     //console.log(this.chucvu)
   }

@@ -6,6 +6,8 @@ import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import * as firebase from 'firebase';
 import { AlertController, LoadingController } from '@ionic/angular';
+import { AngularFireDatabase } from '@angular/fire/database';
+import { map } from 'rxjs/operators';
 
 
 @Injectable({
@@ -15,7 +17,7 @@ import { AlertController, LoadingController } from '@ionic/angular';
 export class AuthenticationService {
 
   chucvu : string = ''
-
+  arrayUser : any 
   // getter and setter
   getChucvu()
   {
@@ -37,6 +39,7 @@ export class AuthenticationService {
     public ngZone: NgZone,
     public alert : AlertController ,
     public loadingController : LoadingController,
+    public afDB : AngularFireDatabase
   ) {
     // kiểm tra xem có user trên database hay chưa
     this.ngFireAuth.authState.subscribe(user => {
@@ -51,8 +54,12 @@ export class AuthenticationService {
         localStorage.setItem('user', null);
         JSON.parse(localStorage.getItem('user'));
       }
+      // đọc dữ liệu từ firebase tên 'listuser' sau đó gán vào this.arrayUser
+      return this.afStore.collection('listuser').valueChanges().subscribe(res=>{this.arrayUser = res})
     })
   }
+  
+
   //thong bao
   async presentAlert(title : String, msg : String, trangmuonchuyenden : String) {
     const alert = await this.alert.create({
@@ -71,6 +78,24 @@ export class AuthenticationService {
           handler: () => {
             this.router.navigate([trangmuonchuyenden])
             console.log(trangmuonchuyenden);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  //thong bao 2
+  async presentAlert2(title : String, msg : String, trangchuyenden : String, buttonOk : String,) {
+    const alert = await this.alert.create({
+      header: title + "",
+      message: msg + "",
+      buttons: [
+        {
+          text: buttonOk + "",
+          handler: () => {
+            this.router.navigate([trangchuyenden])
           }
         }
       ]
@@ -194,16 +219,18 @@ export class AuthenticationService {
   // set du lieu cho mang user 
   SetUserData(user) {
     this.chucvu = this.getChucvu()
-    const userRef: AngularFirestoreDocument<any> = this.afStore.doc(`users/${user.uid}`);
+    const userRef: AngularFirestoreDocument<any> = this.afStore.doc(`listuser/${user.uid}`);
+
     const userData: User = {
       uid: user.uid,
       email: user.email,
-      displayName: this.chucvu,
+      displayName: user.displayName,
+      chucvu : this.chucvu,
       photoURL: user.photoURL,
-      emailVerified: user.emailVerified
+      emailVerified: true//user.emailVerified
     }
     return userRef.set(userData, {
-      merge: true
+      merge: true //set gia tri trong database cua firebase
     })
   }
 

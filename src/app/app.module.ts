@@ -21,17 +21,18 @@ import { AuthenticationService } from './page_login/shared/authenticatin-Service
 import { DangnhapPage } from './page_login/dangnhap/dangnhap.page'
 import { WelcomPage } from './page_login/welcome/welcom.page'
 import { AngularFireDatabase } from '@angular/fire/database';
-
+//import {  } from '@angular/core'
 
 @NgModule({
   declarations: [AppComponent,
                 ],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, 
-    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireModule.initializeApp(environment.firebaseConfig), // connect with firebase
     AngularFireAuthModule,
     AngularFireDatabaseModule,
     AngularFirestoreModule,
+    
   ],
   providers: [
     StatusBar,

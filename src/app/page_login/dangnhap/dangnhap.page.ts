@@ -28,7 +28,7 @@ export class DangnhapPage implements OnInit {
     public welcomePage : WelcomPage
     ) { 
       this.chucvu = this.authService.getChucvu()
-      
+      console.log(this.chucvu)
     }
 
   ngOnInit() {
@@ -54,50 +54,62 @@ export class DangnhapPage implements OnInit {
   }
   logIn()
   {
-    //console.log(this.chucvu)
-    if((this.email && this.password) != "")
-    {
-        this.authService.SignIn(this.email, this.password).then((res)=>
-        {
-          if(this.authService.isEmailVerified == true)
+    let e, cv //email và chức vụ
+    let arrayUser : any = this.authService.arrayUser
+      if((this.email && this.password) != "")
+      {
+          this.authService.SignIn(this.email, this.password).then((res)=>
           {
-            if(this.chucvu == 'daotao')
+            for(let user of arrayUser)  //cac phan tu chi duoc tra ra het khi nam trong vòng lặp for này
+            {                           // neu nam ngoai vong lap for thi chi tra ra phan tu cuoi cua mang
+              e = user.email
+              cv = user.chucvu
+              console.log(e)
+              console.log(cv)
+              if(this.email == e && cv == "daotao") // neu email nhap vao = e (firebase) và chucvu(firebase) = 'daotao' => page dao tao
+                {                                   // khi nguoi dung dang ky => chucvu đã lưu trên firebase roi nen khong can co dieu kien cho this.chucvu
+                this.authService.presentLoading('Vui lòng chờ...', 2500);
+                this.router.navigate(['tabs/home'])
+                console.log('Đăng nhập thành công')
+                }
+              if(this.email == e && (this.chucvu && cv) == 'giangvien')
+              {
+                console.log('Đây là trang của giảng viên')
+              }
+              if(this.email == e && (this.chucvu && cv) == 'congtacsinhvien')
+              {
+                console.log('Đây là trang của công tác sinh viên')
+              }
+              else{
+                console.log('Đăng nhập thất bại')
+              }
+            }
+            if(this.authService.isEmailVerified == false)
             {
-            this.authService.presentLoading('Vui lòng chờ...', 2500);
-            this.router.navigate(['tabs/home'])
-            console.log('Đăng nhập thành công')
+              alert('email này không hợp lệ hoặc chưa đăng ký!')
             }
-            else{
-              console.log('Đăng nhập thất bại')
+          }).catch((error)=>{
+
+            if(error == 'Error: The email address is badly formatted.')
+            {
+              alert('email định dạng sai')
             }
-          }
-          else
-          {
-            alert('email này không hợp lệ hoặc chưa đăng ký!')
-          }
-        }).catch((error)=>{
-
-          if(error == 'Error: The email address is badly formatted.')
-          {
-            alert('email định dạng sai')
-          }
-          else if(error == 'Error: There is no user record corresponding to this identifier. The user may have been deleted.')
-          {
-            alert('Email bạn nhập không đúng, chưa đăng ký hoặc bị khóa')
-          }
-          else if(error == 'Error: The password is invalid or the user does not have a password.')
-          {
-            alert('Mật khẩu không đúng')
-          }
-        
-        })
-    }
-    else
-    {
-      alert('Bạn chưa nhập đầy đủ thông tin!')
-    }
-}
-
+            else if(error == 'Error: There is no user record corresponding to this identifier. The user may have been deleted.')
+            {
+              alert('Email bạn nhập không đúng, chưa đăng ký hoặc bị khóa')
+            }
+            else if(error == 'Error: The password is invalid or the user does not have a password.')
+            {
+              alert('Mật khẩu không đúng')
+            }
+          
+          })
+      }
+      else
+      {
+        alert('Bạn chưa nhập đầy đủ thông tin!')
+      }
+  }
   loginGoogle()
   {
     this.authService.GoogleAuth().then((res)=>
@@ -105,4 +117,5 @@ export class DangnhapPage implements OnInit {
       this.authService.presentLoading("Vui lòng chờ...", 2500)
     });
   }
+
 }

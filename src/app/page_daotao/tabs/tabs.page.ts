@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthenticationService } from 'src/app/page_login/shared/authenticatin-Service'
 
 @Component({
   selector: 'app-tabs',
@@ -7,7 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TabsPage implements OnInit {
 
-  constructor() { }
+  chucvu = ''
+  constructor(public authService : AuthenticationService) { 
+    this.authService.setChucvu(this.chucvu)
+  }
 
   ngOnInit() {
   }

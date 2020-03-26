@@ -15,6 +15,7 @@ export class VerifyEmailPage implements OnInit {
     public authService : AuthenticationService,
     public appCtrl : IonApp,
     public router : Router,
+    public navCtrl : NavController
   ) { }
 
   ngOnInit() {
@@ -27,10 +28,11 @@ export class VerifyEmailPage implements OnInit {
   }
   backLogin()
   {
-    VerifyEmailPage.clickBack = true
-    this.router.navigate(['dangnhap'])
-    this.router.navigateByUrl('/verify-email', { skipLocationChange: true }).then(() => {
-      this.router.navigate(['dangnhap']);
-  }); 
+    this.navCtrl.navigateForward('/dangnhap')
+    //VerifyEmailPage.clickBack = true
+    //this.router.navigate(['dangnhap'])
+    //this.router.navigateByUrl('/verify-email', { skipLocationChange: true }).then(() => {
+      //this.router.navigate(['dangnhap']);
+    //}); 
   }
 }
