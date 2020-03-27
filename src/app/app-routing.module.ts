@@ -4,7 +4,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./page_login/welcome/welcom.module').then(m => m.WelcomPageModule)
+    loadChildren: () => import('./page_login/hello/hello.module').then(m => m.HelloPageModule)
   },
   {
     path: 'welcome',
@@ -57,7 +57,12 @@ const routes: Routes = [
   {
     path: 'verify-email',
     loadChildren: () => import('./page_login/verify-email/verify-email.module').then( m => m.VerifyEmailPageModule)
+  },
+  {
+    path: 'hello',
+    loadChildren: () => import('./page_login/hello/hello.module').then( m => m.HelloPageModule)
   }
+
  
 
 

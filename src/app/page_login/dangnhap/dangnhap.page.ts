@@ -64,25 +64,25 @@ export class DangnhapPage implements OnInit {
             {                           // neu nam ngoai vong lap for thi chi tra ra phan tu cuoi cua mang
               e = user.email
               cv = user.chucvu
-              console.log(e)
-              console.log(cv)
+              //console.log(e)
+              //console.log(cv)
               if(this.email == e && cv == "daotao") // neu email nhap vao = e (firebase) và chucvu(firebase) = 'daotao' => page dao tao
-                {                                   // khi nguoi dung dang ky => chucvu đã lưu trên firebase roi nen khong can co dieu kien cho this.chucvu
-                this.authService.presentLoading('Vui lòng chờ...', 2500);
-                this.router.navigate(['tabs/home'])
-                console.log('Đăng nhập thành công')
-                }
-              if(this.email == e && (this.chucvu && cv) == 'giangvien')
-              {
-                console.log('Đây là trang của giảng viên')
+              {                                   // khi nguoi dung dang ky => chucvu đã lưu trên firebase roi nen khong can co dieu kien cho this.chucvu
+              this.authService.presentLoading('Vui lòng chờ...', 2500);
+              this.router.navigate(['tabs/home'])
+              console.log('Đăng nhập thành công')
               }
-              if(this.email == e && (this.chucvu && cv) == 'congtacsinhvien')
-              {
-                console.log('Đây là trang của công tác sinh viên')
-              }
-              else{
-                console.log('Đăng nhập thất bại')
-              }
+            if(this.email == e && (this.chucvu && cv) == 'giangvien')
+            {
+              console.log('Đây là trang của giảng viên')
+            }
+            if(this.email == e && (this.chucvu && cv) == 'congtacsinhvien')
+            {
+              console.log('Đây là trang của công tác sinh viên')
+            }
+            else{
+              console.log('Đăng nhập thất bại')
+            }
             }
             if(this.authService.isEmailVerified == false)
             {

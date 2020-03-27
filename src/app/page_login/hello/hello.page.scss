@@ -1,30 +1,11 @@
-.content{
+.main
+{
     text-align: center;
-    justify-content: center;
+    margin-top: 75px;
 }
-
-.content .ion-item
+.main .row
 {
-    padding-top: 25px;
-}
-.main{
-    margin-top: 70px;
-}
-.quenmatkhau{
-    background: red($color: #000000);
-    text-align: end;
-}
-
-.icon
-{
-    width: 30px;
-    height: 30px;
-    color: #ff0000;
-}
-p
-{
-    color: #000066;
-    font-size: 17px;
+    margin-top: 75px;
 }
 .divider {
     display: flex;
@@ -54,6 +35,8 @@ p
        background: #cccccc;
     }
 }
-small{
-    padding: 8px;
+.already {
+    display: block;
+    text-align: center;
+    padding-bottom: 10px;
 }

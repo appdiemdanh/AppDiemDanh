@@ -23,7 +23,6 @@ export class WelcomPage implements OnInit {
     public router : Router,
     public authService : AuthenticationService
     ) {
-      console.log(this.authService.userData)
    }
 
   ngOnInit() {
@@ -39,7 +38,7 @@ export class WelcomPage implements OnInit {
     if(this.chucvu !== '')
     {
       this.authService.setChucvu(this.chucvu + "")  
-      this.router.navigate(['dangnhap'])
+      this.router.navigate(['dangky'])
     }
     else
     {
