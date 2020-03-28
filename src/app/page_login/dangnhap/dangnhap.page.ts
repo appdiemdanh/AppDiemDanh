@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavController, LoadingController } from '@ionic/angular';
 
 import { Router } from '@angular/router';
-import { WelcomPage } from '../welcome/welcom.page'
+import { WelcomPage } from '../chonchucvu/welcom.page'
 import { AuthenticationService } from '../shared/authenticatin-Service'
 import { error } from 'protractor';
 import { VerifyEmailPage } from '../verify-email/verify-email.page';
@@ -72,11 +72,11 @@ export class DangnhapPage implements OnInit {
               this.router.navigate(['tabs/home'])
               console.log('Đăng nhập thành công')
               }
-            if(this.email == e && (this.chucvu && cv) == 'giangvien')
+            if(this.email == e && cv == 'giangvien')
             {
               console.log('Đây là trang của giảng viên')
             }
-            if(this.email == e && (this.chucvu && cv) == 'congtacsinhvien')
+            if(this.email == e && cv == 'congtacsinhvien')
             {
               console.log('Đây là trang của công tác sinh viên')
             }
@@ -112,10 +112,7 @@ export class DangnhapPage implements OnInit {
   }
   loginGoogle()
   {
-    this.authService.GoogleAuth().then((res)=>
-    {
-      this.authService.presentLoading("Vui lòng chờ...", 2500)
-    });
+   this.router.navigate(['chonchucvu2'])
   }
 
 }

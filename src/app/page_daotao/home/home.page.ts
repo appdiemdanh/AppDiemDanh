@@ -22,15 +22,10 @@ export class HomePage implements OnInit {
 
   chucvu = ''
   user : any
-  event : any
 
   e : any
   p : any 
 
-  listUser : [{
-    email : '',
-    chucvu : ''
-  }]
   constructor(
     public dangnhap : DangnhapPage,
     public authService : AuthenticationService,
@@ -76,16 +71,14 @@ export class HomePage implements OnInit {
     //console.log(con)
 
   }
-  keyup(event)
-  {
-    
-  }
+
   getData()
   {
     let a, b : any
     let arrUser = this.authService.arrayUser
     for(let u of arrUser)
     {
+      /*
       //console.log(u.chucvu + u.email)
       let err 
       a = 'daotao'
@@ -103,7 +96,7 @@ export class HomePage implements OnInit {
         this.router.navigate(['tabs/tab5'])
         console.log('thành công')
       }
-     
+     */
 
     }
   }

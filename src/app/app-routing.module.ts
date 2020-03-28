@@ -7,8 +7,8 @@ const routes: Routes = [
     loadChildren: () => import('./page_login/hello/hello.module').then(m => m.HelloPageModule)
   },
   {
-    path: 'welcome',
-    loadChildren: () => import('./page_login/welcome/welcom.module').then( m => m.WelcomPageModule)
+    path: 'chonchucvu',
+    loadChildren: () => import('./page_login/chonchucvu/welcom.module').then( m => m.WelcomPageModule)
   },
   {
     path: 'dangnhap',
@@ -61,7 +61,11 @@ const routes: Routes = [
   {
     path: 'hello',
     loadChildren: () => import('./page_login/hello/hello.module').then( m => m.HelloPageModule)
+  },  {
+    path: 'chonchucvu2',
+    loadChildren: () => import('./page_login/chonchucvu2/chonchucvu2.module').then( m => m.Chonchucvu2PageModule)
   }
+
 
  
 

@@ -200,19 +200,31 @@ export class AuthenticationService {
 
   // Sign in with Gmail
   GoogleAuth() {
-    return this.AuthLogin(new auth.GoogleAuthProvider());
+    this.getChucvu()
+    return this.AuthLogin(new auth.GoogleAuthProvider())
   }
 
   // Auth providers
   AuthLogin(provider) {
+    this.getChucvu()
     return this.ngFireAuth.auth.signInWithPopup(provider) // xác thực người dùng
     .then((result) => {  //(result : kết quả)
-       this.ngZone.run(() => {
-          this.router.navigate(['tabs']);
-        })
-      this.SetUserData(result.user);
+      if(this.chucvu == "daotao")
+      {
+        this.presentLoading("Vui lòng chờ...", 1900)
+        this.router.navigate(['tabs/home'])
+      }
+      else if(this.chucvu == "giangvien")
+      {
+        console.log(this.chucvu)
+      }
+      else if(this.chucvu == "congtacsinhvien")
+      {
+        console.log(this.chucvu)
+      }
+      //khoi setuser nha
     }).catch((error) => {
-      window.alert("Lỗi" + error)
+      console.log('Lỗi ' + error)
     })
   }
 

@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { WelcomPageRoutingModule } from './welcom-routing.module';
-
+  
 import { WelcomPage } from './welcom.page';
 
 @NgModule({
