@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Công tác sinh viên</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <h3>Chọn môn học</h3>
+  </ion-item>
+  <ion-item>
+    <ion-label>Môn học</ion-label>
+    <ion-select value="brown" okText="Okay" cancelText="Dismiss">
+      <ion-select-option value="brown">Brown</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-button color="primary" (click)='chonlop()'>Chọn Lớp</ion-button>
+</ion-content>

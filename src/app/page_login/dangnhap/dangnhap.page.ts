@@ -78,6 +78,8 @@ export class DangnhapPage implements OnInit {
             }
             if(this.email == e && cv == 'congtacsinhvien')
             {
+              this.authService.presentLoading('Vui lòng chờ...', 2500);
+              this.router.navigate(['chonmon'])
               console.log('Đây là trang của công tác sinh viên')
             }
             else{
