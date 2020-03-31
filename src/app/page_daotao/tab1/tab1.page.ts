@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Tab2Page } from '../tab2/tab2.page';
+import { AngularFireDatabase } from '@angular/fire/database';
 
 @Component({
   selector: 'app-tab1',
@@ -8,29 +9,10 @@ import { Tab2Page } from '../tab2/tab2.page';
 })
 export class Tab1Page implements OnInit {
 
-  constructor() { }
+  listgiangvien : any = ''
+  constructor(private afDB : AngularFireDatabase) { }
 
   ngOnInit() {
-  }
-
-  // list giao vien
-  listgv = [
-    {
-      msgv : 'G0001',
-      tengv : 'Trần Công Mua'
-    },
-    {
-      msgv : 'G0002',
-      tengv : 'Phạm Đào Minh Vũ'
-    },
-    {
-      msgv : 'G0003',
-      tengv : 'Vũ Phạm Đình Thái'
-    }
-  ];
-  //
-  click()
-  {
-    console.log('mày đang click');
+    this.afDB.list(`/danhsachgiangvien/`).valueChanges().subscribe(res=>{this.listgiangvien = res})
   }
 }

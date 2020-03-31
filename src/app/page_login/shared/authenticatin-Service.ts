@@ -116,17 +116,7 @@ export class AuthenticationService {
   }
 
   // Đăng nhập
-  /*
-  SignIn(email, password) {
-    return this.ngFireAuth.auth.signInWithEmailAndPassword(email, password)
-  }
-  */ //đăng nhập, và setdata người dùng vào trên firebase
-
-  //SignIn(email, password) {
-    //return this.ngFireAuth.auth.signInWithEmailAndPassword(email, password).catch((error) => {
-    //console.log(error)
-  //})
-//}
+ 
   SignIn(email, password) {
     return this.ngFireAuth.auth.signInWithEmailAndPassword(email, password)
   }
@@ -157,15 +147,7 @@ export class AuthenticationService {
       .catch((error) => console.log(error))
   }
   // Quên mật khẩu
-  /*
-  PasswordRecover(email, actioncode) {
-    return this.ngFireAuth.auth.sendPasswordResetEmail(email, actioncode)
-    .then(() => {
-    }).catch((error) => {
-      console.log("Lỗi" + error)
-    })
-  }
-  */
+
  PasswordRecover(passwordResetEmail) {
   return this.ngFireAuth.auth.sendPasswordResetEmail(passwordResetEmail)
   .then(() => {
@@ -190,8 +172,7 @@ export class AuthenticationService {
     return (user !== null && user.emailVerified !== false) ? true : false; // user khác rỗng và emailFerfied trong list user khác false thì trả về true ngược lại trả về false
   }
 
-  //public User = JSON.parse(localStorage.getItem('user'));
-  //public emailVerified = false
+  
   // Returns true when user's email is verified (đã xác minh rồi)
   get isEmailVerified(): boolean {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -211,7 +192,7 @@ export class AuthenticationService {
     .then((result) => {  //(result : kết quả)
       if(this.chucvu == "daotao")
       {
-        this.presentLoading("Vui lòng chờ...", 1900)
+        this.presentLoading("Vui lòng chờ...", 2500)
         this.router.navigate(['tabs/home'])
       }
       else if(this.chucvu == "giangvien")
@@ -220,9 +201,10 @@ export class AuthenticationService {
       }
       else if(this.chucvu == "congtacsinhvien")
       {
-        console.log(this.chucvu)
+        this.presentLoading("Vui lòng chờ...", 2500)
+        this.router.navigate(['chonmon'])
       }
-      //khoi setuser nha
+      //khoi setuserData nha
     }).catch((error) => {
       console.log('Lỗi ' + error)
     })

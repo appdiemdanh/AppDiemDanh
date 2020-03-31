@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFireDatabase } from '@angular/fire/database';
 
 @Component({
   selector: 'app-tab2',
@@ -7,37 +8,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class Tab2Page implements OnInit {
 
-  constructor() { }
+  listmonhoc : any
+  hocky = 'HK2'
+  listhocky = [{tenhocky : 'Học Kỳ 1', id : 'HK1'}, {tenhocky : 'Học Kỳ 2', id : 'HK2'}, {tenhocky : 'Học Kỳ 3', id : "HK3"}]
+  constructor(private afDB : AngularFireDatabase) { }
 
   ngOnInit() {
+    this.afDB.list(`/danhsachmonhoc/` + this.hocky).valueChanges().subscribe(res=>{this.listmonhoc = res})
   }
 
-  listmonhoc = [
-    {
-      mamonhoc : 'M0001',
-      tenmonhoc : 'Cơ sở lập trình',
-      sotiet : '48'
-    },
-    {
-      mamonhoc : 'M0002',
-      tenmonhoc : 'Tin học',
-      sotiet : '32'
-    },
-    {
-      mamonhoc : 'M0003',
-      tenmonhoc : 'CCNA 1',
-      sotiet : '72'
-    },
-    {
-      mamonhoc : 'M0004',
-      tenmonhoc : 'Lập trình nâng cao',
-      sotiet : '56'
-    },
-    {
-      mamonhoc : 'M0005',
-      tenmonhoc : 'Cơ sở Dữ liệu',
-      sotiet : '64'
-    }
-  ];
+  getId(event)
+  {
+    console.log(event)
+  }
+ 
 
 }

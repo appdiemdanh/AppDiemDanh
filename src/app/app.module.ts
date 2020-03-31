@@ -21,6 +21,7 @@ import { AuthenticationService } from './page_login/shared/authenticatin-Service
 import { DangnhapPage } from './page_login/dangnhap/dangnhap.page'
 import { WelcomPage } from './page_login/chonchucvu/welcom.page'
 import { AngularFireDatabase } from '@angular/fire/database';
+import { HomePage } from './page_daotao/home/home.page'
 //import {  } from '@angular/core'
 
 @NgModule({
@@ -32,7 +33,7 @@ import { AngularFireDatabase } from '@angular/fire/database';
     AngularFireAuthModule,
     AngularFireDatabaseModule,
     AngularFirestoreModule,
-    
+    // những import mà không có trên project thì phải add vô đây nữa nha
   ],
   providers: [
     StatusBar,
@@ -43,7 +44,8 @@ import { AngularFireDatabase } from '@angular/fire/database';
     AngularFirestoreModule,
     DangnhapPage,
     WelcomPage,
-    AngularFireDatabase
+    AngularFireDatabase,
+    HomePage
   ],
   bootstrap: [AppComponent]
 })

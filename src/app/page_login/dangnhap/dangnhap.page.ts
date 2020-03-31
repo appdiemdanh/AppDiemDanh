@@ -34,24 +34,7 @@ export class DangnhapPage implements OnInit {
   ngOnInit() {
     
   }
-  
 
-  public setUser(text : String)
-  {
-    this.email = text + ""
-  }
-  public getUser()
-  {
-    return this.email 
-  }
-
-  public getClick()
-  {
-    if(VerifyEmailPage.clickBack = true)
-      {
-        window.location.reload(true)
-      }
-  }
   logIn()
   {
     let e, cv //email và chức vụ
@@ -72,19 +55,19 @@ export class DangnhapPage implements OnInit {
               this.router.navigate(['tabs/home'])
               console.log('Đăng nhập thành công')
               }
-            if(this.email == e && cv == 'giangvien')
-            {
-              console.log('Đây là trang của giảng viên')
-            }
-            if(this.email == e && cv == 'congtacsinhvien')
-            {
-              this.authService.presentLoading('Vui lòng chờ...', 2500);
-              this.router.navigate(['chonmon'])
-              console.log('Đây là trang của công tác sinh viên')
-            }
-            else{
-              console.log('Đăng nhập thất bại')
-            }
+              if(this.email == e && cv == 'giangvien')
+              {
+                console.log('Đây là trang của giảng viên')
+              }
+              if(this.email == e && cv == 'congtacsinhvien')
+              {
+                this.authService.presentLoading('Vui lòng chờ...', 2500);
+                this.router.navigate(['chonmon'])
+                console.log('Đây là trang của công tác sinh viên')
+              }
+              else{
+                console.log('Đăng nhập thất bại')
+              }
             }
             if(this.authService.isEmailVerified == false)
             {
@@ -111,10 +94,6 @@ export class DangnhapPage implements OnInit {
       {
         alert('Bạn chưa nhập đầy đủ thông tin!')
       }
-  }
-  loginGoogle()
-  {
-   this.router.navigate(['chonchucvu2'])
   }
 
 }

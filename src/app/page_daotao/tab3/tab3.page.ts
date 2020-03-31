@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFireDatabase } from '@angular/fire/database';
 
 @Component({
   selector: 'app-tab3',
@@ -7,31 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class Tab3Page implements OnInit {
 
-  constructor() { }
+  listlop : any
+
+  constructor(private afDB : AngularFireDatabase) { }
 
   ngOnInit() {
+    this.afDB.list(`/danhsachlop/`).valueChanges().subscribe(res=>{this.listlop = res})
   }
-
-  listlop = [
-    {
-      malop : 'L0001',
-      tenlop : 'CD18DD1',
-      loailop : 'Thường'
-    },
-    {
-      malop : 'L0002',
-      tenlop : 'CD18DD2',
-      loailop : 'Thường'
-    },
-    {
-      malop : 'L0003',
-      tenlop : 'CD18DD3',
-      loailop : 'CLC'
-    },
-    {
-      malop : 'L0004',
-      tenlop : 'CD18DD4',
-      loailop : 'Thường'
-    }
-  ];
 }

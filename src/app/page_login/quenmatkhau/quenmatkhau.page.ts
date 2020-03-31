@@ -11,7 +11,6 @@ import { AlertController } from '@ionic/angular';
 })
 export class QuenmatkhauPage implements OnInit {
 
-  passwordRequet : 'toiyeuban123'
   email = ''
 
   constructor(
@@ -30,17 +29,20 @@ export class QuenmatkhauPage implements OnInit {
       {
         alert("vui lòng không để trống ô email này")
       }
-      this.authService.PasswordRecover(this.email).then((res)=>
+      else 
       {
-        
-      }).catch((error) =>
-      {
-        if(error == "TypeError: Cannot read property 'emailVerified' of null")
+        this.authService.PasswordRecover(this.email).then((res)=>
         {
-          alert('Email bạn nhập sai, chưa đăng ký hoặc đã bị khóa')
-        }
-        console.log(error)
-      })
+
+        }).catch((error) =>
+          {
+          if(error == "TypeError: Cannot read property 'emailVerified' of null")
+          {
+            alert('Email bạn nhập sai, chưa đăng ký hoặc đã bị khóa')
+          }
+          console.log(error)
+        })
+      }
   }
 
 }

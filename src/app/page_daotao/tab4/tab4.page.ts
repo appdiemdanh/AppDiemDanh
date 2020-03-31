@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFireDatabase } from '@angular/fire/database';
 
 @Component({
   selector: 'app-tab4',
@@ -9,11 +10,15 @@ export class Tab4Page implements OnInit {
 
   isChecked = ""
   id = ""
-  constructor() {
-    this.Sapxepkitu();
+  listsinhvien : any
+  tenlop = "CD18DĐ1"
+
+  constructor(private afDB : AngularFireDatabase) {
+    //this.Sapxepkitu();
    }
 
   ngOnInit() {
+    this.afDB.list(`/danhsachsinhvienk18/` + this.tenlop).valueChanges().subscribe(res=>{this.listsinhvien = res}) 
   }
   //
   getValues(event)
@@ -27,13 +32,13 @@ export class Tab4Page implements OnInit {
   Sapxepkitu()
    {
      this.listsinhvien.sort(function(a, b) {
-       return a.tensv[0].localeCompare(b.tensv[0]);
+       return a.D[0].localeCompare(b.D[0]);
      });
     
      var newsinhvien = {};
     
      for (var i = 0; i < this.listsinhvien.length; i++) {
-       var c = this.listsinhvien[i].tensv[0].toUpperCase();
+       var c = this.listsinhvien[i].D[0].toUpperCase();
        if (newsinhvien[c] && newsinhvien[c].length >= 0)
          newsinhvien[c].push(this.listsinhvien[i]);
        else {
@@ -45,38 +50,5 @@ export class Tab4Page implements OnInit {
      //console.log(newsinhvien);
    }
   //
-  listsinhvien = 
-  [
-    {
-      mssv : 'S0001',
-      tensv : 'Cáp Kỳ',
-      lop : 'CD18DD1',
-      ngaysinh : '12/12/2000'
-    },
-    {
-      mssv : 'S0002',
-      tensv : 'Nguyễn Quang Khải',
-      lop : 'CD18DD2',
-      ngaysinh : '12/08/2000'
-    },
-    {
-      mssv : 'S0003',
-      tensv : 'Nguyễn Hoàng Thanh Vy',
-      lop : 'CD18DD1',
-      ngaysinh : '06/06/2000'
-    },
-    {
-      mssv : 'S0004',
-      tensv : 'Lê Minh Phố',
-      lop : 'CD18DD4',
-      ngaysinh : '27/04/1999'
-    },
-    {
-      mssv : 'S0005',
-      tensv : 'Lê Quang Huy',
-      lop : 'CD18DD2',
-      ngaysinh : '07/09/2000'
-    },
-  ];
 
 }

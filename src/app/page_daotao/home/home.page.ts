@@ -8,6 +8,7 @@ import { map, tap } from 'rxjs/operators'
 import { TestBed } from '@angular/core/testing';
 import { TestObject } from 'protractor/built/driverProviders';
 import { Router } from '@angular/router';
+import { join } from 'path';
 
 @Component({
   selector: 'app-home',
@@ -16,15 +17,17 @@ import { Router } from '@angular/router';
 })
 export class HomePage implements OnInit {
 
-  email = this.dangnhap.email
+  public listsvDD1 : any 
+  public listsvTM1 : any
+  public listsvLW1 : any
+  public listsinhvien : any
+  public listgiangvien : any
+  public listmonhoc : any
+  public listlop : any
 
-  users: Observable<any[]>;
+  public tenlop = "CD18LW1"
+  public hocky = "HK3"
 
-  chucvu = ''
-  user : any
-
-  e : any
-  p : any 
 
   constructor(
     public dangnhap : DangnhapPage,
@@ -33,71 +36,27 @@ export class HomePage implements OnInit {
     public afs : AngularFirestore,
     public router : Router
   ) {
-    this.chucvu = this.authService.getChucvu()
-    this.authService.setChucvu(this.chucvu)
-    //let listItems : any = this.authService.arrayUser
-
-    //this.afD.list('user').valueChanges().subscribe(console.log)
-    //this.afDB.list("listItems/").valueChanges().subscribe(data => {
-      //this.listItems = data
-      //console.log(this.listItems) 
-    //})
-    //console.log(this.user)
+  
    }
 
   ngOnInit() {
-
+        //khoi tao gia tri ban dau
+    this.afDB.list(`/danhsachmonhoc/` + this.hocky).valueChanges().subscribe(res=>{this.listmonhoc = res})
+    this.afDB.list(`/danhsachlop/`).valueChanges().subscribe(res=>{this.listlop = res}) &&
+    this.afDB.list(`/danhsachsinhvienk18/` + this.tenlop).valueChanges().subscribe(res=>{this.listsinhvien = res}) 
   }
+
 
   logOut()
   {
     this.authService.SignOut().then((res)=>{
-      //this.dangnhap.setUser(this.email)   
     }).catch((error)=>{
       console.log(error)
     })
   }
-  ggetData()
-  {
-    let con
-    this.afs.collection('listuser').valueChanges().subscribe(data => {this.user = data}
-    )
-    let a : any = JSON.stringify(this.user)
-    console.log(a)
-    //for(let i of a)
-    //{
-      //con = i["email"];
-    //}
-    //console.log(con)
-
-  }
-
   getData()
   {
-    let a, b : any
-    let arrUser = this.authService.arrayUser
-    for(let u of arrUser)
-    {
-      /*
-      //console.log(u.chucvu + u.email)
-      let err 
-      a = 'daotao'
-      b = 'capky99@gmail.com'
-      let c = u.email 
-      let d = u.chucvu
-      console.log(c)
-      if(c == b && d == a)
-      {
-        err = true
-        console.log('đúng')
-      }
-      if(err == true)
-      {
-        this.router.navigate(['tabs/tab5'])
-        console.log('thành công')
-      }
-     */
-
-    }
+    console.log(this.listmonhoc)
   }
+ 
 }
