@@ -61,7 +61,8 @@ const routes: Routes = [
   {
     path: 'hello',
     loadChildren: () => import('./page_login/hello/hello.module').then( m => m.HelloPageModule)
-  },  {
+  },
+  {
     path: 'chonchucvu2',
     loadChildren: () => import('./page_login/chonchucvu2/chonchucvu2.module').then( m => m.Chonchucvu2PageModule)
   },
@@ -72,7 +73,15 @@ const routes: Routes = [
   {
     path: 'chonmon',
     loadChildren: () => import('./page_congtacsv/chonmon/chonmon.module').then( m => m.ChonmonPageModule)
+  },
+  {
+    path: 'thongtinsv',
+    loadChildren: () => import('./page_daotao/thongtinsv/thongtinsv.module').then( m => m.ThongtinsvPageModule)
+  },  {
+    path: 'thongtin-gv',
+    loadChildren: () => import('./page_daotao/thongtin-gv/thongtin-gv.module').then( m => m.ThongtinGvPageModule)
   }
+
 
 
  

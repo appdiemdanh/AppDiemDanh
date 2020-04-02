@@ -8,9 +8,10 @@
   <h4>Danh sách giáo viên</h4>
   <ion-list>
     <ion-item *ngFor='let gv of listgiangvien'>
-      <ion-label>
+      <ion-label (click)='getMaGV(gv.B)'>
         {{gv.C}} 
       </ion-label>
+      <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
     </ion-item>
   </ion-list>
 </ion-content>

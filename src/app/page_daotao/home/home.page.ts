@@ -17,18 +17,8 @@ import { join } from 'path';
 })
 export class HomePage implements OnInit {
 
-  public listsvDD1 : any 
-  public listsvTM1 : any
-  public listsvLW1 : any
-  public listsinhvien : any
-  public listgiangvien : any
-  public listmonhoc : any
-  public listlop : any
-
-  public tenlop = "CD18LW1"
-  public hocky = "HK3"
-
-
+  public hocky = ''
+  
   constructor(
     public dangnhap : DangnhapPage,
     public authService : AuthenticationService,
@@ -41,9 +31,6 @@ export class HomePage implements OnInit {
 
   ngOnInit() {
         //khoi tao gia tri ban dau
-    this.afDB.list(`/danhsachmonhoc/` + this.hocky).valueChanges().subscribe(res=>{this.listmonhoc = res})
-    this.afDB.list(`/danhsachlop/`).valueChanges().subscribe(res=>{this.listlop = res}) &&
-    this.afDB.list(`/danhsachsinhvienk18/` + this.tenlop).valueChanges().subscribe(res=>{this.listsinhvien = res}) 
   }
 
 
@@ -56,7 +43,7 @@ export class HomePage implements OnInit {
   }
   getData()
   {
-    console.log(this.listmonhoc)
+    //console.log(this.listmonhoc)
   }
  
 }

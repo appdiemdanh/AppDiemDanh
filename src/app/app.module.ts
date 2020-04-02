@@ -22,6 +22,7 @@ import { DangnhapPage } from './page_login/dangnhap/dangnhap.page'
 import { WelcomPage } from './page_login/chonchucvu/welcom.page'
 import { AngularFireDatabase } from '@angular/fire/database';
 import { HomePage } from './page_daotao/home/home.page'
+import { Tab4Page } from './page_daotao/tab4/tab4.page'
 //import {  } from '@angular/core'
 
 @NgModule({
@@ -45,7 +46,8 @@ import { HomePage } from './page_daotao/home/home.page'
     DangnhapPage,
     WelcomPage,
     AngularFireDatabase,
-    HomePage
+    HomePage,
+    Tab4Page
   ],
   bootstrap: [AppComponent]
 })

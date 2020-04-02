@@ -8,12 +8,20 @@
 
 <ion-content>
   <h4>Danh sách sinh viên</h4>
-  <ion-list>
-    <ion-item *ngFor = 'let sv of listsinhvien'>
-      <ion-label>
-        {{sv.D}} - {{sv.C}}
-      </ion-label>
-      <ion-checkbox id="{{sv.B}}" color="dark" (ionChange) = "getValues($event);"></ion-checkbox>
+  <ion-item>
+    <ion-label>Lọc theo : </ion-label>
+    <ion-select [(ngModel)]='xemsinhvientheo'>
+      <ion-select-option value='tatcasinhvien'>Tất cả sinh viên</ion-select-option>
+      <ion-select-option value='svlopCD18DĐ1'>SV lớp CD18DĐ1</ion-select-option>
+      <ion-select-option value='svlopCD18TM1'>SV lớp CD18TM1</ion-select-option>
+      <ion-select-option value='svlopCD18LW1'>SV lớp CD18LW1</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <br>
+  <ion-list *ngFor = 'let sv of listsinhvien'>
+    <ion-item (click)='getItem(sv.C)' *ngIf='dieukienShow(sv.A)'>
+      <ion-label>{{sv.B}}. {{sv.D}}</ion-label>
+      <ion-icon name="chevron-forward-outline" slot='end'>></ion-icon>
     </ion-item>
   </ion-list>
 </ion-content>

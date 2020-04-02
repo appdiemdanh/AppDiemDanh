@@ -5,6 +5,16 @@
 </ion-header>
 
 <ion-content >
+  <br>
+  <ion-item>
+    <ion-label>Chọn học kỳ</ion-label>
+    <ion-select [(ngModel)]='hocky'>
+      <ion-select-option value="hocky1" >Học Kỳ 1</ion-select-option>
+      <ion-select-option value="hocky2">Học Kỳ 2</ion-select-option>
+      <ion-select-option value="hocky3">Học Kỳ 3</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <br>
   <ion-item>
     <ion-label possiton="floating">Item</ion-label>
     <ion-input type="text" [(ngModel)]="item"></ion-input>
@@ -12,4 +22,6 @@
   <ion-button type="submit" (click)='logOut()'expand='block'>Đăng Xuất</ion-button>
   <ion-button type="submit" (click)='getData()' expand='block'>Get Data</ion-button>
   
+
+
 </ion-content>

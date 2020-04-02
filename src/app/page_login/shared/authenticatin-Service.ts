@@ -17,6 +17,8 @@ import { map } from 'rxjs/operators';
 export class AuthenticationService {
 
   chucvu : string = ''
+  mssv : string = ''
+  msgv : string = ''
   arrayUser : any 
   // getter and setter
   getChucvu()
@@ -26,6 +28,22 @@ export class AuthenticationService {
   setChucvu(cv : string)
   {
     this.chucvu = cv
+  }
+  setMssv(mssv : string)
+  {
+    this.mssv = mssv
+  }
+  getMssv()
+  {
+    return this.mssv
+  }
+  setMsgv(msgv : string)
+  {
+    this.msgv = msgv
+  }
+  getMsgv()
+  {
+    return this.msgv
   }
 
   // tạo mảng user

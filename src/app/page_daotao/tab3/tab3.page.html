@@ -6,11 +6,12 @@
 
 <ion-content>
   <h4>Danh sách lớp</h4>
-  <ion-list>
-    <ion-item *ngFor='let listlop of listlop'>
+  <ion-list *ngFor='let listlop of listlop' >
+    <ion-item (click)='getThongtin()'>
       <ion-label>
         {{listlop.B}}
       </ion-label>
+      <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
     </ion-item>
   </ion-list>
 </ion-content>
