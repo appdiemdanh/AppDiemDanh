@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref='tabs/tab4'></ion-back-button>
+    </ion-buttons>
+    <ion-title>Thông tin lớp</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <br>
+  <form *ngFor = 'let lop of listlop'>
+    <ion-list *ngIf = 'lop.B == malop'>
+      <ion-item>
+        <p>Tên lớp : </p>  
+        <ion-label slot="end" >{{lop.C}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <p>Mã lớp : </p>  
+        <ion-label slot="end">{{lop.B}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <p>Số lượng sinh viên : </p>  
+        <ion-label slot="end">{{tongsv}}</ion-label>
+      </ion-item>
+    </ion-list>
+  </form>
+</ion-content>
+

@@ -19,7 +19,12 @@ export class AuthenticationService {
   chucvu : string = ''
   mssv : string = ''
   msgv : string = ''
+  msmh : string = ''
+  mslop : string = ''
+  tongsv : string = ''
   arrayUser : any 
+  // tạo mảng user
+  public userData: any;
   // getter and setter
   getChucvu()
   {
@@ -45,9 +50,32 @@ export class AuthenticationService {
   {
     return this.msgv
   }
+  setMsmh(msmh : string)
+  {
+    this.msmh = msmh
+  }
+  getMsmh()
+  {
+    return this.msmh
+  }
+  setMalop(msl : string)
+  {
+    this.mslop = msl
+  }
+  getMalop()
+  {
+    return this.mslop
+  }
+  setTongsv(tsv : string)
+  {
+    this.tongsv = tsv
+  }
+  gettongsv()
+  {
+    return this.tongsv
+  }
 
-  // tạo mảng user
-  public userData: any;
+  
 
   // add các function muốn sử dụng vào constructor
   constructor(
@@ -121,6 +149,44 @@ export class AuthenticationService {
 
     await alert.present();
   }
+   //thong bao 3
+   async presentAlert3(title : String, msg : String, trangmuonchuyenden : String) {
+    const alert = await this.alert.create({
+      header: title + "",
+      message: msg + "",
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => {
+            this.router.navigate([trangmuonchuyenden])
+            console.log(trangmuonchuyenden);
+          }
+        }, {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+  //thong bao 4
+  async presentAlert4(msg : string) {
+    const alert = await this.alert.create({
+      header: 'Thông báo',
+      message: msg,
+      buttons: [
+        {
+          text : 'OK',
+        }
+      ],
+    });
+
+    await alert.present();
+  }
   //loading
   async presentLoading(msg : string, miligiay : number) {
     const loading = await this.loadingController.create({
@@ -130,7 +196,7 @@ export class AuthenticationService {
     await loading.present();
 
     const { role, data } = await loading.onDidDismiss();
-    console.log('Loading dismissed!');
+    //console.log('Loading dismissed!');
   }
 
   // Đăng nhập
@@ -142,9 +208,20 @@ export class AuthenticationService {
   // Đăng ký 
   RegisterUser(email, password) {
     return this.ngFireAuth.auth.createUserWithEmailAndPassword(email, password).then((result) => {
+        this.SendVerificationMail(); // gởi mail xác nhận
+        this.presentLoading("Vui lòng chờ...", 1900)
+        this.router.navigate(['verify-email']);
       this.SetUserData(result.user);
     }).catch((error)=>{
       console.log("lỗi"+error)
+      if(error == "Error: The email address is badly formatted.")
+     {
+      this.presentAlert4('Email định dạng sai')
+      }
+      if(error == "Error: The email address is already in use by another account.")
+      {
+        this.presentAlert3('Thông báo', 'Email này đã được đăng ký rồi, vui lòng qua trang quên mật khẩu để khôi phục lại mật khẩu mới', 'quenmatkhau')
+      }
     })
   }
 
@@ -174,11 +251,11 @@ export class AuthenticationService {
   }).catch((error) => {
     if(error == "Error: The email address is badly formatted.")
     {
-      alert('Email định dạng sai')
+      this.presentAlert4('Email định dạng sai')
     }
     else if(error == "Error: There is no user record corresponding to this identifier. The user may have been deleted.")
     {
-      alert('Email bạn nhập không đúng, bị khóa hoặc chưa đăng ký')
+      this.presentAlert4('Email bạn nhập không đúng, bị khóa hoặc chưa đăng ký')
     }
     //alert(error)
   })

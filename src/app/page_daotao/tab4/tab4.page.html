@@ -19,9 +19,9 @@
   </ion-item>
   <br>
   <ion-list *ngFor = 'let sv of listsinhvien'>
-    <ion-item (click)='getItem(sv.C)' *ngIf='dieukienShow(sv.A)'>
+    <ion-item *ngIf='dieukienShow(sv.A)'>
       <ion-label>{{sv.B}}. {{sv.D}}</ion-label>
-      <ion-icon name="chevron-forward-outline" slot='end'>></ion-icon>
+      <ion-icon (click)='getMssv(sv.C)'  name="chevron-forward-outline" slot='end'>></ion-icon>
     </ion-item>
   </ion-list>
 </ion-content>

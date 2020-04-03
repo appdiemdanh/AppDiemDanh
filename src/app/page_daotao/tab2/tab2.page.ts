@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
+import { AuthenticationService } from 'src/app/page_login/shared/authenticatin-Service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tab2',
@@ -9,11 +11,13 @@ import { AngularFireDatabase } from '@angular/fire/database';
 export class Tab2Page implements OnInit {
 
   listmonhoc : any
-  hocky = 'HK1'
-  listhocky = [{tenhocky : 'Học Kỳ 1', id : 'HK1'}, {tenhocky : 'Học Kỳ 2', id : 'HK2'}, {tenhocky : 'Học Kỳ 3', id : "HK3"}]
   xemmonhoctheo = 'tatcamonhoc'
 
-  constructor(private afDB : AngularFireDatabase) { }
+  constructor(
+    private afDB : AngularFireDatabase,
+    private authService : AuthenticationService,
+    private router : Router
+    ) { }
 
   ngOnInit() {
     this.afDB.list(`/danhsachmonhoc/`).valueChanges().subscribe(res=>{this.listmonhoc = res})
@@ -28,6 +32,12 @@ export class Tab2Page implements OnInit {
     let dkxemhk3   = (this.xemmonhoctheo == 'hocky3' && hocky == 'HK3')
     
     return dkxemtatca || dkxemhk1 || dkxemhk2 || dkxemhk3
+  }
+  getMaMH(mamonhoc)
+  {
+    // lấy được mã môn học rồi thì set để tý nữa get ra dùng
+    this.authService.setMsmh(mamonhoc)
+    this.router.navigate(['thongtin-mh'])
   }
 
 }

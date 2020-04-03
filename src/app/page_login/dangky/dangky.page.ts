@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../shared/authenticatin-Service';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-dangky',
@@ -15,57 +16,50 @@ export class DangkyPage implements OnInit {
   repassword = ''
 
   chucvu = ''
+  arrayEmail : any
 
   constructor(
     public router : Router,
-    public authService : AuthenticationService 
+    public authService : AuthenticationService,
+    public afStore : AngularFirestore 
   ) { 
     this.chucvu = this.authService.getChucvu()
     if(this.chucvu == '')
     {
-      this.authService.presentAlert2("Thông báo", "Xin lỗi vì sự bất tiện này, Vui lòng chọn lại chức vụ của bạn.", "welcome", "OK, Chọn chức vụ")
+      this.authService.presentAlert2("Thông báo", "Xin lỗi vì sự bất tiện này, Vui lòng chọn lại chức vụ của bạn.", "chonchucvu", "OK, Chọn chức vụ")
     }
   }
 
   ngOnInit() {
+    this.afStore.collection('listuser').valueChanges().subscribe(res=>this.arrayEmail=res)
   }
+
 
   signUp()
   {
-    if((this.email || this.password || this.repassword).length != 0)
+    // cac dieu kien de dang ky tai khoan moi
+    if((this.email && this.password && this.repassword).length != 0) // input khong rong
     {
-      if(this.password.length >= 6)
+      if(this.password.length >= 6) // password >= 6
       {
-        if(this.repassword == this.password)
+        if(this.repassword == this.password) // nhap lai mat khau phai dung
         {
-          // Tiến hành gọi qua hàm đăng ký bên folder shared trong lớp authentication-Service
           this.authService.RegisterUser(this.email, this.password)
-          .then((res) => { // res chỉ là biếnx
-            if(this.authService.isEmailVerified == false)
-            {
-              this.authService.SendVerificationMail(); // gởi mail xác nhận
-              this.authService.presentLoading("Vui lòng chờ...", 1900)
-              this.router.navigate(['verify-email']);
-            }
-            else
-            {
-              alert("Địa chỉ email này đã đăng được đăng ký rồi, vui lòng qua mục quên mật khẩu rồi nhập emai này vào để quên mật khẩu")
-            }
-          })
         }
         else
         {
-          alert('Mật khẩu bạn nhập lại chưa trùng với mật khẩu!')
+          this.authService.presentAlert4('Mật khẩu bạn nhập lại chưa trùng với mật khẩu!')
         }
       }
       else
       {
-        alert('Mật khẩu của bạn cần phải lớn hơn 5 kí tự!')
+        this.authService.presentAlert4('Mật khẩu của bạn cần phải lớn hơn 5 kí tự!')
       }
     }
     else
     {
-      alert('Bạn cần nhập đầy đủ các thông tin!')
+      this.authService.presentAlert4('Bạn cần nhập đầy đủ các thông tin!')
     }
   }
+
 }

@@ -18,7 +18,8 @@ import { join } from 'path';
 export class HomePage implements OnInit {
 
   public hocky = ''
-  
+  listtest : any
+
   constructor(
     public dangnhap : DangnhapPage,
     public authService : AuthenticationService,
@@ -30,7 +31,8 @@ export class HomePage implements OnInit {
    }
 
   ngOnInit() {
-        //khoi tao gia tri ban dau
+    //khoi tao gia tri ban dau
+    this.afDB.list('danhsachsinhvienk18').valueChanges().subscribe(res=>this.listtest=res)
   }
 
 
@@ -43,7 +45,10 @@ export class HomePage implements OnInit {
   }
   getData()
   {
+    let a = this.listtest[1]
+    console.log(a)
     //console.log(this.listmonhoc)
+    
   }
  
 }

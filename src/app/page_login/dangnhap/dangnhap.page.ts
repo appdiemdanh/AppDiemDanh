@@ -14,12 +14,10 @@ import { VerifyEmailPage } from '../verify-email/verify-email.page';
 })
 export class DangnhapPage implements OnInit {
 
-  user = ''
   public email = ''
   public password = ''
   chucvu  = ''
 
-  public e = ''
   constructor(
     public navCtrl : NavController,
     public router : Router,
@@ -28,7 +26,6 @@ export class DangnhapPage implements OnInit {
     public welcomePage : WelcomPage
     ) { 
       this.chucvu = this.authService.getChucvu()
-      console.log(this.chucvu)
     }
 
   ngOnInit() {
@@ -38,7 +35,7 @@ export class DangnhapPage implements OnInit {
   logIn()
   {
     let e, cv //email và chức vụ
-    let arrayUser : any = this.authService.arrayUser
+    let arrayUser : any = this.authService.arrayUser // gan gia tri cho mang user
       if((this.email && this.password) != "")
       {
           this.authService.SignIn(this.email, this.password).then((res)=>
@@ -57,38 +54,36 @@ export class DangnhapPage implements OnInit {
               }
               if(this.email == e && cv == 'giangvien')
               {
-                console.log('Đây là trang của giảng viên')
+                this.authService.presentLoading('Vui lòng chờ...', 2500)
+                this.router.navigate(['diemdanh'])
+                console.log('Đăng nhập thành công')
               }
               if(this.email == e && cv == 'congtacsinhvien')
               {
                 this.authService.presentLoading('Vui lòng chờ...', 2500);
                 this.router.navigate(['chonmon'])
-                console.log('Đây là trang của công tác sinh viên')
+                console.log('Đăng nhập thành công')
               }
               else{
                 console.log('Đăng nhập thất bại')
               }
             }
-            if(this.authService.isEmailVerified == false)
-            {
-              alert('email này không hợp lệ hoặc chưa đăng ký!')
-            }
-          }).catch((error)=>{
-
+          }).catch(error=>{
+            //so sanh loi phat ra tu error rồi dịch ra tiếng việt cho dễ hiểu 
             if(error == 'Error: The email address is badly formatted.')
             {
-              alert('email định dạng sai')
+              this.authService.presentAlert4('email định dạng sai')
             }
             else if(error == 'Error: There is no user record corresponding to this identifier. The user may have been deleted.')
             {
-              alert('Email bạn nhập không đúng, chưa đăng ký hoặc bị khóa')
+              this.authService.presentAlert4('Email bạn nhập không đúng, chưa đăng ký hoặc bị khóa')
             }
             else if(error == 'Error: The password is invalid or the user does not have a password.')
             {
-              alert('Mật khẩu không đúng')
+              this.authService.presentAlert4('Mật khẩu không đúng')
             }
-          
           })
+          //
       }
       else
       {

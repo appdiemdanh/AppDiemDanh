@@ -25,9 +25,12 @@ export class Tab4Page implements OnInit {
    }
 
   ngOnInit() {
-    this.afDB.list(`/danhsachsinhvienk18/`).valueChanges().subscribe(res=>{this.listsinhvien = res}) 
+    this.afDB.list(`/danhsachsinhvienk18/`).valueChanges().subscribe(res=>{this.listsinhvien = res;
+   
+    }) 
+    
   }
-  getItem(mssv)
+  getMssv(mssv)
   {
     this.authService.setMssv(mssv + "")
     console.log(mssv)
@@ -43,27 +46,6 @@ export class Tab4Page implements OnInit {
       
       return dkxemtacasinhvien || dkxemsvlopDD1 || dkxemsvlopTM1 || dkxemsvlopLW1
     }
-  //
-  Sapxepkitu()
-   {
-     this.listsinhvien.sort(function(a, b) {
-       return a.D[0].localeCompare(b.D[0]);
-     });
-    
-     var newsinhvien = {};
-    
-     for (var i = 0; i < this.listsinhvien.length; i++) {
-       var c = this.listsinhvien[i].D[0].toUpperCase();
-       if (newsinhvien[c] && newsinhvien[c].length >= 0)
-         newsinhvien[c].push(this.listsinhvien[i]);
-       else {
-         newsinhvien[c] = [];
-         newsinhvien[c].push(this.listsinhvien[i]);
-       }
-     }
-    
-     console.log(newsinhvien);
-   }
   //
 
 }

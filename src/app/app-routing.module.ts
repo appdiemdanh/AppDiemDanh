@@ -77,10 +77,27 @@ const routes: Routes = [
   {
     path: 'thongtinsv',
     loadChildren: () => import('./page_daotao/thongtinsv/thongtinsv.module').then( m => m.ThongtinsvPageModule)
-  },  {
+  },
+  {
     path: 'thongtin-gv',
     loadChildren: () => import('./page_daotao/thongtin-gv/thongtin-gv.module').then( m => m.ThongtinGvPageModule)
+  },
+  {
+    path: 'thongtin-mh',
+    loadChildren: () => import('./page_daotao/thongtin-mh/thongtin-mh.module').then( m => m.ThongtinMhPageModule)
+  },
+  {
+    path: 'thongtinlop',
+    loadChildren: () => import('./page_daotao/thongtinlop/thongtinlop.module').then( m => m.ThongtinlopPageModule)
+  },  {
+    path: 'diemdanh',
+    loadChildren: () => import('./page_giangvien/diemdanh/diemdanh.module').then( m => m.DiemdanhPageModule)
+  },
+  {
+    path: 'thongtindiemdanh',
+    loadChildren: () => import('./page_giangvien/thongtindiemdanh/thongtindiemdanh.module').then( m => m.ThongtindiemdanhPageModule)
   }
+
 
 
 

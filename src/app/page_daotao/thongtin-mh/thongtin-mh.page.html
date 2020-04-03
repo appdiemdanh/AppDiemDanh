@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref='tabs/tab2'></ion-back-button>
+    </ion-buttons>
+    <ion-title>Thông tin môn học</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <br>
+  <form *ngFor = 'let mh of listmonhoc'>
+    <ion-list *ngIf = 'mh.C == msmh'> <!--ionlist chỉ hiển thị khi : mh.C == msmh(bên file .ts)-->
+      <ion-item>
+        <p>Tên môn học : </p>  
+        <ion-label slot="end" >{{mh.D}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <p>MSMH : </p>  
+        <ion-label slot="end">{{mh.C}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <p>Số tín chỉ : </p>  
+        <ion-label slot="end">{{mh.E}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <p>Học ở : </p>  
+        <ion-label slot="end">{{mh.A}}</ion-label>
+      </ion-item>
+    </ion-list>
+  </form>
+</ion-content>
