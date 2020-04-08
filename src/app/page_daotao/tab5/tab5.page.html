@@ -5,5 +5,23 @@
 </ion-header>
 
 <ion-content>
-  <h4>Phân giờ giảng cho giáo viên</h4>  
+  <br>
+  <ion-item>
+    <ion-label>Chọn học kỳ</ion-label>
+    <ion-select (ionChange)='getHocky($event)'>
+      <ion-select-option value="HK1" >Học Kỳ 1</ion-select-option>
+      <ion-select-option value="HK2">Học Kỳ 2</ion-select-option>
+      <ion-select-option value="HK3">Học Kỳ 3</ion-select-option>
+    </ion-select>
+  </ion-item><br>
+  <ion-item>
+    <ion-label>Chọn lớp học</ion-label>
+    <ion-select (ionChange)='getLop($event)'>
+      <ion-select-option value="CD18DĐ1" >CD18DĐ1</ion-select-option>
+      <ion-select-option value="CD18TM1">CD18TM1</ion-select-option>
+      <ion-select-option value="CD18LW1">CD18LW1</ion-select-option>
+    </ion-select>
+  </ion-item><br><br>
+  <ion-button type='submit' (click)="nextPage()" expand='block'>Tiếp tục</ion-button>
+
 </ion-content>

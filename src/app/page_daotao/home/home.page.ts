@@ -17,7 +17,6 @@ import { join } from 'path';
 })
 export class HomePage implements OnInit {
 
-  public hocky = ''
   listtest : any
 
   constructor(

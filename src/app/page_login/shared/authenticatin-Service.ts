@@ -22,6 +22,13 @@ export class AuthenticationService {
   msmh : string = ''
   mslop : string = ''
   tongsv : string = ''
+  hocky : string = ''
+  ngaybatdau : string = ''
+  ngayketthuc : string = ''
+  giobatdau : string = ''
+  gioketthuc : string = ''
+  ngayhoc : string = ''
+
   arrayUser : any 
   // tạo mảng user
   public userData: any;
@@ -74,9 +81,56 @@ export class AuthenticationService {
   {
     return this.tongsv
   }
-
+  setHocky(hk : string)
+  {
+    this.hocky = hk
+  }
+  getHocky()
+  {
+    return this.hocky
+  }
+  setNgaybatdau(nbd : string)
+  {
+    this.ngaybatdau = nbd
+  }
+  getNgaybatdau()
+  {
+    return this.ngaybatdau
+  }
+  setNgayketthuc(nkt : string)
+  {
+    this.ngayketthuc = nkt
+  }
+  getNgayketthuc()
+  {
+    return this.ngayketthuc
+  }
+  setGiobatdau(gbd : string)
+  {
+    this.giobatdau = gbd
+  }
+  getGiobatdau()
+  {
+    return this.giobatdau
+  }
+  setGioketthuc(gkt : string)
+  {
+    this.gioketthuc = gkt
+  }
+  getGioketthuc()
+  {
+    return this.gioketthuc
+  }
+  setNgayhoc(nh : string)
+  {
+    this.ngayhoc = nh
+  }
+  getNgayhoc()
+  {
+    return this.ngayhoc
+  }
   
-
+  
   // add các function muốn sử dụng vào constructor
   constructor(
     public afStore: AngularFirestore,
@@ -292,7 +346,8 @@ export class AuthenticationService {
       }
       else if(this.chucvu == "giangvien")
       {
-        console.log(this.chucvu)
+        this.presentLoading("Vui lòng chờ...", 2500)
+        this.router.navigate(['diemdanh'])
       }
       else if(this.chucvu == "congtacsinhvien")
       {
@@ -316,7 +371,7 @@ export class AuthenticationService {
       displayName: user.displayName,
       chucvu : this.chucvu,
       photoURL: user.photoURL,
-      emailVerified: true//user.emailVerified
+      emailVerified: user.emailVerified
     }
     return userRef.set(userData, {
       merge: true //set gia tri trong database cua firebase

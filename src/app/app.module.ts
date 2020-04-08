@@ -23,6 +23,7 @@ import { WelcomPage } from './page_login/chonchucvu/welcom.page'
 import { AngularFireDatabase } from '@angular/fire/database';
 import { HomePage } from './page_daotao/home/home.page'
 import { Tab4Page } from './page_daotao/tab4/tab4.page'
+//import {  } from ''
 //import {  } from '@angular/core'
 
 @NgModule({

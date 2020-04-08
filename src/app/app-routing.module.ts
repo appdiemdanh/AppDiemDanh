@@ -89,21 +89,23 @@ const routes: Routes = [
   {
     path: 'thongtinlop',
     loadChildren: () => import('./page_daotao/thongtinlop/thongtinlop.module').then( m => m.ThongtinlopPageModule)
-  },  {
+  },
+  {
     path: 'diemdanh',
     loadChildren: () => import('./page_giangvien/diemdanh/diemdanh.module').then( m => m.DiemdanhPageModule)
   },
   {
     path: 'thongtindiemdanh',
     loadChildren: () => import('./page_giangvien/thongtindiemdanh/thongtindiemdanh.module').then( m => m.ThongtindiemdanhPageModule)
+  },
+  {
+    path: 'phangiohoc',
+    loadChildren: () => import('./page_daotao/phangiohoc/phangiohoc.module').then( m => m.PhangiohocPageModule)
+  },
+  {
+    path: 'thongtinphangio',
+    loadChildren: () => import('./page_daotao/thongtinphangio/thongtinphangio.module').then( m => m.ThongtinphangioPageModule)
   }
-
-
-
-
- 
-
-
 ];
 
 @NgModule({   
