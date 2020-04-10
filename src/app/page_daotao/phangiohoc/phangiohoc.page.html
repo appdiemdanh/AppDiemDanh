@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref='tabs/tab5'></ion-back-button>
     </ion-buttons>
-    <ion-title>Phân giờ học</ion-title>
+    <ion-title>Phân giờ dạy cho giảng viên</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -16,16 +16,24 @@
           Học kỳ : {{ hk }}
         </ion-col>
         <ion-col>
-          Lớp : {{ malop }}
+          Giảng viên : {{ tengiangvien }}
         </ion-col>
       </ion-row>
     </ion-grid>
   </ion-item>
 
-  <ion-list *ngIf='checkshow == true'> <!--show ra khi bien checkshow = true-->
+  <ion-list *ngIf='showChonmonChongiangvien == true'> <!--show ra khi bien checkshow = true-->
+    <ion-item>
+      <ion-label>Chọn lớp</ion-label>
+      <ion-select (ionChange)='getTenlop($event)' >
+        <ion-select-option *ngFor='let lop of listlop'>
+          <ion-item (click)='click()'>{{lop.B}}</ion-item>
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
     <ion-item>
       <ion-label>Chọn môn học</ion-label>
-      <ion-select placeholder="Môn học" (ionChange)='getTenmh($event)' >
+      <ion-select (ionChange)='getTenmh($event)' >
         <ion-select-option *ngFor='let mh of listmonhoc'> 
           <ion-item *ngIf="mh.A == hocky" >
             <ion-label >
@@ -36,10 +44,14 @@
       </ion-select>
     </ion-item>
     <ion-item>
-      <ion-label>Chọn giảng viên dạy</ion-label>
-      <ion-select placeholder="Giảng viên" (ionChange)='getTengv($event)' >
-        <ion-select-option *ngFor='let gv of listgiangvien'>
-          <ion-item (click)='click()'>{{gv.C}}</ion-item>
+      <ion-label>Chọn phòng học</ion-label>
+      <ion-select (ionChange)='getTenphonghoc($event)' >
+        <ion-select-option *ngFor='let ph of listphonghoc'> 
+          <ion-item>
+            <ion-label>
+              {{ph.B}}
+            </ion-label>
+          </ion-item>
         </ion-select-option>
       </ion-select>
     </ion-item>
@@ -48,17 +60,20 @@
   <ion-item>
     <ion-grid>
       <ion-row>
-        <ion-col size='6'>
+        <ion-col size='4'>
+          Lớp : {{ tenlop }}
+        </ion-col>
+        <ion-col size='4'>
           Môn học : {{ tenmonhoc }}
         </ion-col>
-        <ion-col size='6'>
-          Giảng viên dạy : {{ tengiangvien }}
+        <ion-col size='4'>
+          Phòng học : {{ tenphonghoc }}
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col size='5'></ion-col>
         <ion-col>
-          <ion-icon class="icon" name="chevron-down-outline" *ngIf='checkshow == false' (click)="clickIcon()"></ion-icon>
+          <ion-icon class="icon" name="chevron-down-outline" *ngIf='showChonmonChongiangvien == false' (click)="clickIcon()"></ion-icon>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -69,8 +84,7 @@
     <ion-label>Ngày bắt đầu</ion-label>
     <ion-datetime 
       displayFormat="DD - MM - YYYY" 
-      placeholder="Chọn ngày bắt đầu"
-      cancelText="Bỏ chọn" 
+      cancelText="Hủy" 
       doneText="Chọn"
       [(ngModel)] ='ngaybatdau' >
   </ion-datetime>
@@ -79,9 +93,8 @@
     <ion-label>Ngày kết thúc</ion-label>
     <ion-datetime 
       displayFormat="DD - MM - YYYY" 
-      placeholder="Chọn ngày kết thúc"
       doneText="Chọn"
-      cancelText="Bỏ chọn" 
+      cancelText="Hủy" 
       [(ngModel)] ='ngayketthuc' >
   </ion-datetime>
   </ion-item>
@@ -89,9 +102,8 @@
     <ion-label>Giờ bắt đầu</ion-label>
     <ion-datetime 
       displayFormat="HH : mm" 
-      placeholder="Chọn giờ bắt đầu"
       doneText="Chọn"
-      cancelText="Bỏ chọn" 
+      cancelText="Hủy" 
       [(ngModel)] ='giobatdau' >
   </ion-datetime>
   </ion-item>
@@ -99,13 +111,12 @@
     <ion-label>Giờ kết thúc</ion-label>
     <ion-datetime 
       displayFormat="HH : mm" 
-      placeholder="Chọn giờ kết thúc"
       doneText="Chọn"
-      cancelText="Bỏ chọn" 
+      cancelText="Hủy" 
       [(ngModel)] ='gioketthuc' >
   </ion-datetime>
   </ion-item>
-  <ion-item>
+  <ion-item (click)="viewngayhocsaukhixoa = false">
     <ion-label>Ngày học</ion-label>
     <ion-select (ionChange)="getNgayhoc($event)">
       <ion-select-option *ngFor='let nh of listngayhoc'>
@@ -115,6 +126,10 @@
   </ion-item>
   <ion-item *ngIf="ngayhoc != ''">
     <ion-label>Ngày học : {{ngayhoc}} </ion-label>
+    <ion-icon size="12" name="trash-outline" (click)="ngayhoc = ''; viewngayhocsaukhixoa = true"></ion-icon> 
+  </ion-item>
+  <ion-item *ngIf="viewngayhocsaukhixoa == true">
+    <ion-label>Ngày học : {{ngayhoc}} </ion-label>
   </ion-item>
   <br>
   <ion-row>
@@ -122,6 +137,5 @@
       <ion-button type='submit' (click)='TiepTuc()' expand='block'>Tiếp tục</ion-button>
     </ion-col>
   </ion-row>  
-  
   
 </ion-content>

@@ -34,7 +34,7 @@ export class Chonchucvu2Page implements OnInit {
     }
     else
     {
-      alert('Bạn chưa chọn chức vụ của mình!')
+      this.authService.presentAlert4('Bạn chưa chọn chức vụ của mình!')
     }
   }
 }

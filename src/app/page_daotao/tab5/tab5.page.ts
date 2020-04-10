@@ -14,8 +14,12 @@ export class Tab5Page implements OnInit {
 
   myday = new Date()
 
+  listhocky : any
+  listgiangvien : any
   hocky = ''
-  malop = ''
+  tengiangvien = ''
+  magiangvien = ''
+  showMaGV : boolean = false
 
   constructor(
     public tab4 : Tab4Page,
@@ -23,34 +27,40 @@ export class Tab5Page implements OnInit {
     public afDB : AngularFireDatabase,
     public router : Router
     ) { 
-      console.log(this.myday.getMonth() + 2)
+      //console.log(this.myday.getMonth() + 2)
      }
 
 
   ngOnInit() {
+    // lay gia tri tren fire base gan cho listhocky va listgiangvien
+    this.afDB.list('danhsachhocky').valueChanges().subscribe(res=>this.listhocky=res)
+    this.afDB.list('danhsachgiangvien').valueChanges().subscribe(res=>this.listgiangvien=res)
   }
   
   getHocky(event)
   {
     this.hocky = event.detail.value
   }
-  getLop(event)
+  getGiangvien(event)
   {
-    this.malop = event.detail.value
+    let tenvamaGV = event.detail.value // tao mang hung gia tri tu event
+    this.tengiangvien = tenvamaGV.split("-")[0] // = tenvamaGV cat ra boi dau '-' se tao ra mang voi 2 phan tu thu 0 va thu 1 cua mang do
+    this.magiangvien  = tenvamaGV.split("-")[1] // thu 0 la tengiangvien, thu 1 la magiangvien
   }
   nextPage()
   {
-    if((this.hocky && this.malop) != '')
+    if((this.hocky && this.tengiangvien) != '')
     {
        //set gia tri 
       this.authService.setHocky(this.hocky)
-      this.authService.setMalop(this.malop)
+      this.authService.setMsgv(this.tengiangvien)
+      this.authService.setMagiangvien(this.magiangvien)
       //chuyen man hinh
       this.router.navigate(['phangiohoc'])
     }
     else
     {
-      this.authService.presentAlert4('Bạn vui lòng chọn đầy đủ thông tin học kỳ và lớp !')
+      this.authService.presentAlert4('Bạn vui lòng chọn đầy đủ thông tin học kỳ và giảng viên !')
     }
   }
  

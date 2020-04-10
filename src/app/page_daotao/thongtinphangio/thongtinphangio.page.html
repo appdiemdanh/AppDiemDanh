@@ -3,10 +3,33 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref='phangiohoc'></ion-back-button>
     </ion-buttons>
-    <ion-title>Thông tin phân giờ</ion-title>
+    <ion-title>Kiểm tra lại thông tin</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <ion-card class='ion-card'>
+    <ion-item>
+      <ion-card-header>
+        <ion-card-title>Thông tin phân giờ</ion-card-title>
+      </ion-card-header>
+    
+    </ion-item>
+    <ion-card-content>
+        <br>
+        Học kỳ        : {{hocky}}<br><br>      <!--{{giatri}} lay tu ben file .ts nha-->
+        Giảng viên    : {{tengiangvien}}<br>
+        Mã giảng viên : {{magiangvien}}<br>
+        Lớp           : {{lop}}<br>
+        Môn học       : {{tenmonhoc}}<br>
+        Phòng học     : {{tenphonghoc}}<br><br>
+        Ngày bắt đầu  : {{ngaybatdau}}<br>
+        Ngày kết thúc : {{ngayketthuc}}<br>
+        Giờ bắt đầu   : {{giobatdau}}<br>
+        Giờ kết thúc  : {{gioketthuc}}<br>
+        Ngày học      : {{ngayhoc}}<br>
+      <br>
+      <ion-button type='submit' expand='block' (click)='PushDataToSever()'>Gửi lên sever</ion-button>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

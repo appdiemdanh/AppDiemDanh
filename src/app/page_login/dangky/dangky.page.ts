@@ -11,6 +11,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 })
 export class DangkyPage implements OnInit {
 
+  magiangvien = ''
   email = ''
   password = ''
   repassword = ''
@@ -44,7 +45,9 @@ export class DangkyPage implements OnInit {
       {
         if(this.repassword == this.password) // nhap lai mat khau phai dung
         {
-          this.authService.RegisterUser(this.email, this.password)
+          this.authService.RegisterUser(this.email, this.password).then(res=>{
+            this.authService.setMagiangvien(this.magiangvien) // set magiangvien len authService
+          })
         }
         else
         {

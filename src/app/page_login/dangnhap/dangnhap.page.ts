@@ -6,6 +6,7 @@ import { WelcomPage } from '../chonchucvu/welcom.page'
 import { AuthenticationService } from '../shared/authenticatin-Service'
 import { error } from 'protractor';
 import { VerifyEmailPage } from '../verify-email/verify-email.page';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-dangnhap',
@@ -16,31 +17,32 @@ export class DangnhapPage implements OnInit {
 
   public email = ''
   public password = ''
-  chucvu  = ''
+  arrayUser : any = ''
 
   constructor(
     public navCtrl : NavController,
     public router : Router,
     public authService : AuthenticationService,
     public loadingController : LoadingController,
-    public welcomePage : WelcomPage
+    public welcomePage : WelcomPage,
+    public afStore : AngularFirestore
     ) { 
-      this.chucvu = this.authService.getChucvu()
     }
 
   ngOnInit() {
-    
+     // đọc dữ liệu từ firebase tên 'listuser' sau đó gán vào this.arrayUser
+     return this.afStore.collection('listuser').valueChanges().subscribe(res=>{this.arrayUser = res})
   }
 
   logIn()
   {
     let e, cv //email và chức vụ
-    let arrayUser : any = this.authService.arrayUser // gan gia tri cho mang user
+    let mangUser = this.arrayUser
       if((this.email && this.password) != "")
       {
           this.authService.SignIn(this.email, this.password).then((res)=>
           {
-            for(let user of arrayUser)  //cac phan tu chi duoc tra ra het khi nam trong vòng lặp for này
+            for(let user of mangUser)  //cac phan tu chi duoc tra ra het khi nam trong vòng lặp for này
             {                           // neu nam ngoai vong lap for thi chi tra ra phan tu cuoi cua mang
               e = user.email
               cv = user.chucvu
@@ -49,7 +51,7 @@ export class DangnhapPage implements OnInit {
               if(this.email == e && cv == "daotao") // neu email nhap vao = e (firebase) và chucvu(firebase) = 'daotao' => page dao tao
               {                                   // khi nguoi dung dang ky => chucvu đã lưu trên firebase roi nen khong can co dieu kien cho this.chucvu
               this.authService.presentLoading('Vui lòng chờ...', 2500);
-              this.router.navigate(['tabs/home'])
+              this.router.navigate(['tabs/tab1'])
               console.log('Đăng nhập thành công')
               }
               if(this.email == e && cv == 'giangvien')

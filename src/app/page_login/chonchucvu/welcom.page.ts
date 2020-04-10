@@ -42,7 +42,7 @@ export class WelcomPage implements OnInit {
     }
     else
     {
-      alert('Bạn chưa chọn chức vụ của mình!')
+      this.authService.presentAlert4('Bạn chưa chọn chức vụ của mình!')
     }
     //console.log(this.getChucvu())
     //console.log(this.chucvu)

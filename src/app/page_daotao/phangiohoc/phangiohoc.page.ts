@@ -11,22 +11,25 @@ import { Router } from '@angular/router';
 export class PhangiohocPage implements OnInit {
 
   hocky = ''
-  malop = ''
+  tenlop = ''
   magv = ''
   mamh = ''
   hk = ''
   tenmonhoc = ''
   tengiangvien = ''
+  tenphonghoc = ''
   ngaybatdau = ''
   ngayketthuc = ''
   giobatdau = ''
   gioketthuc = ''
-  ngayhoc = [] = ''
+  mangngayhoc : any = []
+  listphonghoc : any
+  ngayhoc = '' // de view ra ben .html, detai : dong 117
 
   listmonhoc : any
-  listgiangvien : any
-  monhoctheohk : any
-  checkshow : boolean = true
+  listlop : any
+  showChonmonChongiangvien : boolean = true
+  viewngayhocsaukhixoa : boolean = false
 
   listngayhoc : any = ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ Nhật']
   constructor(
@@ -36,64 +39,79 @@ export class PhangiohocPage implements OnInit {
   ) { 
      //gan gia tri 
      this.hocky = this.authService.getHocky()
-     this.malop = this.authService.getMalop()
-     this.hk = this.hocky.slice(2)
+     this.tengiangvien = this.authService.getMsgv()
+     this.hk = this.hocky.slice(2) // cat tu vi tri thu 2 lay het phan tu con lai
    
   }
 
   ngOnInit() {
-    this.afDB.list('danhsachmonhoc').valueChanges().subscribe(res=>{
-     this.listmonhoc = res
-    })
-    this.afDB.list('danhsachgiangvien').valueChanges().subscribe(res=>this.listgiangvien=res)
+    // lay gia tri tren firbase gan cho listmonhoc va listgiangvien
+    this.afDB.list('danhsachmonhoc').valueChanges().subscribe(res=>this.listmonhoc = res)
+    this.afDB.list('danhsachlop').valueChanges().subscribe(res=>this.listlop=res)
+    this.afDB.list('danhsachphonghoc').valueChanges().subscribe(res=>this.listphonghoc=res)
 
     
   }
- getTengv(event)
- {
-   if(this.tenmonhoc == '')
-   {
-    this.authService.presentAlert4('Vui lòng chọn môn học trước !')
-   }
-   else
-   {
-    this.tengiangvien = event.detail.value
-    this.checkshow = false
-   }
- }
- getTenmh(event)
- {
-  this.tenmonhoc = event.detail.value
- }
- getNgayhoc(event)
- {
-  this.ngayhoc += event.detail.value + " " // ngayhoc = ngayhoc + event.xxx.xxx
- }
- clickIcon()
- {
-   this.checkshow = !this.checkshow // nghich dao checkshow
-   this.tengiangvien = '' // xoa tengiangvien va tenmonhoc 
-   this.tenmonhoc = ''  
- }
- TiepTuc()
- {
-   // kiem tra coi co bi rong hay khong?
-  if((this.tenmonhoc && this.tengiangvien && this.ngaybatdau 
-    && this.ngayketthuc && this.giobatdau && this.gioketthuc
-     && this.ngayhoc) != '')
+  getTenlop(event)
   {
-    //set gia tri len authentication-Service
-    this.authService.setNgaybatdau(this.ngaybatdau)
-    this.authService.setNgayketthuc(this.ngayketthuc)
-    this.authService.setGiobatdau(this.giobatdau)
-    this.authService.setNgayhoc(this.ngayhoc) 
-    //chuyen trang
-    this.router.navigate(['thongtinphangio'])    
+    this.tenlop = event.detail.value
   }
-  else
+  getTenmh(event)
   {
-    this.authService.presentAlert4('Bạn vui lòng chọn đầy đủ các thông tin !')
+    this.tenmonhoc = event.detail.value
   }
- }
+  getTenphonghoc(event)
+  {
+    if((this.tenlop && this.tenmonhoc) == '')
+    {
+      this.authService.presentAlert4('Vui lòng chọn lớp và môn học trước !')
+    }
+    else
+    {
+      this.tenphonghoc = event.detail.value
+      this.showChonmonChongiangvien = false // set = false de ion-list chứa chọn môn và chọn giảng viên đóng lại, chi tiết xem bên html tai dong 25
+    }
+  }
+  getNgayhoc(event)
+  {
+   
+    // get gia tri va push vao mang ngayhoc
+    let nh = event.detail.value
+    this.mangngayhoc.push(nh)
+     // gan gia tri de view ra html, dong 117
+     this.ngayhoc += nh + " "   
+    
+  }
+  clickIcon()
+  {
+    this.showChonmonChongiangvien = !this.showChonmonChongiangvien // nghich dao checkshow
+    this.tenmonhoc = ''  // xoa ten mon hoc
+    this.tenphonghoc = ''
+    this.tenlop = ''
+  }
+  TiepTuc()
+  {
+    // kiem tra coi co bi rong hay khong?
+    if((this.hk && this.tenlop && this.tenmonhoc && this.tengiangvien && this.ngaybatdau 
+      && this.ngayketthuc && this.giobatdau && this.gioketthuc
+      && this.mangngayhoc) != '')
+    {
+      //set gia tri len authentication-Service
+      this.authService.setMalop(this.tenlop)
+      this.authService.setMsmh(this.tenmonhoc)
+      this.authService.setPhonghoc(this.tenphonghoc)
+      this.authService.setNgaybatdau(this.ngaybatdau.slice(0, 10)) // cat tu ki tu 0 den 10
+      this.authService.setNgayketthuc(this.ngayketthuc.slice(0, 10))
+      this.authService.setGiobatdau(this.giobatdau.slice(11, 16)) // cat tu ki tu 11 den 16
+      this.authService.setGioketthuc(this.gioketthuc.slice(11, 16))
+      this.authService.setNgayhoc(this.mangngayhoc) 
+      //chuyen trang
+      this.router.navigate(['thongtinphangio'])    
+    }
+    else
+    {
+      this.authService.presentAlert4('Bạn vui lòng chọn đầy đủ các thông tin !')
+    }
+  }
   
 }

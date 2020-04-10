@@ -8,6 +8,10 @@
 </ion-header>
 
 <ion-content>
+  <ion-item lines = "full" *ngIf="chucvu == 'giangvien'"> <!--view ra khi chucvu tra ve la 'giangvien'-->
+    <ion-label position = "floating">Mã giảng viên</ion-label>
+    <ion-input type = "text" [(ngModel)] = "magiangvien"></ion-input>
+  </ion-item>
   <ion-item lines = "full">
     <ion-label position = "floating">Email</ion-label>
     <ion-input type = "text" [(ngModel)] = "email"></ion-input>

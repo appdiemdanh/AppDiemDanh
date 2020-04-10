@@ -3,11 +3,12 @@ import { auth } from 'firebase/app';
 import { User } from "./modUser";
 import { Router } from "@angular/router";
 import { AngularFireAuth } from "@angular/fire/auth";
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/firestore';
 import * as firebase from 'firebase';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { map } from 'rxjs/operators';
+import { phangiogiang } from './modPhangio'
 
 
 @Injectable({
@@ -17,6 +18,7 @@ import { map } from 'rxjs/operators';
 export class AuthenticationService {
 
   chucvu : string = ''
+  magiangvien : string = ''
   mssv : string = ''
   msgv : string = ''
   msmh : string = ''
@@ -27,19 +29,28 @@ export class AuthenticationService {
   ngayketthuc : string = ''
   giobatdau : string = ''
   gioketthuc : string = ''
-  ngayhoc : string = ''
+  ngayhoc : any = []
+  phonghoc = ''
 
   arrayUser : any 
   // tạo mảng user
   public userData: any;
   // getter and setter
+  setChucvu(cv : string)
+  {
+    this.chucvu = cv
+  }
   getChucvu()
   {
     return this.chucvu
   }
-  setChucvu(cv : string)
+  setMagiangvien(mgv : string) // cua ben page dang ky 
   {
-    this.chucvu = cv
+    this.magiangvien = mgv
+  }
+  getMagiangvien()// cua ben page dang ky 
+  {
+    return this.magiangvien
   }
   setMssv(mssv : string)
   {
@@ -121,7 +132,7 @@ export class AuthenticationService {
   {
     return this.gioketthuc
   }
-  setNgayhoc(nh : string)
+  setNgayhoc(nh : any)
   {
     this.ngayhoc = nh
   }
@@ -129,8 +140,15 @@ export class AuthenticationService {
   {
     return this.ngayhoc
   }
-  
-  
+  setPhonghoc(ph : string)
+  {
+    this.phonghoc = ph
+  }
+  getPhonghoc()
+  {
+    return this.phonghoc
+  }
+
   // add các function muốn sử dụng vào constructor
   constructor(
     public afStore: AngularFirestore,
@@ -154,8 +172,6 @@ export class AuthenticationService {
         localStorage.setItem('user', null);
         JSON.parse(localStorage.getItem('user'));
       }
-      // đọc dữ liệu từ firebase tên 'listuser' sau đó gán vào this.arrayUser
-      return this.afStore.collection('listuser').valueChanges().subscribe(res=>{this.arrayUser = res})
     })
   }
   
@@ -342,7 +358,7 @@ export class AuthenticationService {
       if(this.chucvu == "daotao")
       {
         this.presentLoading("Vui lòng chờ...", 2500)
-        this.router.navigate(['tabs/home'])
+        this.router.navigate(['tabs/tab1'])
       }
       else if(this.chucvu == "giangvien")
       {
@@ -363,15 +379,24 @@ export class AuthenticationService {
   // set du lieu cho mang user 
   SetUserData(user) {
     this.chucvu = this.getChucvu()
+    if(this.getMagiangvien() == '')
+    {
+      this.magiangvien = 'null'
+    }
+    else
+    {
+      this.magiangvien = this.getMagiangvien()
+    }
     const userRef: AngularFirestoreDocument<any> = this.afStore.doc(`listuser/${user.uid}`);
 
     const userData: User = {
-      uid: user.uid,
-      email: user.email,
-      displayName: user.displayName,
-      chucvu : this.chucvu,
-      photoURL: user.photoURL,
-      emailVerified: user.emailVerified
+      uid           : user.uid,
+      email         : user.email,
+      displayName   : user.displayName,
+      chucvu        : this.chucvu,
+      magiangvien   : this.magiangvien,
+      photoURL      : user.photoURL,
+      emailVerified : user.emailVerified
     }
     return userRef.set(userData, {
       merge: true //set gia tri trong database cua firebase

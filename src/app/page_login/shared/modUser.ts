@@ -4,6 +4,7 @@ export interface User {
     email: string;
     displayName: string;
     chucvu : string;
+    magiangvien: string;
     photoURL: string;
     emailVerified: boolean;
 }
