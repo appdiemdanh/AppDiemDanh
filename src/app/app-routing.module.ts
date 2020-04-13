@@ -105,7 +105,11 @@ const routes: Routes = [
   {
     path: 'thongtinphangio',
     loadChildren: () => import('./page_daotao/thongtinphangio/thongtinphangio.module').then( m => m.ThongtinphangioPageModule)
-  }
+  },
+  {
+    path: 'thoikhoabieu',
+    loadChildren: () => import('./page_giangvien/thoikhoabieu/thoikhoabieu.module').then( m => m.ThoikhoabieuPageModule)
+  },
 ];
 
 @NgModule({   

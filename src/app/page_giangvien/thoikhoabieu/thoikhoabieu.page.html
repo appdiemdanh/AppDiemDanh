@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Thời khóa biểu</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngFor='let tkb of listthoikhoabieu'>
+      <ion-card >
+        <ion-card-header>
+          <ion-card-title>Lớp {{tkb.lop}}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-list>
+            <ion-item>Ngày học      : {{tkb.ngayhoc}}</ion-item>
+            <ion-item>Môn học       : {{tkb.tenmonhoc}} </ion-item>
+            <ion-item>Phòng học     : {{tkb.tenphonghoc}}</ion-item>
+            <ion-item>Giờ bắt đầu   : {{tkb.giobatdau}}</ion-item>
+            <ion-item>Giờ kết thúc  : {{tkb.gioketthuc}}</ion-item>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+  </ion-list>
+  <ion-button type='submit' (click)='diemdanhSV()' expand='block'>Điểm danh sinh viên</ion-button>
+  <ion-button type='submit' color='danger' (click)='logOut()' expand='block'>Đăng xuất</ion-button>
+</ion-content>

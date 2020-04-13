@@ -5,5 +5,16 @@
 </ion-header>
 
 <ion-content>
-
+  <ion-label>Sinh viên đi học</ion-label>
+  <br>
+  <ion-list *ngFor='let dihoc of listsvdihoc'>
+    <ion-item>{{dihoc}}</ion-item>
+  </ion-list>
+  <br>
+  <br>
+  <ion-label>Sinh viên vắng học</ion-label>
+  <br>
+  <ion-list *ngFor='let vanghoc of listsvvanghoc'>
+    <ion-item>{{vanghoc}}</ion-item>
+  </ion-list>
 </ion-content>

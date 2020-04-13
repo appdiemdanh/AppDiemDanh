@@ -39,15 +39,14 @@ export class DangkyPage implements OnInit {
   signUp()
   {
     // cac dieu kien de dang ky tai khoan moi
-    if((this.email && this.password && this.repassword).length != 0) // input khong rong
+    if((this.email && this.password && this.repassword && this.magiangvien).length != 0) // input khong rong
     {
       if(this.password.length >= 6) // password >= 6
       {
         if(this.repassword == this.password) // nhap lai mat khau phai dung
         {
-          this.authService.RegisterUser(this.email, this.password).then(res=>{
-            this.authService.setMagiangvien(this.magiangvien) // set magiangvien len authService
-          })
+          this.authService.setMagiangvien(this.magiangvien) // set magiangvien len authService
+          this.authService.RegisterUser(this.email, this.password)
         }
         else
         {

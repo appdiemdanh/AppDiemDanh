@@ -8,6 +8,25 @@
 </ion-header>
 
 <ion-content>
-
+  <ion-label *ngIf="isShow == false" class="ion-label"><p>Chưa có lớp nào đến giờ điểm danh</p></ion-label>
+  <ion-item *ngIf="isShow == true">
+    <ion-grid>
+      <ion-row>
+        <ion-col size='6'>
+          Lớp : {{malop}}
+        </ion-col>
+        <ion-col size='6'>
+          Môn học : {{monhoc}}
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-item>
+  <ion-list *ngFor='let sv of listsinhvien'>
+      <ion-item *ngIf="isShow == true">
+        <ion-label>{{sv.D}}</ion-label>
+        <ion-checkbox slot="end" value='{{sv.D}}' (ionChange)='getSinhvien($event)'></ion-checkbox>
+      </ion-item>
+  </ion-list>
+  <ion-button *ngIf="isShow == true" type='submit' (click)='sendDiemDanh()' expand='block'>Gửi điểm danh</ion-button>
 </ion-content>
 

@@ -31,6 +31,9 @@ export class AuthenticationService {
   gioketthuc : string = ''
   ngayhoc : any = []
   phonghoc = ''
+  email = ''
+  listsvdihoc = []
+  listsvvanghoc = []
 
   arrayUser : any 
   // tạo mảng user
@@ -147,6 +150,30 @@ export class AuthenticationService {
   getPhonghoc()
   {
     return this.phonghoc
+  }
+  setEmail(em : string)
+  {
+    this.email = em
+  }
+  getEmail()
+  {
+    return this.email
+  }
+  setListdihoc(lsv : [])
+  {
+    this.listsvdihoc = lsv
+  }
+  getListdihoc()
+  {
+    return this.listsvdihoc
+  }
+  setListvanghoc(lsv : [])
+  {
+    this.listsvvanghoc = lsv
+  }
+  getListvanghoc()
+  {
+    return this.listsvvanghoc
   }
 
   // add các function muốn sử dụng vào constructor
@@ -272,7 +299,8 @@ export class AuthenticationService {
   // Đăng nhập
  
   SignIn(email, password) {
-    return this.ngFireAuth.auth.signInWithEmailAndPassword(email, password)
+    return this.ngFireAuth.auth.signInWithEmailAndPassword(email, password).then(res=>{
+    })
   }
 
   // Đăng ký 
@@ -363,7 +391,7 @@ export class AuthenticationService {
       else if(this.chucvu == "giangvien")
       {
         this.presentLoading("Vui lòng chờ...", 2500)
-        this.router.navigate(['diemdanh'])
+        this.router.navigate(['thoikhoabieu'])
       }
       else if(this.chucvu == "congtacsinhvien")
       {

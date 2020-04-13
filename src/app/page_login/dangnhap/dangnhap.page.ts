@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, LoadingController } from '@ionic/angular';
-
+import { auth } from 'firebase/app';
 import { Router } from '@angular/router';
 import { WelcomPage } from '../chonchucvu/welcom.page'
 import { AuthenticationService } from '../shared/authenticatin-Service'
 import { error } from 'protractor';
 import { VerifyEmailPage } from '../verify-email/verify-email.page';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-dangnhap',
@@ -25,8 +26,9 @@ export class DangnhapPage implements OnInit {
     public authService : AuthenticationService,
     public loadingController : LoadingController,
     public welcomePage : WelcomPage,
-    public afStore : AngularFirestore
-    ) { 
+    public afStore : AngularFirestore,
+    public ngFireAuth: AngularFireAuth
+    ) {
     }
 
   ngOnInit() {
@@ -34,58 +36,59 @@ export class DangnhapPage implements OnInit {
      return this.afStore.collection('listuser').valueChanges().subscribe(res=>{this.arrayUser = res})
   }
 
+  /**
+   * chức đăng nhập vẫn chưa hoàn thiện, vì khi người dùng không xác nhận email đăng ký thì vẫn đăng nhập được
+   * 
+   * sẽ tìm cách fix sau
+   */
   logIn()
   {
-    let e, cv //email và chức vụ
+    let e, cv, mgv //email và chức vụ
     let mangUser = this.arrayUser
       if((this.email && this.password) != "")
       {
-          this.authService.SignIn(this.email, this.password).then((res)=>
+        this.ngFireAuth.auth.signInWithEmailAndPassword(this.email, this.password).then((res)=>
+        {
+          // vòng lặp for sẽ duyệt qua các phần tử trong mangUser, chỉ cần khi nào thấy đúng thì nó làm
+          // vd: sai sai dung => làm, sai dung sai => làm, nhưng sai sai sai => không làm
+          for(let user of mangUser) 
           {
-            for(let user of mangUser)  //cac phan tu chi duoc tra ra het khi nam trong vòng lặp for này
-            {                           // neu nam ngoai vong lap for thi chi tra ra phan tu cuoi cua mang
-              e = user.email
-              cv = user.chucvu
-              //console.log(e)
-              //console.log(cv)
-              if(this.email == e && cv == "daotao") // neu email nhap vao = e (firebase) và chucvu(firebase) = 'daotao' => page dao tao
-              {                                   // khi nguoi dung dang ky => chucvu đã lưu trên firebase roi nen khong can co dieu kien cho this.chucvu
+            e = user.email
+            cv = user.chucvu
+            mgv = user.magiangvien
+
+            if(this.email == e && cv == "daotao") // neu email nhap vao = e (firebase) và chucvu(firebase) = 'daotao' => page dao tao
+            {                                   // khi nguoi dung dang ky => chucvu đã lưu trên firebase roi nen khong can co dieu kien cho this.chucvu
+            this.authService.presentLoading('Vui lòng chờ...', 2500);
+            this.router.navigate(['tabs/tab1'])
+            }
+            if(this.email == e && cv == 'giangvien')
+            {
+              this.authService.setMagiangvien(mgv)
+              this.authService.presentLoading('Vui lòng chờ...', 2500)
+              this.router.navigate(['thoikhoabieu'])
+            }
+            if(this.email == e && cv == 'congtacsinhvien')
+            {
               this.authService.presentLoading('Vui lòng chờ...', 2500);
-              this.router.navigate(['tabs/tab1'])
-              console.log('Đăng nhập thành công')
-              }
-              if(this.email == e && cv == 'giangvien')
-              {
-                this.authService.presentLoading('Vui lòng chờ...', 2500)
-                this.router.navigate(['diemdanh'])
-                console.log('Đăng nhập thành công')
-              }
-              if(this.email == e && cv == 'congtacsinhvien')
-              {
-                this.authService.presentLoading('Vui lòng chờ...', 2500);
-                this.router.navigate(['chonmon'])
-                console.log('Đăng nhập thành công')
-              }
-              else{
-                console.log('Đăng nhập thất bại')
-              }
-            }
-          }).catch(error=>{
-            //so sanh loi phat ra tu error rồi dịch ra tiếng việt cho dễ hiểu 
-            if(error == 'Error: The email address is badly formatted.')
-            {
-              this.authService.presentAlert4('email định dạng sai')
-            }
-            else if(error == 'Error: There is no user record corresponding to this identifier. The user may have been deleted.')
-            {
-              this.authService.presentAlert4('Email bạn nhập không đúng, chưa đăng ký hoặc bị khóa')
-            }
-            else if(error == 'Error: The password is invalid or the user does not have a password.')
-            {
-              this.authService.presentAlert4('Mật khẩu không đúng')
-            }
-          })
-          //
+              this.router.navigate(['chonmon'])
+            }  
+          }                    
+        }).catch(error=>{
+          //so sanh loi phat ra tu error rồi dịch ra tiếng việt cho dễ hiểu 
+          if(error == 'Error: The email address is badly formatted.')
+          {
+            this.authService.presentAlert4('email định dạng sai')
+          }
+          else if(error == 'Error: There is no user record corresponding to this identifier. The user may have been deleted.')
+          {
+            this.authService.presentAlert4('Email bạn nhập không đúng, chưa đăng ký hoặc bị khóa')
+          }
+          else if(error == 'Error: The password is invalid or the user does not have a password.')
+          {
+            this.authService.presentAlert4('Mật khẩu không đúng')
+          }
+        })
       }
       else
       {
