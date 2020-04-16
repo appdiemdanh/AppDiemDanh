@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from 'src/app/page_login/shared/authenticatin-Service';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Router } from '@angular/router';
+import { AlertController, ToastController } from '@ionic/angular';
+import { DiemDanh } from 'src/app/page_login/shared/modDiemdanh'
 
 @Component({
   selector: 'app-diemdanh',
@@ -13,34 +15,46 @@ export class DiemdanhPage implements OnInit {
   day = new Date()
   malop = ''
   monhoc = ''
-  isChecked = false
   tensv : string = ''
-  isShow = false
+  thungaythangnamhientai = ''
+  soluongsinhvien : number
+  isChecked = false
+  dadiemdanhroi : boolean = false
   listfirebase : any
   listsinhvien = [] // muc đích dấu [] để có thể sử dụng hàm push()
   listsvdihoc : any = []
   listsvvanghoc : any = []
+  //
+  listdiemdanh : any
+  listthoikhoabieu : any = []
+
 
   constructor(
     public authService : AuthenticationService,
     public afDB : AngularFireDatabase,
-    public router : Router
+    public router : Router,
+    public alert : AlertController,
+    public toastController : ToastController
   ) {
     // lay gia tri tu ben thoikhoabieu truyen qua
     this.malop = this.authService.getMalop()
     this.monhoc = this.authService.getMsmh()
-    // điều kiện show ra ion-list
-    if((this.malop && this.monhoc) != '')
+    this.listthoikhoabieu.push(this.authService.getListTKB())
+    // gan gia tri cho ngaythangnamhientai
+    let thu = "Thứ " + (this.day.getDay() + 1) 
+    if(thu == "Thứ 1")
     {
-      this.isShow = true
+      thu = "Chủ nhật"
     }
-    //
+    this.thungaythangnamhientai = thu + "  " + this.day.getDate() + "-" + (this.day.getMonth() + 1) + "-" + this.day.getFullYear()
+    // điều kiện show ra ion-list
    }
   /**
   *  sau khi chạy qua điều kiện malop(firebase) == malop(thoikhoabieu truyen qua)
   *  thì list trả ra kiểu [object] nên listsinhvien hứng(push về) cũng phải kiểu [] để bên file html đọc được 
   */
   ngOnInit() {
+    // gán giá trị với điều kiện ...
     this.afDB.list('danhsachsinhvienk18').valueChanges().subscribe((res)=>
     {
       this.listfirebase = res
@@ -50,9 +64,51 @@ export class DiemdanhPage implements OnInit {
         {
           this.listsinhvien.push(lfb)
           this.listsvvanghoc.push(lfb.D)
+          this.soluongsinhvien =  this.listsinhvien.length
         }
       }
     })
+    /**
+     * Đầu tiên : listdiemdanh có item giodiemdanh
+     *            listthoikhoabieu có item giobatdau, gioketthuc
+     * Dưới đây mình sẽ trả về lớp này đã điểm danh hay chưa với biến dadiemdanhroi : boolean
+     * nếu listdiemdanh nó tồn tại: giodiemdanh >= giobatdau và giodiemdanh <= gioketthuc 
+     *    tức là đã điểm danh rồi => thì biến dadiemdanhroi = true ngược lại thì = false
+     * 
+     */
+    this.afDB.list('diemdanh').valueChanges().subscribe(res=>
+      { 
+        this.listdiemdanh = res
+        for(let ldd of this.listdiemdanh)
+        {
+          if(ldd.ngaydiemdanh == this.thungaythangnamhientai)
+          {
+           for(let ltkb of this.listthoikhoabieu)
+           {
+             console.log(ltkb.ngaybatdau)
+             let giobatdau = new Date(null,null,null, ltkb.giobatdau.slice(0, 2), ltkb.giobatdau.slice(3, 5)) // nam,thang,ngay, gio, phut
+             let gioketthuc = new Date(null,null,null, ltkb.gioketthuc.slice(0, 2), ltkb.gioketthuc.slice(3, 5)) // nam,thang,ngay, gio, phut
+             let giogoidiemdanh = new Date(null,null,null, ldd.giodiemdanh.slice(0, 2), ldd.giodiemdanh.slice(3)) // nam,thang,ngay, gio, phut
+             if(ldd.giodiemdanh >= ltkb.giobatdau)
+             {
+               if(ldd.giodiemdanh >= ltkb.giobatdau)
+               {
+                 if(ldd.giodiemdanh <= ltkb.gioketthuc)
+                 {
+                   //console.log(ltkb.giobatdau)
+                   this.dadiemdanhroi = true 
+                 }
+                 else
+                 {
+                   this.dadiemdanhroi = false
+                 }
+               }
+             }
+           }
+          }
+        }
+
+      })
   }
   /**
    * Đầu tiên listsvvangmat = listsinhvien, listsvdihoc = []
@@ -96,14 +152,89 @@ export class DiemdanhPage implements OnInit {
       //console.log('sv đi học', this.listsvdihoc)
     if(this.listsvdihoc.length > 0 && this.listsvvanghoc.length > 0)
     {
-      this.authService.setListdihoc(this.listsvdihoc)
-      this.authService.setListvanghoc(this.listsvvanghoc)
-      this.router.navigate(['thongtindiemdanh'])
+      this.presentAlert()
     }
     else
     {
       this.authService.presentAlert4('Bạn vui lòng chọn dấu tick nếu sinh viên có mặt và ngược lại, sau đó mới bấm điểm danh.')
     }
   }
+  async presentAlert() {
+    //alert
+    const alert = await this.alert.create({
+      header: 'Thông báo',
+      message: 'Danh sách điểm danh này sẽ được gửi lên sever và sẽ không thể thay đổi gì sau khi đã gửi.',
+      buttons: [
+        {
+          text: 'Gửi lên sever',
+          cssClass: 'secondary',
+          handler: () => {
+            this.sendtoSever()
+          }
+        }, {
+          text: 'Quay lại',
+          role: 'cancel',
+          handler: () => {
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+  //toast
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Gửi thông tin điểm danh thành công',
+      duration: 3000
+    });
+    await toast.present();
+  }
+
+  // push data to firebase
+  sendtoSever()
+  {
+    // get gia tri id
+    let id = 0
+    for(let dd of this.listdiemdanh)
+    {
+      if(dd.id != null)
+      {
+        id = dd.id
+      } 
+    }
+    // gan gia tri 
+    let autoID                  = id + 1
+    let giodiemdanh             = this.day.getHours() + ":" + this.day.getMinutes()
+    let soluongsinhviendihoc    = this.listsvdihoc.length
+    let soluongsinhvienvanghoc  = this.listsvvanghoc.length
+    let danhsachsinhviendihoc   = this.listsvdihoc
+    let danhsachsinhvienvanghoc = this.listsvvanghoc
+    let tongsinhvien            = this.soluongsinhvien
+    let tengiangvien            = this.authService.getTengiangvien()
+    // tao bien data
+    let data : DiemDanh = {
+      id               : autoID,
+      lop               : this.malop,
+      monhoc            : this.monhoc,
+      giangvienday      : tengiangvien,
+      ngaydiemdanh      : this.thungaythangnamhientai,
+      giodiemdanh       : giodiemdanh,
+      danhsachSVdihoc   : danhsachsinhviendihoc,
+      danhsachSVvanghoc : danhsachsinhvienvanghoc,
+      soluongSVdihoc    : soluongsinhviendihoc,
+      soluongSVvanghoc  : soluongsinhvienvanghoc,
+      tongsoSV          : tongsinhvien
+    }
+    console.log(data)
+    // push data lên firebase
+    this.afDB.list('diemdanh').push(data).then(res=>
+      {
+        this.authService.setIsSend(true)
+        this.authService.setID(autoID) // set id để qua bên thongtinphangio so sánh
+        this.presentToast()
+        this.router.navigate(['thongtindiemdanh'])
+      })
+  }    
   
 }

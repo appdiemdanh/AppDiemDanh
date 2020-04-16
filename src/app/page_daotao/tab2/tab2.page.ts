@@ -10,30 +10,51 @@ import { Router } from '@angular/router';
 })
 export class Tab2Page implements OnInit {
 
-  listmonhoc : any
+  listmonhoctheohocky = []
   xemmonhoctheo = 'tatcamonhoc'
-
+  listhocky = ['Tất cả môn học']
+  tatcamonhoc : any = []
   constructor(
     private afDB : AngularFireDatabase,
     private authService : AuthenticationService,
     private router : Router
-    ) { }
+    ) { 
+    }
 
   ngOnInit() {
-    this.afDB.list(`/danhsachmonhoc/`).valueChanges().subscribe(res=>{this.listmonhoc = res})
+    this.afDB.list(`/danhsachmonhoc/`).valueChanges().subscribe(res=>
+      {
+        this.tatcamonhoc = res 
+      })
+    this.afDB.list('danhsachhocky').valueChanges().subscribe(res=>
+      {
+        let danhsachhocky : any = res
+        for(let hk of danhsachhocky)
+        {
+          this.listhocky.push(hk.B)
+        }  
+      })
   }
-
-  //điều kiện để show list ra là hocky truyền từ bên .html qua đây phải = gì đó và this.status = gì đó...
-  dieukienShow(hocky) 
+  getHocky(event)
   {
-    let dkxemtatca = (this.xemmonhoctheo == 'tatcamonhoc')
-    let dkxemhk1   = (this.xemmonhoctheo == 'hocky1' && hocky == 'HK1')
-    let dkxemhk2   = (this.xemmonhoctheo == 'hocky2' && hocky == 'HK2')
-    let dkxemhk3   = (this.xemmonhoctheo == 'hocky3' && hocky == 'HK3')
-    
-    return dkxemtatca || dkxemhk1 || dkxemhk2 || dkxemhk3
+    // lay ra hockyduocchon
+    let hockyduocchon = event.detail.value
+    // dau tien minh cho mảng monhoctheohocky = rỗng trước// nếu không mảng sẽ bị cộng dồn sau mỗi lần người dùng chọn học kỳ (hàm push())
+    this.listmonhoctheohocky = []
+    // gán giá trị
+    for(let mh of this.tatcamonhoc)
+    {
+      if(hockyduocchon == "Tất cả môn học") // neu người dùng chọn tất cả môn học thì trả ra nguyên list luôn
+      {
+        this.listmonhoctheohocky = this.tatcamonhoc
+      }
+      else if(hockyduocchon == mh.A) //mh.A là mảng mh.phần tử tên A( A: hocky)
+      {
+        this.listmonhoctheohocky.push(mh)
+      }
+    }
   }
-  getMaMH(mamonhoc)
+  getMonhoc(mamonhoc)
   {
     // lấy được mã môn học rồi thì set để tý nữa get ra dùng
     this.authService.setMsmh(mamonhoc)

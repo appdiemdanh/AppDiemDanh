@@ -1,20 +1,45 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>thongtindiemdanh</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button>Thông tin điểm danh</ion-back-button>
+    </ion-buttons>
+    <ion-title></ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-label>Sinh viên đi học</ion-label>
-  <br>
-  <ion-list *ngFor='let dihoc of listsvdihoc'>
-    <ion-item>{{dihoc}}</ion-item>
-  </ion-list>
-  <br>
-  <br>
-  <ion-label>Sinh viên vắng học</ion-label>
-  <br>
-  <ion-list *ngFor='let vanghoc of listsvvanghoc'>
-    <ion-item>{{vanghoc}}</ion-item>
-  </ion-list>
+  <ion-card class='ion-card'>
+    <ion-item>
+      <ion-card-header>
+        <ion-card-title>Thông tin điểm danh</ion-card-title>
+      </ion-card-header>
+    
+    </ion-item>
+    <ion-card-content>
+      <br>
+      <ion-list *ngFor='let ldd of listdiemdanh'>
+        <ion-item>Ngày                : {{ldd.ngaydiemdanh}}</ion-item>
+        <ion-item>Giờ                 : {{ldd.giodiemdanh}}</ion-item>
+        <ion-item>Lớp                 : {{ldd.lop}}</ion-item>
+        <ion-item>Môn học             : {{ldd.monhoc}}</ion-item>
+        <ion-item>
+          Sinh viên đi hoc    : {{ldd.soluongSVdihoc}} sinh viên
+          <ion-icon name="chevron-down-outline" *ngIf='isshowDihoc == false' (click)='isshowDihoc = true' slot="end"></ion-icon>
+          <ion-icon name="chevron-up-outline" *ngIf='isshowDihoc == true' (click)='isshowDihoc = false' slot="end"></ion-icon>
+        </ion-item>
+        <ion-list *ngFor='let dihoc of listsvdihoc'>
+          <ion-item *ngIf='isshowDihoc == true'>{{dihoc}}</ion-item>
+        </ion-list>
+        <ion-item>
+          Sinh viên vắng học  : {{ldd.soluongSVvanghoc}} sinh viên
+          <ion-icon name="chevron-down-outline" *ngIf='isshowVanghoc == false' (click)='isshowVanghoc = true' slot="end"></ion-icon>
+          <ion-icon name="chevron-up-outline" *ngIf='isshowVanghoc == true' (click)='isshowVanghoc = false' slot="end"></ion-icon>
+        </ion-item>
+        <ion-list *ngFor='let vanghoc of listsvvanghoc'>
+          <ion-item *ngIf='isshowVanghoc == true'>{{vanghoc}}</ion-item>
+        </ion-list>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <ion-button type='submit' expand='block'>Xem lịch sử điểm danh</ion-button>
 </ion-content>

@@ -13,21 +13,20 @@
       <ion-card-header>
         <ion-card-title>Thông tin phân giờ</ion-card-title>
       </ion-card-header>
-    
     </ion-item>
     <ion-card-content>
         <br>
-        Học kỳ        : {{hocky}}<br><br>      <!--{{giatri}} lay tu ben file .ts nha-->
-        Giảng viên    : {{tengiangvien}}<br>
-        Mã giảng viên : {{magiangvien}}<br>
-        Lớp           : {{lop}}<br>
-        Môn học       : {{tenmonhoc}}<br>
-        Phòng học     : {{tenphonghoc}}<br><br>
-        Ngày bắt đầu  : {{ngaybatdau}}<br>
-        Ngày kết thúc : {{ngayketthuc}}<br>
-        Giờ bắt đầu   : {{giobatdau}}<br>
-        Giờ kết thúc  : {{gioketthuc}}<br>
-        Ngày học      : {{ngayhoc}}<br>
+        <ion-item>Học kỳ        : {{hocky}}</ion-item>
+        <ion-item>Giảng viên    : {{tengiangvien}}</ion-item>
+        <ion-item>Mã giảng viên : {{magiangvien}}</ion-item>
+        <ion-item>Lớp           : {{lop}}</ion-item>
+        <ion-item>Môn học       : {{tenmonhoc}}</ion-item>
+        <ion-item> Phòng học     : {{tenphonghoc}}</ion-item>
+        <ion-item>Ngày bắt đầu  : {{ngaybatdau}}</ion-item>
+        <ion-item>Ngày kết thúc : {{ngayketthuc}}</ion-item>
+        <ion-item>Giờ bắt đầu   : {{giobatdau}}</ion-item>
+        <ion-item>Giờ kết thúc  : {{gioketthuc}}</ion-item>
+        <ion-item>Ngày học      : {{ngayhoc}}</ion-item>
       <br>
       <ion-button type='submit' expand='block' (click)='PushDataToSever()'>Gửi lên sever</ion-button>
     </ion-card-content>

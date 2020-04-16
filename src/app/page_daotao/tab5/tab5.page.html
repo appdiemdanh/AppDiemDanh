@@ -15,7 +15,7 @@
   <ion-item>
     <ion-label>Chọn giảng viên</ion-label>
     <ion-select (ionChange)='getGiangvien($event)'>
-      <ion-select-option *ngFor='let gv of listgiangvien'>{{gv.C}}  -{{gv.B}}</ion-select-option>
+      <ion-select-option *ngFor='let gv of listgiangvien'>{{gv.C}}  - {{gv.B}}</ion-select-option>
     </ion-select>
   </ion-item><br><br>
   <ion-button type='submit' (click)="nextPage()" expand='block'>Tiếp tục</ion-button>

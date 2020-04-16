@@ -92,7 +92,7 @@ export class DangnhapPage implements OnInit {
       }
       else
       {
-        alert('Bạn chưa nhập đầy đủ thông tin!')
+        this.authService.presentAlert4('Bạn chưa nhập đầy đủ thông tin!')
       }
   }
 

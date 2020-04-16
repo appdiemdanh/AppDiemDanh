@@ -45,7 +45,13 @@ export class Tab5Page implements OnInit {
   {
     let tenvamaGV = event.detail.value // tao mang hung gia tri tu event
     this.tengiangvien = tenvamaGV.split("-")[0] // = tenvamaGV cat ra boi dau '-' se tao ra mang voi 2 phan tu thu 0 va thu 1 cua mang do
-    this.magiangvien  = tenvamaGV.split("-")[1] // thu 0 la tengiangvien, thu 1 la magiangvien
+    this.magiangvien  = tenvamaGV.split("-")[1].slice(1) // thu 0 la tengiangvien, thu 1 la magiangvien
+    /**
+     * tại sao lại split("-") rồi lại slice(1):
+     * vì tenvamaGV trả ra: tengiangvien - magiangvien 
+     * split("-") là lọc phần tử nếu phân chia nhau bởi dấu "-", khi đó trước magiangvien sẽ có 1 dấu cách
+     * thì tui dùng slice(1) là cắt dấu cách đó (slice(1) cắt từ phần tử thứ 1 cho đến hêt)
+     */
   }
   nextPage()
   {

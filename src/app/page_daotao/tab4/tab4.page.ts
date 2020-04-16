@@ -13,7 +13,6 @@ export class Tab4Page implements OnInit {
   isChecked = ""
   id = ""
   listsinhvien : any
-  xemsinhvientheo = 'tatcasinhvien'
 
   public sothutu = ''
 
@@ -25,9 +24,7 @@ export class Tab4Page implements OnInit {
    }
 
   ngOnInit() {
-    this.afDB.list(`/danhsachsinhvienk18/`).valueChanges().subscribe(res=>{this.listsinhvien = res;
-   
-    }) 
+    this.afDB.list(`/danhsachsinhvienk18/`).valueChanges().subscribe(res=>{this.listsinhvien = res}) 
     
   }
   getMssv(mssv)
@@ -36,16 +33,5 @@ export class Tab4Page implements OnInit {
     console.log(mssv)
     this.router.navigate(['thongtinsv'])
   }
-  //
-    dieukienShow(tenlophoc) // ten lop hoc lay ben sv.A( .html) qua
-    {
-      let dkxemtacasinhvien = (this.xemsinhvientheo == 'tatcasinhvien') // this.xemsinhvient == 'tatcasinhvien' thì mình show ra hết sv luôn
-      let dkxemsvlopDD1     = (this.xemsinhvientheo == 'svlopCD18DĐ1' && tenlophoc == 'CD18DĐ1')
-      let dkxemsvlopTM1     = (this.xemsinhvientheo == 'svlopCD18TM1' && tenlophoc == 'CD18TM1')
-      let dkxemsvlopLW1     = (this.xemsinhvientheo == 'svlopCD18LW1' && tenlophoc == 'CD18LW1')
-      
-      return dkxemtacasinhvien || dkxemsvlopDD1 || dkxemsvlopTM1 || dkxemsvlopLW1
-    }
-  //
 
 }

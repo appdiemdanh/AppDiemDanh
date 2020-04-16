@@ -12,13 +12,16 @@ import { Router } from '@angular/router';
 export class ThoikhoabieuPage implements OnInit {
 
   listthoikhoabieu = []
-  listfirebase : any
+  listphangio : any = []
   listthu : any
   listlop : any
   listlophoc = []
   magiangvien = ''
+  tengiangvien = ''
   day = new Date()
   isshowIonCard = true
+  magvtontai = false
+  toigiodiemdanh = false
   constructor(
     public afDB : AngularFireDatabase,
     public router : Router,
@@ -53,50 +56,79 @@ export class ThoikhoabieuPage implements OnInit {
      *  Các điều kiện này lòng vào nhau nên qua mỗi vòng if nó sẽ lọc ra giá trị nào đúng với if rồi mới vào if tiếp theo lọc tiếp
      */
     this.afDB.list('phangiogiang').valueChanges().subscribe((res)=>{
-      this.listfirebase = res // col 1
-      for(let listfb of this.listfirebase) // col 2
+      this.listphangio = res // col 1
+      for(let listpg of this.listphangio) // col 2
       {
-        if(listfb.magiangvien == this.magiangvien) // if 1
+        if(listpg.magiangvien == this.magiangvien) // if 1
         {
-          this.listlop = (listfb) // gán giá trị cho listlop
-          if(namthangngayhientai >= listfb.ngaybatdau && namthangngayhientai <= listfb.ngayketthuc) // if 2
+          this.magvtontai = true
+          this.listlop = (listpg) // gán giá trị cho listlop
+          if(namthangngayhientai >= listpg.ngaybatdau) // if 2
           {
-            this.listthoikhoabieu.push(listfb)
-            this.listthu = (listfb.ngayhoc)
-            for(let thu of this.listthu)
+            if(namthangngayhientai <= listpg.ngayketthuc)
             {
-              if(thuhientai == thu)
-              { 
-                let giobatdau     = listfb.giobatdau.slice(0, 2)
-                let phutbatdau    = listfb.giobatdau.slice(3, 5)
-                let gioketthuc    = listfb.gioketthuc.slice(0, 2)
-                let phutketthuc   = listfb.gioketthuc.slice(3, 5)
-                const giophutbatdau = new Date(null,null,null, giobatdau, phutbatdau)
-                const giophutketthuc = new Date(null,null,null, gioketthuc, phutketthuc)
-                if(giophuthientai >= giophutbatdau) // if2
+              this.listthoikhoabieu.push(listpg)
+              this.listthu = (listpg.ngayhoc)
+              for(let thu of this.listthu)
+              {
+                if(thuhientai == thu)
                 {
-                  if(giophuthientai < giophutketthuc)
+                  let giobatdau     = listpg.giobatdau.split("-")[1].split(":")[0]
+                  let phutbatdau    = listpg.giobatdau.split("-")[1].split(":")[1]
+                  let gioketthuc    = listpg.gioketthuc.split("-")[1].split(":")[0]
+                  let phutketthuc   = listpg.gioketthuc.split("-")[1].split(":")[1]
+                  //console.log(giobatdau)
+                  const giophutbatdau = new Date(null,null,null, giobatdau, phutbatdau)
+                  const giophutketthuc = new Date(null,null,null, gioketthuc, phutketthuc)
+                  if(giophuthientai >= giophutbatdau) // if2
                   {
-                    let malop = listfb.lop
-                    let monhoc = listfb.tenmonhoc
-                    console.log("Lớp tới giờ học : " + malop)
-                    console.log("Môn tới giờ học " + monhoc)
-                    this.authService.setMalop(malop)
-                    this.authService.setMsmh(monhoc)
+                    if(giophuthientai < giophutketthuc)
+                    {
+                      this.toigiodiemdanh = true
+                      this.authService.setListTKB(listpg) // set listfb sau khi qua các điện để qua page diemdanh get ra so sánh
+                      //console.log(listfb)
+                      let malop = listpg.lop
+                      let monhoc = listpg.tenmonhoc
+                      console.log("Lớp tới giờ học : " + malop)
+                      console.log("Môn tới giờ học " + monhoc)
+                      this.authService.setMalop(malop)
+                      this.authService.setMsmh(monhoc)
+                    }
                   }
                 }
-             }
+              }
             }
           }
         }
       }
     })
-    
+    // get ten giangvien điều kiện magiangvien(dangnhap truyen qua) = magiangvien(firebase)
+    this.afDB.list('danhsachgiangvien').valueChanges().subscribe(res=>
+      {
+        let listgianvien : any = res
+        for(let gv of listgianvien)
+        {
+          if(gv.B == this.magiangvien)
+          {
+            this.tengiangvien = gv.C 
+            this.authService.setTengiangvien(this.tengiangvien)
+            //console.log(this.tengiangvien)
+          }
+        }
+      })
   }
   
   diemdanhSV()
   {   
-    this.router.navigate(['diemdanh'])
+    
+    if(this.toigiodiemdanh == true)
+    {
+      this.router.navigate(['diemdanh'])
+    }
+    else
+    {
+      this.authService.presentAlert4('Xin lỗi, chưa đến giờ học nên không thể điểm danh.')
+    }
   }
   logOut()
   {

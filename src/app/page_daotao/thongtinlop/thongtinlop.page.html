@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref='tabs/tab4'></ion-back-button>
+      <ion-back-button defaultHref='tabs/tab3'></ion-back-button>
     </ion-buttons>
     <ion-title>Thông tin lớp</ion-title>
   </ion-toolbar>
@@ -9,7 +9,7 @@
 
 <ion-content>
   <br>
-  <form *ngFor = 'let lop of listlop'>
+  <form *ngFor='let lop of listlop'>
     <ion-list *ngIf = 'lop.B == malop'>
       <ion-item>
         <p>Tên lớp : </p>  
@@ -22,7 +22,12 @@
       <ion-item>
         <p>Số lượng sinh viên : </p>  
         <ion-label slot="end">{{tongsv}}</ion-label>
+        <ion-icon name="chevron-down-outline" slot="end" *ngIf="isShowListSV == false" (click)="isShowListSV = true"></ion-icon>
+        <ion-icon name="chevron-up-outline" slot="end" *ngIf="isShowListSV == true" (click)="isShowListSV = false"></ion-icon>
       </ion-item>
+      <ion-list *ngFor='let sv of listsv'>
+          <ion-item *ngIf="isShowListSV == true">{{sv.B}}. {{sv.D}}</ion-item>
+      </ion-list>
     </ion-list>
   </form>
 </ion-content>

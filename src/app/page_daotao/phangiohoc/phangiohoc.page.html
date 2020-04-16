@@ -73,7 +73,7 @@
       <ion-row>
         <ion-col size='5'></ion-col>
         <ion-col>
-          <ion-icon class="icon" name="chevron-down-outline" *ngIf='showChonmonChongiangvien == false' (click)="clickIcon()"></ion-icon>
+          <ion-icon class="icon" name="chevron-down-outline" *ngIf='showChonmonChongiangvien == false' (click)="iconMoRong()"></ion-icon>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -83,15 +83,18 @@
   <ion-item>
     <ion-label>Ngày bắt đầu</ion-label>
     <ion-datetime 
+      placeholder="Chọn ngày"
       displayFormat="DD - M - YYYY" 
       cancelText="Hủy" 
       doneText="Chọn"
-      [(ngModel)] ='ngaybatdau' >
+      [(ngModel)] ='ngaybatdau' 
+      >
   </ion-datetime>
   </ion-item>
   <ion-item>
     <ion-label>Ngày kết thúc</ion-label>
     <ion-datetime 
+      placeholder="Chọn ngày"
       displayFormat="DD - M - YYYY" 
       doneText="Chọn"
       cancelText="Hủy" 
@@ -99,37 +102,30 @@
   </ion-datetime>
   </ion-item>
   <ion-item>
-    <ion-label>Giờ bắt đầu</ion-label>
-    <ion-datetime 
-      displayFormat="HH : mm" 
-      doneText="Chọn"
-      cancelText="Hủy" 
-      [(ngModel)] ='giobatdau' >
-  </ion-datetime>
+    <ion-label>Tiết bắt đầu</ion-label>
+    <ion-select okText="Chọn" cancelText="Hủy" (ionChange)="getTietbatdau($event)">
+      <ion-select-option *ngFor="let th of listtiethoc">{{th.tiethoc}} - {{th.giobatdau}}</ion-select-option>
+    </ion-select>
   </ion-item>
   <ion-item>
-    <ion-label>Giờ kết thúc</ion-label>
-    <ion-datetime 
-      displayFormat="HH : mm" 
-      doneText="Chọn"
-      cancelText="Hủy" 
-      [(ngModel)] ='gioketthuc' >
-  </ion-datetime>
+    <ion-label>Tiết kết thúc</ion-label>
+    <ion-select okText="Chọn" cancelText="Hủy" (ionChange)="getTietketthuc($event)">
+      <ion-select-option *ngFor="let th of listtiethoc">{{th.tiethoc}} - {{th.gioketthuc}}</ion-select-option>
+    </ion-select>
   </ion-item>
-  <ion-item (click)="viewngayhocsaukhixoa = false">
+  <ion-item >
     <ion-label>Ngày học</ion-label>
     <ion-select (ionChange)="getNgayhoc($event)">
       <ion-select-option *ngFor='let nh of listngayhoc'>
-        <ion-item>{{nh}}</ion-item>
+        <ion-item>
+          <ion-label>{{nh}}</ion-label>
+        </ion-item>
       </ion-select-option>
     </ion-select>
   </ion-item>
   <ion-item *ngIf="ngayhoc != ''">
     <ion-label>Ngày học : {{ngayhoc}} </ion-label>
-    <ion-icon size="12" name="trash-outline" (click)="ngayhoc = ''; viewngayhocsaukhixoa = true"></ion-icon> 
-  </ion-item>
-  <ion-item *ngIf="viewngayhocsaukhixoa == true">
-    <ion-label>Ngày học : {{ngayhoc}} </ion-label>
+    <ion-icon size="12" name="trash-outline" (click)="iconDelete()"></ion-icon> 
   </ion-item>
   <br>
   <ion-row>

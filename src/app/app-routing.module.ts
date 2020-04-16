@@ -63,10 +63,6 @@ const routes: Routes = [
     loadChildren: () => import('./page_login/hello/hello.module').then( m => m.HelloPageModule)
   },
   {
-    path: 'chonchucvu2',
-    loadChildren: () => import('./page_login/chonchucvu2/chonchucvu2.module').then( m => m.Chonchucvu2PageModule)
-  },
-  {
     path: 'chonlop',
     loadChildren: () => import('./page_congtacsv/chonlop/chonlop.module').then( m => m.ChonlopPageModule)
   },

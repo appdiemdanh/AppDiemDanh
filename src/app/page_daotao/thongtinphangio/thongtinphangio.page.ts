@@ -55,41 +55,50 @@ export class ThongtinphangioPage implements OnInit {
   }
   PushDataToSever()
   {
-    let id = 0
-    for(let pg of this.listphangio)
+    if((this.hocky && this.lop && this.tenmonhoc && this.tengiangvien && this.ngaybatdau 
+      && this.ngayketthuc && this.giobatdau && this.gioketthuc
+      && this.ngayhoc) == '')
     {
-      // neu id tren firebase != null thi gan id = id cua firebase els id = -1
-      if(pg.id != null) 
-      {
-        id = pg.id // ra khoi vòng lặp for thì this.id sẽ gán bằng pg.id thứ cuối cùng của mảng
-      }
-      else
-      {
-        id = -1
-      }
+      this.authService.presentAlert4('Gửi lên sever thất bại, do bị thiếu thông tin phân giờ.')  
     }
-    let autoID = id + 1  // tao id tu dong tang len 1 so voi id tren firebase
-    // tao bien data theo mode phangiogiang ben shared/modPhangiogiang.ts
-    let data : phangiogiang = {
-      id            : autoID,
-      hocky         : this.hocky,
-      tengiangvien  : this.tengiangvien,
-      magiangvien   : this.magiangvien,
-      lop           : this.lop,
-      tenmonhoc     : this.tenmonhoc,
-      tenphonghoc   : this.tenphonghoc,
-      ngaybatdau    : this.ngaybatdau,
-      ngayketthuc   : this.ngayketthuc,
-      giobatdau     : this.giobatdau,
-      gioketthuc    : this.gioketthuc,
-      ngayhoc       : this.ngayhoc
-    }
-    // push len firebase sau do thong bao va chuyen trang
-    this.afDB.list('phangiogiang').push(data).then(res=>{
-      this.authService.presentAlert2('Thông báo', 'Đã gửi thông tin phân giờ thành công', 'phangiohoc', 'OK')
-    }).catch(error=>{
-      console.log('Lỗi ' + error)
-    })
+    else
+    {
+      let id = 0
+      for(let pg of this.listphangio)
+      {
+        // neu id tren firebase != null thi gan id = id cua firebase els id = -1
+        if(pg.id != null) 
+        {
+          id = pg.id // ra khoi vòng lặp for thì this.id sẽ gán bằng pg.id thứ cuối cùng của mảng
+        }
+        else
+        {
+          id = -1
+        }
+      }
+      let autoID = id + 1  // tao id tu dong tang len 1 so voi id tren firebase
+      // tao bien data theo mode phangiogiang ben shared/modPhangiogiang.ts
+      let data : phangiogiang = {
+        id            : autoID,
+        hocky         : this.hocky,
+        tengiangvien  : this.tengiangvien,
+        magiangvien   : this.magiangvien,
+        lop           : this.lop,
+        tenmonhoc     : this.tenmonhoc,
+        tenphonghoc   : this.tenphonghoc,
+        ngaybatdau    : this.ngaybatdau,
+        ngayketthuc   : this.ngayketthuc,
+        giobatdau     : this.giobatdau,
+        gioketthuc    : this.gioketthuc,
+        ngayhoc       : this.ngayhoc
+      }
+      // push len firebase sau do thong bao va chuyen trang
+      this.afDB.list('phangiogiang').push(data).then(res=>{
+        this.authService.presentAlert2('Thông báo', 'Đã gửi thông tin phân giờ thành công', 'phangiohoc', 'OK')
+      }).catch(error=>{
+        console.log('Lỗi ' + error)
+      })  
+    }  
   }
 
 }

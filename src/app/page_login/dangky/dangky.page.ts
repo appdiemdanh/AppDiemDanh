@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../shared/authenticatin-Service';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireDatabase } from '@angular/fire/database';
 
 @Component({
   selector: 'app-dangky',
@@ -12,17 +13,19 @@ import { AngularFirestore } from '@angular/fire/firestore';
 export class DangkyPage implements OnInit {
 
   magiangvien = ''
+  mabaomat = ''
   email = ''
   password = ''
   repassword = ''
-
   chucvu = ''
-  arrayEmail : any
+  arraymabaomat : any = []
+  mabaomatFirebase = ''
 
   constructor(
     public router : Router,
     public authService : AuthenticationService,
-    public afStore : AngularFirestore 
+    public afStore : AngularFirestore ,
+    public afDB : AngularFireDatabase
   ) { 
     this.chucvu = this.authService.getChucvu()
     if(this.chucvu == '')
@@ -32,36 +35,79 @@ export class DangkyPage implements OnInit {
   }
 
   ngOnInit() {
-    this.afStore.collection('listuser').valueChanges().subscribe(res=>this.arrayEmail=res)
+    this.afDB.list('mabaomat').valueChanges().subscribe(res=>{
+      this.arraymabaomat = res
+      for(let mbm of this.arraymabaomat)
+      {
+        this.mabaomatFirebase = mbm
+      }
+    })
   }
 
 
   signUp()
   {
-    // cac dieu kien de dang ky tai khoan moi
-    if((this.email && this.password && this.repassword && this.magiangvien).length != 0) // input khong rong
+    // chuc vu là daotao hoac congtacsinhvien
+    if(this.chucvu == 'daotao' || this.chucvu == 'congtacsinhvien')
     {
-      if(this.password.length >= 6) // password >= 6
+      if((this.email && this.password && this.repassword && this.mabaomat).length != 0) // input khong rong
       {
-        if(this.repassword == this.password) // nhap lai mat khau phai dung
+        if(this.password.length >= 6) // password >= 6
         {
-          this.authService.setMagiangvien(this.magiangvien) // set magiangvien len authService
-          this.authService.RegisterUser(this.email, this.password)
+          if(this.repassword == this.password) // nhap lai mat khau phai dung
+          {
+            if(this.mabaomat == this.mabaomatFirebase)
+            {
+              this.authService.RegisterUser(this.email, this.password)
+            }
+            else
+            {
+              this.authService.presentAlert4('Mã bảo mật bạn nhập chưa chính xác')
+            }
+          }
+          else
+          {
+            this.authService.presentAlert4('Mật khẩu bạn nhập lại chưa trùng với mật khẩu!')
+          }
         }
         else
         {
-          this.authService.presentAlert4('Mật khẩu bạn nhập lại chưa trùng với mật khẩu!')
+          this.authService.presentAlert4('Mật khẩu của bạn cần phải lớn hơn 5 kí tự!')
         }
       }
       else
       {
-        this.authService.presentAlert4('Mật khẩu của bạn cần phải lớn hơn 5 kí tự!')
-      }
+        this.authService.presentAlert4('Bạn cần nhập đầy đủ các thông tin!')
+      }        
     }
-    else
+    // chuc vu la giangvien
+    else if(this.chucvu == 'giangvien')
     {
-      this.authService.presentAlert4('Bạn cần nhập đầy đủ các thông tin!')
+      if((this.email && this.password && this.repassword && this.magiangvien).length != 0) // input khong rong
+      {
+        if(this.password.length >= 6) // password >= 6
+        {
+          if(this.repassword == this.password) // nhap lai mat khau phai dung
+          {
+              this.authService.setMagiangvien(this.magiangvien) // set magiangvien len authService
+              this.authService.RegisterUser(this.email, this.password)
+          }
+          else
+          {
+            this.authService.presentAlert4('Mật khẩu bạn nhập lại chưa trùng với mật khẩu!')
+          }
+        }
+        else
+        {
+          this.authService.presentAlert4('Mật khẩu của bạn cần phải lớn hơn 5 kí tự!')
+        }
+      }
+      else
+      {
+        this.authService.presentAlert4('Bạn cần nhập đầy đủ các thông tin!')
+      }   
     }
+    
   }
 
 }

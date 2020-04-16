@@ -5,7 +5,7 @@ import { Router } from "@angular/router";
 import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/firestore';
 import * as firebase from 'firebase';
-import { AlertController, LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { map } from 'rxjs/operators';
 import { phangiogiang } from './modPhangio'
@@ -21,6 +21,7 @@ export class AuthenticationService {
   magiangvien : string = ''
   mssv : string = ''
   msgv : string = ''
+  tengiangvien : string = ''
   msmh : string = ''
   mslop : string = ''
   tongsv : string = ''
@@ -32,8 +33,11 @@ export class AuthenticationService {
   ngayhoc : any = []
   phonghoc = ''
   email = ''
+  id : number
+  issend : boolean = false
   listsvdihoc = []
   listsvvanghoc = []
+  listthoikhoabieu  = []
 
   arrayUser : any 
   // tạo mảng user
@@ -86,14 +90,6 @@ export class AuthenticationService {
   getMalop()
   {
     return this.mslop
-  }
-  setTongsv(tsv : string)
-  {
-    this.tongsv = tsv
-  }
-  gettongsv()
-  {
-    return this.tongsv
   }
   setHocky(hk : string)
   {
@@ -175,6 +171,38 @@ export class AuthenticationService {
   {
     return this.listsvvanghoc
   }
+  setID(id : number)
+  {
+    this.id = id
+  }
+  getID()
+  {
+    return this.id
+  }
+  setTengiangvien(tengv : string)
+  {
+    this.tengiangvien = tengv
+  }
+  getTengiangvien()
+  {
+    return this.tengiangvien
+  }
+  setIsSend(issend : boolean)
+  {
+    this.issend = issend
+  }
+  getIsSend()
+  {
+    return this.issend
+  } 
+  setListTKB(list : [])
+  {
+    this.listthoikhoabieu = list
+  }
+  getListTKB()
+  {
+    return this.listthoikhoabieu
+  }
 
   // add các function muốn sử dụng vào constructor
   constructor(
@@ -184,7 +212,8 @@ export class AuthenticationService {
     public ngZone: NgZone,
     public alert : AlertController ,
     public loadingController : LoadingController,
-    public afDB : AngularFireDatabase
+    public afDB : AngularFireDatabase,
+    public toastController : ToastController
   ) {
     // kiểm tra xem có user trên database hay chưa
     this.ngFireAuth.authState.subscribe(user => {
@@ -201,7 +230,6 @@ export class AuthenticationService {
       }
     })
   }
-  
 
   //thong bao
   async presentAlert(title : String, msg : String, trangmuonchuyenden : String) {
@@ -284,6 +312,7 @@ export class AuthenticationService {
 
     await alert.present();
   }
+
   //loading
   async presentLoading(msg : string, miligiay : number) {
     const loading = await this.loadingController.create({

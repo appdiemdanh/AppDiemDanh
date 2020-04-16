@@ -8,18 +8,17 @@
   <h4>Danh sách môn học</h4>
   <ion-item>
     <ion-label>Lọc theo : </ion-label>
-    <ion-select [(ngModel)]='xemmonhoctheo'>
-      <ion-select-option value='tatcamonhoc' >Tất cả môn học</ion-select-option>
-      <ion-select-option value='hocky1'>Học Kỳ 1</ion-select-option>
-      <ion-select-option value='hocky2'>Học Kỳ 2</ion-select-option>
-      <ion-select-option value='hocky3'>Học Kỳ 3</ion-select-option>
+    <ion-select (ionChange)='getHocky($event)'>
+      <ion-select-option *ngFor='let hk of listhocky'>
+        <ion-item >{{hk}}</ion-item>
+      </ion-select-option>
     </ion-select>
   </ion-item>
   <br>
-  <ion-list *ngFor='let mh of listmonhoc'>
-    <ion-item *ngIf='dieukienShow(mh.A)'>
+  <ion-list *ngFor='let mh of listmonhoctheohocky'>
+    <ion-item (click)='getMonhoc(mh.C)'>
       <ion-label>{{mh.D}}</ion-label>
-      <ion-icon (click)='getMaMH(mh.C)' name="chevron-forward-outline" slot="end"></ion-icon>
+      <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
     </ion-item>
   </ion-list>
 </ion-content>
