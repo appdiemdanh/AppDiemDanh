@@ -229,6 +229,7 @@ export class AuthenticationService {
         JSON.parse(localStorage.getItem('user'));
       }
     })
+
   }
 
   //thong bao
@@ -449,11 +450,8 @@ export class AuthenticationService {
     const userData: User = {
       uid           : user.uid,
       email         : user.email,
-      displayName   : user.displayName,
       chucvu        : this.chucvu,
-      magiangvien   : this.magiangvien,
-      photoURL      : user.photoURL,
-      emailVerified : user.emailVerified
+      magiangvien   : this.magiangvien
     }
     return userRef.set(userData, {
       merge: true //set gia tri trong database cua firebase
@@ -463,7 +461,11 @@ export class AuthenticationService {
   // đăng xuất và xóa user ra khỏi mảng
   SignOut() {
     return this.ngFireAuth.auth.signOut().then(() => {
+      // xóa user, email và password lưu ở local
       localStorage.removeItem('user');
+      localStorage.removeItem('email')
+      localStorage.removeItem('password')
+      // chuyển màn hình
       this.router.navigate(['dangnhap']);
     })
   }

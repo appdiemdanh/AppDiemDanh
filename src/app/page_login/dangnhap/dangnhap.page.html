@@ -16,11 +16,18 @@
     <ion-label position="stacked">Mật khẩu</ion-label>
     <ion-input id="password" type="password" placeholder="Nhập mật khẩu" [(ngModel)]="password"></ion-input>
   </ion-item><br>
-      <a class="quenmatkhau" [routerLink]="['/quenmatkhau']">Quên mật khẩu?</a><br><br><br>
+    <ion-label>
+      <ion-checkbox class='ion-checkbox' (ionChange)='getNhomatkhau($event)' checked="{{nhomatkhau}}"></ion-checkbox>
+      Nhớ mật khẩu  
+    </ion-label>
+    <br><br>
   <ion-row>
     <ion-col>
       <ion-button type="submit"  expand="block" (click)='logIn()'>Đăng nhập</ion-button>
     </ion-col>
   </ion-row>
   <br>
+  <br>
+  <a class="quenmatkhau" [routerLink]="['/quenmatkhau']">Quên mật khẩu?</a><br><br><br>
+
 </ion-content>

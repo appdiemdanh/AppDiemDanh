@@ -25,6 +25,7 @@
         <ion-icon name="chevron-down-outline" slot="end" *ngIf="isShowListSV == false" (click)="isShowListSV = true"></ion-icon>
         <ion-icon name="chevron-up-outline" slot="end" *ngIf="isShowListSV == true" (click)="isShowListSV = false"></ion-icon>
       </ion-item>
+      <br>
       <ion-list *ngFor='let sv of listsv'>
           <ion-item *ngIf="isShowListSV == true">{{sv.B}}. {{sv.D}}</ion-item>
       </ion-list>

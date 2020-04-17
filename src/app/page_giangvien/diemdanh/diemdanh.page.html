@@ -10,7 +10,7 @@
 <ion-content>
   <ion-item>
     <ion-grid>
-      <ion-row>
+      <ion-row class="ion-row">
         <ion-col size='6'>
           Lớp : {{malop}}
         </ion-col>
@@ -20,11 +20,15 @@
       </ion-row>
     </ion-grid>
   </ion-item>
+  <ion-item>
+    <ion-label>Chọn tất cả</ion-label>
+    <ion-checkbox (ionChange)="getStatus($event)" slot="end"></ion-checkbox>
+  </ion-item><br>
   <ion-list *ngFor='let sv of listsinhvien'>
-      <ion-item>
-        <ion-label>{{sv.D}}</ion-label>
-        <ion-checkbox slot="end" value='{{sv.D}}' (ionChange)='getSinhvien($event)'></ion-checkbox>
-      </ion-item>
+    <ion-item>
+      <ion-label>{{sv.D}}</ion-label>
+      <ion-checkbox slot="end" value='{{sv.D}}' checked="{{chontatca}}" (ionChange)='getSinhvien($event)'></ion-checkbox>
+    </ion-item>
   </ion-list>
   <ion-item>
     <ion-label class='bold'>

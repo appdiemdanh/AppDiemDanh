@@ -105,7 +105,11 @@ const routes: Routes = [
   {
     path: 'thoikhoabieu',
     loadChildren: () => import('./page_giangvien/thoikhoabieu/thoikhoabieu.module').then( m => m.ThoikhoabieuPageModule)
+  },  {
+    path: 'lichsudiemdanh',
+    loadChildren: () => import('./page_giangvien/lichsudiemdanh/lichsudiemdanh.module').then( m => m.LichsudiemdanhPageModule)
   },
+
 ];
 
 @NgModule({   

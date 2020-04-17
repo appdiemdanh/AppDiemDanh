@@ -3,6 +3,7 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import { AuthenticationService } from 'src/app/page_login/shared/authenticatin-Service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-thoikhoabieu',
@@ -22,10 +23,15 @@ export class ThoikhoabieuPage implements OnInit {
   isshowIonCard = true
   magvtontai = false
   toigiodiemdanh = false
+  // view ra toast
+  monhoc = ''
+  lophoc = ''
+
   constructor(
     public afDB : AngularFireDatabase,
     public router : Router,
-    public authService : AuthenticationService
+    public authService : AuthenticationService,
+    public toastController : ToastController
   ) {
     /*
      * magiangvien được set khi đăng nhập(magiangvien lay tu listuser) nếu chức vụ đăng nhập là giảng viên
@@ -86,13 +92,15 @@ export class ThoikhoabieuPage implements OnInit {
                     {
                       this.toigiodiemdanh = true
                       this.authService.setListTKB(listpg) // set listfb sau khi qua các điện để qua page diemdanh get ra so sánh
-                      //console.log(listfb)
+                      //console.log(listpg)
                       let malop = listpg.lop
                       let monhoc = listpg.tenmonhoc
-                      console.log("Lớp tới giờ học : " + malop)
-                      console.log("Môn tới giờ học " + monhoc)
+                      // set gia trị
                       this.authService.setMalop(malop)
                       this.authService.setMsmh(monhoc)
+                      //set gia tri de view ra Toast
+                      this.monhoc = listpg.tenmonhoc
+                      this.lophoc = listpg.lop
                     }
                   }
                 }
@@ -100,6 +108,10 @@ export class ThoikhoabieuPage implements OnInit {
             }
           }
         }
+      }
+      if(this.toigiodiemdanh == true)
+      {
+        this.presentToast()
       }
     })
     // get ten giangvien điều kiện magiangvien(dangnhap truyen qua) = magiangvien(firebase)
@@ -134,4 +146,13 @@ export class ThoikhoabieuPage implements OnInit {
   {
     this.authService.SignOut()
   }
+  //toast
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: "Tới giờ học môn : " + this.monhoc + ", Lớp : " + this.lophoc,
+      duration: 3000
+    });
+    await toast.present();
+  }
+
 }

@@ -5,10 +5,7 @@
 
 .content .ion-item
 {
-    padding-top: 25px;
-}
-.main{
-    margin-top: 70px;
+    margin-top: 10%;
 }
 .quenmatkhau{
     background: red($color: #000000);
@@ -26,34 +23,11 @@ p
     color: #000066;
     font-size: 17px;
 }
-.divider {
-    display: flex;
-    
-    &:before,
-    &:after {
-      content: "";
-      flex: 1;
-    }
-}
-  
-.line {
-    align-items: center;
-    margin: 1em -1em;
-    color: #cccccc;
-    
-    &:before,
-    &:after {
-      height: 1px;
-      margin: 0 1em;
-    }
-} 
 
-.one-line {
-    &:before,
-    &:after {
-       background: #cccccc;
-    }
-}
 small{
     padding: 8px;
+}
+.ion-checkbox
+{
+    margin-top: 10px;
 }

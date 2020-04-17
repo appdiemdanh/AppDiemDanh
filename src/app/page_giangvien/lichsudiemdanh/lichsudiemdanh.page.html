@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>lịch sử điểm danh</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngFor='let ldd of listdiemdanh'>
+    <ion-card>
+      <ion-card-header>
+        <ion-item>
+          <ion-card-title class="title">{{ldd.ngaydiemdanh}}</ion-card-title>
+        </ion-item>
+      </ion-card-header>
+    
+      <ion-card-content>
+        <br>
+        <ion-item>Ngày điểm danh      : {{ldd.ngaydiemdanh}}</ion-item>
+        <ion-item>Giờ điểm danh       : {{ldd.giodiemdanh}}</ion-item>
+        <ion-item>Lớp                 : {{ldd.lop}}</ion-item>
+        <ion-item>Môn học             : {{ldd.monhoc}}</ion-item>
+        <ion-item>
+          Sinh viên đi hoc    : {{ldd.soluongSVdihoc}} sinh viên
+        </ion-item>
+        <ion-item>
+          Sinh viên vắng học  : {{ldd.soluongSVvanghoc}} sinh viên
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+</ion-content>

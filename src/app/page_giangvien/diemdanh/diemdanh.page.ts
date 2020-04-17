@@ -20,6 +20,7 @@ export class DiemdanhPage implements OnInit {
   soluongsinhvien : number
   isChecked = false
   dadiemdanhroi : boolean = false
+  chontatca : boolean = false
   listfirebase : any
   listsinhvien = [] // muc đích dấu [] để có thể sử dụng hàm push()
   listsvdihoc : any = []
@@ -73,7 +74,7 @@ export class DiemdanhPage implements OnInit {
      *            listthoikhoabieu có item giobatdau, gioketthuc
      * Dưới đây mình sẽ trả về lớp này đã điểm danh hay chưa với biến dadiemdanhroi : boolean
      * nếu listdiemdanh nó tồn tại: giodiemdanh >= giobatdau và giodiemdanh <= gioketthuc 
-     *    tức là đã điểm danh rồi => thì biến dadiemdanhroi = true ngược lại thì = false
+     *    tức là đã điểm danh rồi => thì biến dadiemdanhroi = true (Khởi tạo cho nó bằng false)
      * 
      */
     this.afDB.list('diemdanh').valueChanges().subscribe(res=>
@@ -85,30 +86,34 @@ export class DiemdanhPage implements OnInit {
           {
            for(let ltkb of this.listthoikhoabieu)
            {
-             console.log(ltkb.ngaybatdau)
-             let giobatdau = new Date(null,null,null, ltkb.giobatdau.slice(0, 2), ltkb.giobatdau.slice(3, 5)) // nam,thang,ngay, gio, phut
-             let gioketthuc = new Date(null,null,null, ltkb.gioketthuc.slice(0, 2), ltkb.gioketthuc.slice(3, 5)) // nam,thang,ngay, gio, phut
-             let giogoidiemdanh = new Date(null,null,null, ldd.giodiemdanh.slice(0, 2), ldd.giodiemdanh.slice(3)) // nam,thang,ngay, gio, phut
-             if(ldd.giodiemdanh >= ltkb.giobatdau)
+             //console.log(ltkb.ngaybatdau)
+             // giobatdau va gioketthuc trên firebase có dạng : Tiết x - giờ:phút => bây giờ mình sẽ cắt giờ với phút ra                                    phần tử: 012345678    
+             var giophutbatdau = ltkb.giobatdau.split("-")[1].slice(1) // giobatdau cắt ra khi gặp dấu "-" lấy phần tử thứ 1, sau đó cắt tại phần tử thứ 1 đến hết   _gio:phut (_ là khoảng trống)
+             var giophutketthuc = ltkb.gioketthuc.split("-")[1].slice(1) 
+             //
+             let giobatdau = new Date(null,null,null, giophutbatdau.split(":")[0], giophutbatdau.split(":")[1]) // nam,thang,ngay, gio, phut
+             let gioketthuc = new Date(null,null,null, giophutketthuc.split(":")[0], giophutketthuc.split(":")[1]) // nam,thang,ngay, gio, phut
+             let giodiemdanh = new Date(null,null,null, ldd.giodiemdanh.split(":")[0], ldd.giodiemdanh.split(":")[1]) // nam,thang,ngay, gio, phut
+            
+             if(giodiemdanh >= giobatdau)
              {
-               if(ldd.giodiemdanh >= ltkb.giobatdau)
-               {
-                 if(ldd.giodiemdanh <= ltkb.gioketthuc)
-                 {
-                   //console.log(ltkb.giobatdau)
-                   this.dadiemdanhroi = true 
-                 }
-                 else
-                 {
-                   this.dadiemdanhroi = false
-                 }
-               }
+                if(giodiemdanh <= gioketthuc)
+                {
+                  //console.log(ltkb.giobatdau)
+                  this.dadiemdanhroi = true 
+                }     
              }
            }
           }
         }
 
       })
+  }
+  // get trạng thái click của ion-checkbox
+  getStatus(event)
+  {
+    this.chontatca = event.detail.checked
+    //console.log(event.detail.checked)
   }
   /**
    * Đầu tiên listsvvangmat = listsinhvien, listsvdihoc = []
@@ -150,7 +155,7 @@ export class DiemdanhPage implements OnInit {
   {
       //console.log('List sv vắng học :' ,this.listsvvanghoc)
       //console.log('sv đi học', this.listsvdihoc)
-    if(this.listsvdihoc.length > 0 && this.listsvvanghoc.length > 0)
+    if(this.listsvdihoc.length > 0 || this.listsvvanghoc.length > 0)
     {
       this.presentAlert()
     }
@@ -186,7 +191,7 @@ export class DiemdanhPage implements OnInit {
   async presentToast() {
     const toast = await this.toastController.create({
       message: 'Gửi thông tin điểm danh thành công',
-      duration: 3000
+      duration: 3000,
     });
     await toast.present();
   }
@@ -231,7 +236,7 @@ export class DiemdanhPage implements OnInit {
     this.afDB.list('diemdanh').push(data).then(res=>
       {
         this.authService.setIsSend(true)
-        this.authService.setID(autoID) // set id để qua bên thongtinphangio so sánh
+        //this.authService.setID(autoID) // set id để qua bên thongtinphangio so sánh
         this.presentToast()
         this.router.navigate(['thongtindiemdanh'])
       })

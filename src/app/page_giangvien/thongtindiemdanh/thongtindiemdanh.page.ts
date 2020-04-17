@@ -14,11 +14,11 @@ export class ThongtindiemdanhPage implements OnInit {
   giodiemdanh = ''
   lop = ''
   monhoc = ''
+  malop = ''
   soluongSVdihoc : number
   soluongSVvanghoc : number
-  listsvdihoc : any = []
-  listsvvanghoc : any = []
   listdiemdanh : any = []
+  listdiemdanhcuoicung : any = []
 
   isshowDihoc = false
   isshowVanghoc = false
@@ -27,34 +27,31 @@ export class ThongtindiemdanhPage implements OnInit {
     public authService : AuthenticationService,
     public afDB : AngularFireDatabase
   ) { 
-    this.id = this.authService.getID() // lay từ diemdanh qua
+    this.malop = this.authService.getMalop()
   }
 
   /**
-   * Sau khi lọc qua các điều kiện thì res trả ra tưng object 1 nên ta phải sử dụng hàm push() thay vì sài dấu =
-   * để bên *ngFor hiểu được (vì *ngFor chỉ đọc kiểu như là array)
+   *  đầu tiên sẽ gán tất cả giá trị của diemdanh(list trên firebase) vào mảng diemdanh
+   *  tiếp theo mình sẽ dùng for và lọc điều kiện lop(diemdanh firebase) == malop(truyền từ page thoikhoabieu)
+   * nếu điều kiện đúng thì gán giá trị cho listdiemdanh (list này đều có lop = malop)
+   *  Sau đó mình thoát ra vòng lặp for thì giá trị của listdiemdanh chỉ trả ra cái cuối cùng thôi
+   * vd : trong for nó có 100 giá trị thoát ra for thì chỉ còn 1 thôi tại vì đâu còn vòng lặp nào đâu
+   *  và mình gán giá trị cuối chính là điểm danh mới nhất của lớp đó vào mảng listdiemdanhcuoicun là xong.
    */
   ngOnInit() {
-    // gán giá trị cho lisdiemdanh với điều kiện ...
     this.afDB.list('diemdanh').valueChanges().subscribe(res=>
       {
-        let listdiemdanhfirebase : any = res
-        for(let lfb of listdiemdanhfirebase)
+        let diemdanh : any = res
+        for(let dd of diemdanh)
         {
-          if(lfb.id == this.id)
+          if(dd.lop == this.malop) // dd.lop == this.malop khác với this.malop == dd.lop nha (test thử xong console ra là biết)
           {
-            // gan gia tri listdiemdanh 
-            this.listdiemdanh.push(lfb)
-            //gan gia tri cho listsvdihoc, vanghoc
-            for(let ldd of this.listdiemdanh)
-            {
-              this.listsvdihoc = ldd.danhsachSVdihoc
-              this.listsvvanghoc = ldd.danhsachSVvanghoc
-            }
-          }
+            this.listdiemdanh = dd // gán tất cả giá trị thỏa điều kiện vào listdiemdanh
+          }          
         }
+        //thoát khỏi vòng lặp thì listdiemdanh sẽ trả ra giá trị cuối cùng thôi
+        this.listdiemdanhcuoicung.push(this.listdiemdanh)
       })
-      
   }
 
 }
