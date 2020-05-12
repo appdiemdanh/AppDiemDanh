@@ -23,6 +23,12 @@ export class ThoikhoabieuPage implements OnInit {
   isshowIonCard = true
   magvtontai = false
   toigiodiemdanh = false
+
+  // format date time
+  namthangngayhientai : Date
+  giophuthientai : Date
+  thuhientai : String
+
   // view ra toast
   monhoc = ''
   lophoc = ''
@@ -38,17 +44,14 @@ export class ThoikhoabieuPage implements OnInit {
      * sau đó qua đây thì get ra để so sánh với magiangvien (phangiogiang)
      * nếu magiangvien(listuser) == magiangvien(phangiogiang) thì hiện ra ion-card để giảng viên đó xem giờ dạy của mình, col 9 html
      */
-    this.magiangvien = this.authService.getMagiangvien()
+    this.magiangvien = localStorage.getItem('magiangvien')
     
   }
   ngOnInit() {
-    let namthangngayhientai = this.day.getFullYear() + "-" + (this.day.getMonth() + 1) + "-" + this.day.getDate()
-    let thuhientai = "Thứ " + (this.day.getDay() + 1) + ""
-    let giophuthientai = new Date(null,null,null, this.day.getHours(), this.day.getMinutes())
-    if(thuhientai == "Thứ 1")
-    {
-      thuhientai = "Chủ nhật"
-    }
+    
+    // thực hiện formatDatetime()
+    this.formatDatetime();
+
     /**
      * Đầu tiên gán giá trị cho listfirebase - col 1
      * Sau đó tạo vòng lặp để đọc giá trị của listfirebase - col 2
@@ -67,17 +70,32 @@ export class ThoikhoabieuPage implements OnInit {
       {
         if(listpg.magiangvien == this.magiangvien) // if 1
         {
+          // gán mgv đã tồn tại
           this.magvtontai = true
-          this.listlop = (listpg) // gán giá trị cho listlop
-          if(namthangngayhientai >= listpg.ngaybatdau) // if 2
+          // gán giá trị cho listlop
+          this.listlop = listpg
+
+          // format ngaybatdau và ngayketthuc thành kiểu Date
+          let nambatdau     = listpg.ngaybatdau.split("-")[0] // cắt listpg.ngaybatdau bằng dấu - và lấy phần tử đầu tiên được cắt ra
+          let thangbatdau   = listpg.ngaybatdau.split("-")[1]
+          let ngaybatdau    = listpg.ngaybatdau.split("-")[2]
+          let namketthuc    = listpg.ngayketthuc.split("-")[0]
+          let thangketthuc  = listpg.ngayketthuc.split("-")[1]
+          let ngayketthuc   = listpg.ngayketthuc.split("-")[2]
+
+          let ntnbatdau     = new Date(nambatdau, thangbatdau, ngaybatdau)
+          let ntnketthuc    = new Date(namketthuc, thangketthuc, ngayketthuc)
+          
+          // so sánh ngày và giờ
+          if(this.namthangngayhientai >= ntnbatdau) // if 2
           {
-            if(namthangngayhientai <= listpg.ngayketthuc)
+            if(this.namthangngayhientai <= ntnketthuc)
             {
               this.listthoikhoabieu.push(listpg)
               this.listthu = (listpg.ngayhoc)
               for(let thu of this.listthu)
               {
-                if(thuhientai == thu)
+                if(this.thuhientai == thu)
                 {
                   let giobatdau     = listpg.giobatdau.split("-")[1].split(":")[0]
                   let phutbatdau    = listpg.giobatdau.split("-")[1].split(":")[1]
@@ -86,9 +104,9 @@ export class ThoikhoabieuPage implements OnInit {
                   //console.log(giobatdau)
                   const giophutbatdau = new Date(null,null,null, giobatdau, phutbatdau)
                   const giophutketthuc = new Date(null,null,null, gioketthuc, phutketthuc)
-                  if(giophuthientai >= giophutbatdau) // if2
+                  if(this.giophuthientai >= giophutbatdau) // if2
                   {
-                    if(giophuthientai < giophutketthuc)
+                    if(this.giophuthientai < giophutketthuc)
                     {
                       this.toigiodiemdanh = true
                       this.authService.setListTKB(listpg) // set listfb sau khi qua các điện để qua page diemdanh get ra so sánh
@@ -146,6 +164,24 @@ export class ThoikhoabieuPage implements OnInit {
   {
     this.authService.SignOut()
   }
+
+  // chuyển đổi ngày giờ từ string sang kiểu Date để có thể so sánh
+  formatDatetime()
+  {
+    // ngày tháng năm hiện tại
+    this.namthangngayhientai = new Date(this.day.getFullYear(), (this.day.getMonth() + 1), this.day.getDate())
+
+    // thứ hiện tại
+    this.thuhientai = "Thứ " + (this.day.getDay() + 1) + ""
+
+    // giờ phút hiện tại
+    this.giophuthientai = new Date(null,null,null, this.day.getHours(), this.day.getMinutes())
+    if(this.thuhientai == "Thứ 1")
+    {
+      this.thuhientai = "Chủ nhật"
+    }
+  }
+
   //toast
   async presentToast() {
     const toast = await this.toastController.create({

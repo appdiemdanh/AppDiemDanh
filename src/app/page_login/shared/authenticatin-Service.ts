@@ -282,16 +282,16 @@ export class AuthenticationService {
       message: msg + "",
       buttons: [
         {
-          text: 'OK',
-          handler: () => {
-            this.router.navigate([trangmuonchuyenden])
-            console.log(trangmuonchuyenden);
-          }
-        }, {
           text: 'Cancel',
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
+          }
+        }, {
+          text: 'OK',
+          handler: () => {
+            this.router.navigate([trangmuonchuyenden])
+            console.log(trangmuonchuyenden);
           }
         }
       ]
@@ -465,6 +465,7 @@ export class AuthenticationService {
       localStorage.removeItem('user');
       localStorage.removeItem('email')
       localStorage.removeItem('password')
+      localStorage.removeItem('dadangnhap')
       // chuyển màn hình
       this.router.navigate(['dangnhap']);
     })

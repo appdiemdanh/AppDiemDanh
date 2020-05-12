@@ -171,15 +171,15 @@ export class DiemdanhPage implements OnInit {
       message: 'Danh sách điểm danh này sẽ được gửi lên sever và sẽ không thể thay đổi gì sau khi đã gửi.',
       buttons: [
         {
+          text: 'Quay lại',
+          role: 'cancel',
+          handler: () => {
+          }
+        }, {
           text: 'Gửi lên sever',
           cssClass: 'secondary',
           handler: () => {
             this.sendtoSever()
-          }
-        }, {
-          text: 'Quay lại',
-          role: 'cancel',
-          handler: () => {
           }
         }
       ]

@@ -19,7 +19,7 @@ export class Tab5Page implements OnInit {
   hocky = ''
   tengiangvien = ''
   magiangvien = ''
-  showMaGV : boolean = false
+  dadangnhap = ''
 
   constructor(
     public tab4 : Tab4Page,
@@ -27,7 +27,9 @@ export class Tab5Page implements OnInit {
     public afDB : AngularFireDatabase,
     public router : Router
     ) { 
-      //console.log(this.myday.getMonth() + 2)
+      // lấy giá trị lưu từ local
+      this.dadangnhap = localStorage.getItem('dadangnhap')
+      console.log(this.dadangnhap)
      }
 
 
@@ -57,12 +59,19 @@ export class Tab5Page implements OnInit {
   {
     if((this.hocky && this.tengiangvien) != '')
     {
-       //set gia tri 
-      this.authService.setHocky(this.hocky)
-      this.authService.setMsgv(this.tengiangvien)
-      this.authService.setMagiangvien(this.magiangvien)
-      //chuyen man hinh
-      this.router.navigate(['phangiohoc'])
+      if(this.dadangnhap == "đúng")
+      {
+         //set gia tri 
+        this.authService.setHocky(this.hocky)
+        this.authService.setMsgv(this.tengiangvien)
+        this.authService.setMagiangvien(this.magiangvien)
+        //chuyen man hinh
+        this.router.navigate(['phangiohoc'])
+      }
+      else
+      {
+        this.authService.presentAlert3("Thông báo ", "Vui lòng đăng nhập để tiếp tục!", "dangnhap")
+      }
     }
     else
     {

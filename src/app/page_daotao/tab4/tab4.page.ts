@@ -27,10 +27,10 @@ export class Tab4Page implements OnInit {
     this.afDB.list(`/danhsachsinhvienk18/`).valueChanges().subscribe(res=>{this.listsinhvien = res}) 
     
   }
-  getMssv(mssv)
+  gotoThongtinsv(mssv)
   {
     this.authService.setMssv(mssv + "")
-    console.log(mssv)
+    //console.log(mssv)
     this.router.navigate(['thongtinsv'])
   }
 

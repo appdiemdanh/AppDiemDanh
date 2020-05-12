@@ -10,7 +10,7 @@
   <h4>Danh sách sinh viên</h4>
   <br>
   <ion-list *ngFor = 'let sv of listsinhvien'>
-    <ion-item (click)='getMssv(sv.C)'>
+    <ion-item (click)='gotoThongtinsv(sv.C)'> <!--sv.C : masv (firebase)-->
       <ion-label>{{sv.B}}. {{sv.D}}</ion-label>
       <ion-icon name="chevron-forward-outline" slot='end'>></ion-icon>
     </ion-item>
