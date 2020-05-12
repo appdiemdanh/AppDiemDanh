@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { AuthenticationService } from 'src/app/page_login/shared/authenticatin-Service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-thongtinlop',
@@ -17,7 +18,8 @@ export class ThongtinlopPage implements OnInit {
 
   constructor(
     private afDB : AngularFireDatabase,
-    private authService : AuthenticationService
+    private authService : AuthenticationService,
+    private router : Router
   ) {
     //gan gia tri 
     this.malop = this.authService.getMalop()
@@ -40,6 +42,15 @@ export class ThongtinlopPage implements OnInit {
       }
       this.tongsv = this.listsv.length
     })
+  }
+
+  gotoThongtinsv(mssv)
+  {
+    // set mssv len authService
+    this.authService.setMssv(mssv)
+    
+    // chuyển màn hình
+    this.router.navigate(['thongtinsv'])
   }
 
 }
