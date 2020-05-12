@@ -18,7 +18,7 @@ export class DangnhapPage implements OnInit {
 
   public email = ''
   public password = ''
-  nhomatkhau : boolean = false
+  nhomatkhau : boolean = true
   arrayUser : any = []
 
   constructor(
@@ -31,13 +31,20 @@ export class DangnhapPage implements OnInit {
     public ngFireAuth: AngularFireAuth,
     ) {
       // lấy giá trị lưu ở local
-      let em = window.localStorage.getItem('email')
-      let pw = window.localStorage.getItem('password')
-      // nếu nó khác rỗng thì gán cho email và password để đăng nhập
+      let em = localStorage.getItem('email')
+      let pw = localStorage.getItem('password')
+      //console.log(em)
+      //console.log(pw)
+
+      // nếu nó khác null thì gán cho email và password và tiến hành tự động đăng nhập luôn
       if(em != null && pw != null)
       {
         this.email = em
         this.password = pw
+      }
+      else
+      {
+        console.log('chưa nhớ mật khẩu')
       }
     }
 
@@ -50,14 +57,25 @@ export class DangnhapPage implements OnInit {
   {
     this.nhomatkhau = event.detail.checked
   }
+
+  //chức đăng nhập vẫn chưa hoàn thiện, vì khi người dùng không xác nhận email đăng ký thì vẫn đăng nhập được, sẽ tìm cách fix sau
   /**
-   * chức đăng nhập vẫn chưa hoàn thiện, vì khi người dùng không xác nhận email đăng ký thì vẫn đăng nhập được
+   * Đầu tiên mình kiểm tra các điều kiện như nhập đủ chưa, có để trống ô nào không
+   * Tiếp theo gọi hàm signInWithEmailAndPassword(email, password) thực hiện đăng nhập
+   *    nếu thực hiện được{
+   *      chạy vòng lặp lấy ra được listuser(firebase) để so sánh : (khi vào đây tức là email và password đã đúng)
+   *       +email(nhập vào) = email(firebase) và chucvu(firebase) = "daotao" thì chuyển đến trang của đào tạo
+   *        và sau đó lưu chucvu lên local để qua app-routing mình so sánh tiếp (qua đó coi sẽ biết),
+   *        congtacsinhvien cũng tương tự như daotao.
+   *        giangvien thì mình sẽ lưu thêm magiangvien lên local cũng để qua app-routing so sánh luôn.
+   * }
+   *    không thực hiện được {
+   *      mình sẽ dịch lỗi từ tiếng anh sang tiếng việt và alert ra cho người dùng đọc.
+   * }
    * 
-   * sẽ tìm cách fix sau
    */
   logIn()
   {
-    let e, cv, mgv //email và chức vụ
     if((this.email && this.password) != "")
     {
       this.ngFireAuth.auth.signInWithEmailAndPassword(this.email, this.password).then((res)=>
@@ -66,39 +84,47 @@ export class DangnhapPage implements OnInit {
         // vd: sai sai dung => làm, sai dung sai => làm, nhưng sai sai sai => không làm
         for(let user of this.arrayUser) 
         {
-          e = user.email
-          cv = user.chucvu
-          mgv = user.magiangvien
+          let e = user.email
+          let cv = user.chucvu
+          let mgv = user.magiangvien
+          
           if(this.email == e && cv == "daotao") // neu email nhap vao = e (firebase) và chucvu(firebase) = 'daotao' => page dao tao
           {                                   // khi nguoi dung dang ky => chucvu đã lưu trên firebase roi nen khong can co dieu kien cho this.chucvu
-          this.authService.presentLoading('Vui lòng chờ...', 1800);
-          this.router.navigate(['tabs/tab1'])
+            localStorage.setItem('chucvu', 'daotao') // luu vao bo nho local với key là chucvu giá trị là 'daotao'
+            localStorage.setItem('dadangnhap', 'đúng')
+            this.authService.presentLoading('Vui lòng chờ...', 1800);
+            this.router.navigate(['tabs/tabs/tab1'])
           }
           else if(this.email == e && cv == 'giangvien')
           {
-            this.authService.setMagiangvien(mgv)
+            // set chucvu va magiangvien lên local mục đích qua app_routing_module để so sánh(cứ qua coi là rõ)
+            localStorage.setItem('chucvu', 'giangvien')
+            localStorage.setItem('magiangvien', mgv)
             this.authService.presentLoading('Vui lòng chờ...', 1800)
             this.router.navigate(['thoikhoabieu'])
           }
           else if(this.email == e && cv == 'congtacsinhvien')
           {
+            localStorage.setItem('chucvu', 'congtacsinhvien')
             this.authService.presentLoading('Vui lòng chờ...', 1800);
             this.router.navigate(['chonmon'])
           }
           // vào vòng lặp for này tức là email và password đã đúng rồi vì đã qua hàm signInWithEmailAndPassword()
           //nếu click nhớ mật khẩu thì mình gán giá trị cho local
-          if(this.nhomatkhau == true)
-          {
-            window.localStorage.setItem('email', this.email)
-            window.localStorage.setItem('password', this.password)
-          }
-          // nếu không click nhơ mật khẩu thì mình xóa giá trị lưu trên local đi 
-          else if(this.nhomatkhau == false)
-          {
-            window.localStorage.setItem('email', '')
-            window.localStorage.setItem('password', '')
-          }
-        }                    
+        }     
+        // đăng nhập thành công thì thực hiện ghi nhớ mật khẩu 
+        if(this.nhomatkhau == true)
+        {
+          localStorage.setItem('email', this.email)
+          localStorage.setItem('password', this.password)
+        }
+        // nếu không click nhơ mật khẩu thì mình xóa giá trị lưu trên local  
+        else if(this.nhomatkhau == false)
+        {
+          localStorage.setItem('email', '')
+          localStorage.setItem('password', '')
+        }
+
       }).catch(error=>{
         //so sanh loi phat ra tu error rồi dịch ra tiếng việt cho dễ hiểu 
         if(error == 'Error: The email address is badly formatted.')
