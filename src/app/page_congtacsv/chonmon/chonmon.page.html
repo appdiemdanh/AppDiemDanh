@@ -9,13 +9,19 @@
 
 <ion-content>
   <ion-item>
-    <h3>Chọn môn học</h3>
+    <h3>Xem lịch sử điểm danh</h3>
+  </ion-item>
+  <ion-item>
+    <ion-label>Lớp</ion-label>
+    <ion-select (ionChange)="getLophoc($event)">
+    <ion-select-option *ngFor='let lop of malop' >{{lop}}</ion-select-option>
+    </ion-select>
   </ion-item>
   <ion-item>
     <ion-label>Môn học</ion-label>
-    <ion-select value="brown" okText="Okay" cancelText="Dismiss">
-      <ion-select-option value="brown">Brown</ion-select-option>
+    <ion-select (ionChange)="getMonhoc($event)">
+    <ion-select-option *ngFor='let mon of monhoc' >{{mon}}</ion-select-option>
     </ion-select>
   </ion-item>
-  <ion-button color="primary" (click)='chonlop()'>Chọn Lớp</ion-button>
+  <ion-button color="primary" (click)='chonlop()'>Lịch sử điểm danh</ion-button>
 </ion-content>

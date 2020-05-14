@@ -27,7 +27,7 @@
       <ion-label>Chọn lớp</ion-label>
       <ion-select (ionChange)='getTenlop($event)' >
         <ion-select-option *ngFor='let lop of listlop'>
-          <ion-item (click)='click()'>{{lop.B}}</ion-item>
+          <ion-item>{{lop.B}}</ion-item>
         </ion-select-option>
       </ion-select>
     </ion-item>
@@ -35,7 +35,7 @@
       <ion-label>Chọn môn học</ion-label>
       <ion-select (ionChange)='getTenmh($event)' >
         <ion-select-option *ngFor='let mh of listmonhoc'> 
-          <ion-item *ngIf="mh.A == hocky" >
+          <ion-item>
             <ion-label >
               {{mh.D}}
             </ion-label>

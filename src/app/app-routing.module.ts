@@ -2,7 +2,7 @@ import { NgModule, OnInit } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes, Router } from '@angular/router';
 
 // tạo routes
-let routes : Routes
+let routes : Routes = []
 
 // lấy giá trị lưu từ local về 
 let email         = localStorage.getItem('email')

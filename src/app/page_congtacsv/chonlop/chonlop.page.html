@@ -7,10 +7,31 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-item>
-    <h3>Thống kê điểm danh</h3>
-  </ion-item>
-  <ion-item>
-    <ion-label>Lớp học</ion-label>
-  </ion-item>
+  <ion-list *ngFor='let ldd of listdiemdanh'>
+    <ion-card>
+      <ion-card-header>
+        <ion-item>
+          <ion-card-title class="title">{{ldd.ngaydiemdanh}}</ion-card-title>
+        </ion-item>
+      </ion-card-header>
+    
+      <ion-card-content>
+        <br>
+        <ion-item>Ngày điểm danh      : {{ldd.ngaydiemdanh}}</ion-item>
+        <ion-item>Giờ điểm danh       : {{ldd.giodiemdanh}}</ion-item>
+        <ion-item>Lớp                 : {{ldd.lop}}</ion-item>
+        <ion-item>Môn học             : {{ldd.monhoc}}</ion-item>
+        <ion-item>
+          Sinh viên đi hoc    : {{ldd.soluongSVdihoc}} sinh viên
+        </ion-item>
+        <ion-item>
+          Sinh viên vắng học  : {{ldd.soluongSVvanghoc}} sinh viên
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+  <ion-grid>
+    <ion-button type='submit' color='danger' (click)='logOut()' expand='block'>Đăng xuất</ion-button>
+  </ion-grid>
+  <br>
 </ion-content>
