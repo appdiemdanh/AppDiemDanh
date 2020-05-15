@@ -89,7 +89,7 @@ export class DangkyPage implements OnInit {
         {
           if(this.repassword == this.password) // nhap lai mat khau phai dung
           {
-              this.authService.setMagiangvien(this.magiangvien) // set magiangvien len authService
+              localStorage.setItem('magiangvien', this.magiangvien) // luu mã giảng viên lên local
               this.authService.RegisterUser(this.email, this.password)
           }
           else

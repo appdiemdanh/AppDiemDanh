@@ -235,8 +235,6 @@ export class DiemdanhPage implements OnInit {
     // push data lên firebase
     this.afDB.list('diemdanh').push(data).then(res=>
       {
-        this.authService.setIsSend(true)
-        //this.authService.setID(autoID) // set id để qua bên thongtinphangio so sánh
         this.presentToast()
         this.router.navigate(['thongtindiemdanh'])
       })

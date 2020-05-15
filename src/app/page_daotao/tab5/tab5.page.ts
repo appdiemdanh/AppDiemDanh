@@ -27,9 +27,7 @@ export class Tab5Page implements OnInit {
     public afDB : AngularFireDatabase,
     public router : Router
     ) { 
-      // lấy giá trị lưu từ local
-      this.dadangnhap = localStorage.getItem('dadangnhap')
-      console.log(this.dadangnhap)
+     
      }
 
 
@@ -57,9 +55,14 @@ export class Tab5Page implements OnInit {
   }
   nextPage()
   {
+     // lấy giá trị isLogge lưu từ local(được lưu bới page dangnhap)
+     this.dadangnhap = localStorage.getItem('isLogged')
+    
+     // Kiểm tra người dùng chọn hết đủ chưa
     if((this.hocky && this.tengiangvien) != '')
     {
-      if(this.dadangnhap == "đúng")
+      // người dùng đã đăng nhập
+      if(this.dadangnhap == "true")
       {
          //set gia tri 
         this.authService.setHocky(this.hocky)
@@ -68,6 +71,7 @@ export class Tab5Page implements OnInit {
         //chuyen man hinh
         this.router.navigate(['phangiohoc'])
       }
+      // chưa đăng nhập
       else
       {
         this.authService.presentAlert3("Thông báo ", "Vui lòng đăng nhập để tiếp tục!", "dangnhap")

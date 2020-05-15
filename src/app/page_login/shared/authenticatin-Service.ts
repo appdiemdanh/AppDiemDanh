@@ -33,10 +33,6 @@ export class AuthenticationService {
   ngayhoc : any = []
   phonghoc = ''
   email = ''
-  id : number
-  issend : boolean = false
-  listsvdihoc = []
-  listsvvanghoc = []
   listthoikhoabieu  = []
 
   arrayUser : any 
@@ -155,30 +151,6 @@ export class AuthenticationService {
   {
     return this.email
   }
-  setListdihoc(lsv : [])
-  {
-    this.listsvdihoc = lsv
-  }
-  getListdihoc()
-  {
-    return this.listsvdihoc
-  }
-  setListvanghoc(lsv : [])
-  {
-    this.listsvvanghoc = lsv
-  }
-  getListvanghoc()
-  {
-    return this.listsvvanghoc
-  }
-  setID(id : number)
-  {
-    this.id = id
-  }
-  getID()
-  {
-    return this.id
-  }
   setTengiangvien(tengv : string)
   {
     this.tengiangvien = tengv
@@ -187,14 +159,6 @@ export class AuthenticationService {
   {
     return this.tengiangvien
   }
-  setIsSend(issend : boolean)
-  {
-    this.issend = issend
-  }
-  getIsSend()
-  {
-    return this.issend
-  } 
   setListTKB(list : [])
   {
     this.listthoikhoabieu = list
@@ -220,7 +184,7 @@ export class AuthenticationService {
       if (user) 
       {
         this.userData = user;
-        localStorage.setItem('user', JSON.stringify(this.userData)); // set gia tri cho user tren firebase
+        localStorage.setItem('user', JSON.stringify(this.userData)); // set gia tri cho user luu trên local
         JSON.parse(localStorage.getItem('user')); // chuyển chuỗi thành json
       } 
       else 
@@ -249,7 +213,6 @@ export class AuthenticationService {
           text: 'Đã nhận',
           handler: () => {
             this.router.navigate([trangmuonchuyenden])
-            console.log(trangmuonchuyenden);
           }
         }
       ]
@@ -291,7 +254,6 @@ export class AuthenticationService {
           text: 'OK',
           handler: () => {
             this.router.navigate([trangmuonchuyenden])
-            console.log(trangmuonchuyenden);
           }
         }
       ]
@@ -325,21 +287,15 @@ export class AuthenticationService {
     const { role, data } = await loading.onDidDismiss();
     //console.log('Loading dismissed!');
   }
-
-  // Đăng nhập
- 
-  SignIn(email, password) {
-    return this.ngFireAuth.auth.signInWithEmailAndPassword(email, password).then(res=>{
-    })
-  }
-
+  
   // Đăng ký 
   RegisterUser(email, password) {
     return this.ngFireAuth.auth.createUserWithEmailAndPassword(email, password).then((result) => {
         this.SendVerificationMail(); // gởi mail xác nhận
-        this.presentLoading("Vui lòng chờ...", 1900)
+        this.presentLoading("Vui lòng chờ...", 1000)
         this.router.navigate(['verify-email']);
-      this.SetUserData(result.user);
+        // set user lên firebase
+        this.SetUserData(result.user);
     }).catch((error)=>{
       console.log("lỗi"+error)
       if(error == "Error: The email address is badly formatted.")
@@ -355,11 +311,7 @@ export class AuthenticationService {
 
   // gửi tin nhắn xác nhận qua gmail
   SendVerificationMail() {
-    // trả về tin nhắn sau đó chuyển màn hình
     return this.ngFireAuth.auth.currentUser.sendEmailVerification()
-    .then(() => {
-      this.router.navigate(['verify-email']);
-    })
   }
 
   //reset password
@@ -374,7 +326,6 @@ export class AuthenticationService {
  PasswordRecover(passwordResetEmail) {
   return this.ngFireAuth.auth.sendPasswordResetEmail(passwordResetEmail)
   .then(() => {
-    //window.alert('Chúng tôi đã gửi 1 tin nhắn đến gmail của bạn, vui lòng kiểm tra hộp thư đến');
     this.presentAlert("Thông báo", "Chúng tôi đã gửi 1 tin nhắn đến gmail của bạn, vui lòng kiểm tra hộp thư đến", "dangnhap")
   }).catch((error) => {
     if(error == "Error: The email address is badly formatted.")
@@ -385,7 +336,6 @@ export class AuthenticationService {
     {
       this.presentAlert4('Email bạn nhập không đúng, bị khóa hoặc chưa đăng ký')
     }
-    //alert(error)
   })
 }
 
@@ -461,11 +411,11 @@ export class AuthenticationService {
   // đăng xuất và xóa user ra khỏi mảng
   SignOut() {
     return this.ngFireAuth.auth.signOut().then(() => {
-      // xóa user, email và password lưu ở local
+      // xóa user, email, password và isLogged lưu ở local
       localStorage.removeItem('user');
-      localStorage.removeItem('email')
+      localStorage.removeItem('email')  
       localStorage.removeItem('password')
-      localStorage.removeItem('dadangnhap')
+      localStorage.removeItem('isLogged')
       // chuyển màn hình
       this.router.navigate(['dangnhap']);
     })

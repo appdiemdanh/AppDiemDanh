@@ -6,8 +6,9 @@ import { WelcomPage } from '../chonchucvu/welcom.page'
 import { AuthenticationService } from '../shared/authenticatin-Service'
 import { error } from 'protractor';
 import { VerifyEmailPage } from '../verify-email/verify-email.page';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore} from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { User } from 'src/app/page_login/shared/modUser';
 
 @Component({
   selector: 'app-dangnhap',
@@ -16,8 +17,8 @@ import { AngularFireAuth } from '@angular/fire/auth';
 })
 export class DangnhapPage implements OnInit {
 
-  public email = ''
-  public password = ''
+  email = ''
+  password = ''
   nhomatkhau : boolean = true
   arrayUser : any = []
 
@@ -30,22 +31,8 @@ export class DangnhapPage implements OnInit {
     public afStore : AngularFirestore,
     public ngFireAuth: AngularFireAuth,
     ) {
-      // lấy giá trị lưu ở local
-      let em = localStorage.getItem('email')
-      let pw = localStorage.getItem('password')
-      //console.log(em)
-      //console.log(pw)
-
-      // nếu nó khác null thì gán cho email và password và tiến hành tự động đăng nhập luôn
-      if(em != null && pw != null)
-      {
-        this.email = em
-        this.password = pw
-      }
-      else
-      {
-        console.log('chưa nhớ mật khẩu')
-      }
+    
+      
     }
 
   ngOnInit() {
@@ -80,6 +67,8 @@ export class DangnhapPage implements OnInit {
     {
       this.ngFireAuth.auth.signInWithEmailAndPassword(this.email, this.password).then((res)=>
       {
+        // thực hiện set user đăng nhập lên firebase nếu người dùng vừa đăng ký
+
         // vòng lặp for sẽ duyệt qua các phần tử trong mangUser, chỉ cần khi nào thấy đúng thì nó làm
         // vd: sai sai dung => làm, sai dung sai => làm, nhưng sai sai sai => không làm
         for(let user of this.arrayUser) 
@@ -91,7 +80,7 @@ export class DangnhapPage implements OnInit {
           if(this.email == e && cv == "daotao") // neu email nhap vao = e (firebase) và chucvu(firebase) = 'daotao' => page dao tao
           {                                   // khi nguoi dung dang ky => chucvu đã lưu trên firebase roi nen khong can co dieu kien cho this.chucvu
             localStorage.setItem('chucvu', 'daotao') // luu vao bo nho local với key là chucvu giá trị là 'daotao'
-            localStorage.setItem('dadangnhap', 'đúng')
+            localStorage.setItem('isLogged', 'true') // lưu người dùng đã đăng nhập lên local
             this.authService.presentLoading('Vui lòng chờ...', 1800);
             this.router.navigate(['tabs/tabs/tab1'])
           }
@@ -145,6 +134,8 @@ export class DangnhapPage implements OnInit {
     {
       this.authService.presentAlert4('Bạn chưa nhập đầy đủ thông tin!')
     }  
+   
   }
 
+  
 }

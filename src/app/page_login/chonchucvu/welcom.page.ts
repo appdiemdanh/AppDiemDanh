@@ -14,9 +14,7 @@ import { AuthenticationService } from '../shared/authenticatin-Service'
 })
 export class WelcomPage implements OnInit {
 
-  backButtonSubscription;
-  registerBackButtonAction;
-  public chucvu = ''
+  chucvu = ''
   
   constructor(
     private platform : Platform,
@@ -31,13 +29,13 @@ export class WelcomPage implements OnInit {
   getId(event)
   {
     this.chucvu = event.target.id
-    console.log(this.chucvu)
+    //console.log(this.chucvu)
   }
-  readyApp()
+  TiepTuc()
   {
     if(this.chucvu !== '')
     {
-      this.authService.setChucvu(this.chucvu + "")  
+      this.authService.setChucvu(this.chucvu) // set chuc vu len authService  
       this.router.navigate(['dangky'])
     }
     else
@@ -47,10 +45,5 @@ export class WelcomPage implements OnInit {
     //console.log(this.getChucvu())
     //console.log(this.chucvu)
   }
-  exitApp()
-  {
-      this.platform.backButton.subscribe(() => {
-      navigator['app'].exitApp();
-    });
-  }
+ 
 }
