@@ -71,12 +71,12 @@ if(email == null && password == null)
       loadChildren: () => import('./page_login/verify-email/verify-email.module').then( m => m.VerifyEmailPageModule)
     },
     {
-      path: 'chonlop',
-      loadChildren: () => import('./page_congtacsv/chonlop/chonlop.module').then( m => m.ChonlopPageModule)
-    },
-    {
       path: 'chonmon',
       loadChildren: () => import('./page_congtacsv/chonmon/chonmon.module').then( m => m.ChonmonPageModule)
+    },
+    {
+      path: 'lichsu',
+      loadChildren: () => import('./page_congtacsv/lichsu/lichsu.module').then( m => m.LichsuPageModule)
     },
     {
       path: 'thongtinsv',
@@ -179,12 +179,12 @@ else // người dùng click nhớ mật khẩu
         loadChildren: () => import('./page_login/verify-email/verify-email.module').then( m => m.VerifyEmailPageModule)
       },
       {
-        path: 'chonlop',
-        loadChildren: () => import('./page_congtacsv/chonlop/chonlop.module').then( m => m.ChonlopPageModule)
-      },
-      {
         path: 'chonmon',
         loadChildren: () => import('./page_congtacsv/chonmon/chonmon.module').then( m => m.ChonmonPageModule)
+      },
+      {
+        path: 'lichsu',
+        loadChildren: () => import('./page_congtacsv/lichsu/lichsu.module').then( m => m.LichsuPageModule)
       },
       {
         path: 'thongtinsv',
@@ -285,12 +285,12 @@ else // người dùng click nhớ mật khẩu
         loadChildren: () => import('./page_login/verify-email/verify-email.module').then( m => m.VerifyEmailPageModule)
       },
       {
-        path: 'chonlop',
-        loadChildren: () => import('./page_congtacsv/chonlop/chonlop.module').then( m => m.ChonlopPageModule)
-      },
-      {
         path: 'chonmon',
         loadChildren: () => import('./page_congtacsv/chonmon/chonmon.module').then( m => m.ChonmonPageModule)
+      },
+      {
+        path: 'lichsu',
+        loadChildren: () => import('./page_congtacsv/lichsu/lichsu.module').then( m => m.LichsuPageModule)
       },
       {
         path: 'thongtinsv',
@@ -391,12 +391,12 @@ else // người dùng click nhớ mật khẩu
         loadChildren: () => import('./page_login/verify-email/verify-email.module').then( m => m.VerifyEmailPageModule)
       },
       {
-        path: 'chonlop',
-        loadChildren: () => import('./page_congtacsv/chonlop/chonlop.module').then( m => m.ChonlopPageModule)
-      },
-      {
         path: 'chonmon',
         loadChildren: () => import('./page_congtacsv/chonmon/chonmon.module').then( m => m.ChonmonPageModule)
+      },
+      {
+        path: 'lichsu',
+        loadChildren: () => import('./page_congtacsv/lichsu/lichsu.module').then( m => m.LichsuPageModule)
       },
       {
         path: 'thongtinsv',

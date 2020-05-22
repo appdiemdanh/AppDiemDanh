@@ -30,7 +30,7 @@ export class ChonmonPage implements OnInit {
     this.afDB.list('danhsachmonhoc').valueChanges().subscribe(res => {
       let danhsachmonhoc: any = res
       for (let dsmh of danhsachmonhoc) {
-        this.monhoc.push(dsmh.D)
+        this.monhoc.push(" "+dsmh.D+" ")
       }
     })
   }
@@ -47,6 +47,6 @@ export class ChonmonPage implements OnInit {
   chonlop(){
     this.authService.setMalop(this.tenlop)
     this.authService.setMsmh(this.tenmonhoc)
-    this.router.navigate(['chonlop'])
+    this.router.navigate(['lichsu'])
   }
 }

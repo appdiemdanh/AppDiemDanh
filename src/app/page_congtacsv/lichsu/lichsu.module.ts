@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ChonlopPageRoutingModule } from './chonlop-routing.module';
+import { LichsuPageRoutingModule } from './lichsu-routing.module';
 
-import { ChonlopPage } from './chonlop.page';
+import { LichsuPage } from './lichsu.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ChonlopPageRoutingModule
+    LichsuPageRoutingModule
   ],
-  declarations: [ChonlopPage]
+  declarations: [LichsuPage]
 })
-export class ChonlopPageModule {}
+export class LichsuPageModule {}
