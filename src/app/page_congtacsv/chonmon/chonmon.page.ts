@@ -37,16 +37,23 @@ export class ChonmonPage implements OnInit {
   getLophoc(event)
   {
     this.tenlop = event.detail.value
-    console.log(this.tenlop);
+    // console.log(this.tenlop);
   }
   getMonhoc(event)
   {
     this.tenmonhoc = event.detail.value
-    console.log(this.tenmonhoc);
+    // console.log(this.tenmonhoc);
   }
   chonlop(){
-    this.authService.setMalop(this.tenlop)
-    this.authService.setMsmh(this.tenmonhoc)
-    this.router.navigate(['lichsu'])
+    console.log(this.tenlop);
+    console.log(this.tenmonhoc);
+    if(this.tenlop === undefined || this.tenmonhoc === undefined){
+      alert('Bạn phải chọn đủ tên lớp và tên môn học cần xem thông tin điểm danh')
+    }
+    else{
+      this.authService.setMalop(this.tenlop)
+      this.authService.setMsmh(this.tenmonhoc)
+      this.router.navigate(['lichsu'])
+    }
   }
 }
