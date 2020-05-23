@@ -287,13 +287,23 @@ export class AuthenticationService {
     const { role, data } = await loading.onDidDismiss();
     //console.log('Loading dismissed!');
   }
+
+  // toast
+   // toast
+   async presentToast(msg : string, thoigianToast : number) {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: thoigianToast
+    });
+    toast.present();
+  }
   
   // Đăng ký 
   RegisterUser(email, password) {
     return this.ngFireAuth.auth.createUserWithEmailAndPassword(email, password).then((result) => {
         this.SendVerificationMail(); // gởi mail xác nhận
         this.presentLoading("Vui lòng chờ...", 1000)
-        this.router.navigate(['verify-email']);
+        this.router.navigate(['xacthuc-email']);
         // set user lên firebase
         this.SetUserData(result.user);
     }).catch((error)=>{
@@ -411,11 +421,8 @@ export class AuthenticationService {
   // đăng xuất và xóa user ra khỏi mảng
   SignOut() {
     return this.ngFireAuth.auth.signOut().then(() => {
-      // xóa user, email, password và isLogged lưu ở local
-      localStorage.removeItem('user');
-      localStorage.removeItem('email')  
-      localStorage.removeItem('password')
-      localStorage.removeItem('isLogged')
+      // xóa user, email, password và isLogged, magiangvien lưu ở local (xóa tất cả)
+      localStorage.clear()
       // chuyển màn hình
       this.router.navigate(['dangnhap']);
     })

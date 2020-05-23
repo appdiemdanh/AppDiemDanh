@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { NavController, LoadingController, ToastController } from '@ionic/angular';
 import { auth } from 'firebase/app';
 import { Router } from '@angular/router';
-import { WelcomPage } from '../chonchucvu/welcom.page'
-import { AuthenticationService } from '../shared/authenticatin-Service'
+import { ChonchucvuPage } from '../chonchucvu/chonchucvu.page'
+import { AuthenticationService } from '../../shared/authenticatin-Service'
 import { error } from 'protractor';
-import { VerifyEmailPage } from '../verify-email/verify-email.page';
+import { QuenmatkhauPage } from '../quenmatkhau/quenmatkhau.page';
 import { AngularFirestore} from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { User } from 'src/app/page_login/shared/modUser';
+import { User } from 'src/app/shared/modUser';
 
 @Component({
   selector: 'app-dangnhap',
@@ -27,7 +27,7 @@ export class DangnhapPage implements OnInit {
     public router : Router,
     public authService : AuthenticationService,
     public loadingController : LoadingController,
-    public welcomePage : WelcomPage,
+    public chonchucvuPage : ChonchucvuPage,
     public afStore : AngularFirestore,
     public ngFireAuth: AngularFireAuth,
     ) {
@@ -89,7 +89,7 @@ export class DangnhapPage implements OnInit {
             // set chucvu va magiangvien lên local mục đích qua app_routing_module để so sánh(cứ qua coi là rõ)
             localStorage.setItem('chucvu', 'giangvien')
             localStorage.setItem('magiangvien', mgv)
-            this.authService.presentLoading('Vui lòng chờ...', 1800)
+            //this.authService.presentLoading('Vui lòng chờ...', 1800) // vì tui đã loading ở constructor của thoikhoabieu.ts (page giangvien ) rồi
             this.router.navigate(['thoikhoabieu'])
           }
           else if(this.email == e && cv == 'congtacsinhvien')
@@ -133,9 +133,9 @@ export class DangnhapPage implements OnInit {
     else
     {
       this.authService.presentAlert4('Bạn chưa nhập đầy đủ thông tin!')
-    }  
-   
+    } 
   }
+
 
   
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from 'src/app/page_login/shared/authenticatin-Service';
+import { AuthenticationService } from 'src/app/shared/authenticatin-Service';
 import { AngularFireDatabase } from '@angular/fire/database';
 
 @Component({

@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { PhangiohocPageRoutingModule } from './phangiohoc-routing.module';
+import { XacthucEmailPageRoutingModule } from './xacthuc-email-routing.module';
 
-import { PhangiohocPage } from './phangiohoc.page';
+import { XacthucEmailPage } from './xacthuc-email.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    PhangiohocPageRoutingModule
+    XacthucEmailPageRoutingModule
   ],
-  declarations: [PhangiohocPage]
+  declarations: [XacthucEmailPage]
 })
-export class PhangiohocPageModule {}
+export class XacthucEmailPageModule {}

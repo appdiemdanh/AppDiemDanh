@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from 'src/app/page_login/shared/authenticatin-Service';
+import { AuthenticationService } from 'src/app/shared/authenticatin-Service';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Router } from '@angular/router';
 
+
 @Component({
-  selector: 'app-phangiohoc',
-  templateUrl: './phangiohoc.page.html',
-  styleUrls: ['./phangiohoc.page.scss'],
+  selector: 'app-phangiogiang',
+  templateUrl: './phangiogiang.page.html',
+  styleUrls: ['./phangiogiang.page.scss'],
 })
-export class PhangiohocPage implements OnInit {
+export class PhangiogiangPage implements OnInit {
 
   hocky = ''
   tenlop = ''
@@ -114,17 +115,18 @@ export class PhangiohocPage implements OnInit {
     })
     this.afDB.list('danhsachlop').valueChanges().subscribe(res=>this.listlop=res)
     this.afDB.list('danhsachphonghoc').valueChanges().subscribe(res=>this.listphonghoc=res)
-    
-    
   }
+
   getTenlop(event)
   {
     this.tenlop = event.detail.value
   }
+
   getTenmh(event)
   {
     this.tenmonhoc = event.detail.value
   }
+
   getTenphonghoc(event)
   {
     if((this.tenlop && this.tenmonhoc) == '')
@@ -137,14 +139,17 @@ export class PhangiohocPage implements OnInit {
       this.showChonmonChongiangvien = false // set = false de ion-list chứa chọn môn và chọn giảng viên đóng lại, chi tiết xem bên html tai dong 25
     }
   }
+
   getTietbatdau(event)
   {
     this.giobatdau = event.detail.value
   }
+
   getTietketthuc(event)
   {
     this.gioketthuc = event.detail.value
   }
+
   getNgayhoc(event)
   {
     let itemngayhoc = event.detail.value
@@ -153,6 +158,7 @@ export class PhangiohocPage implements OnInit {
      // gan gia tri de view ra html, dong 121
      this.ngayhoc += itemngayhoc + " "
   }
+  
   iconDelete()
   {
     this.ngayhoc = ""  // xoa ngayhoc 

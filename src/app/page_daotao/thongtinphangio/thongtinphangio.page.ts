@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from 'src/app/page_login/shared/authenticatin-Service';
+import { AuthenticationService } from 'src/app/shared/authenticatin-Service';
 import { runInThisContext } from 'vm';
 
 import { AngularFireDatabase } from '@angular/fire/database';
-import { phangiogiang } from 'src/app/page_login/shared/modPhangio'
+import { phangiogiang } from 'src/app/shared/modPhangio'
 
 @Component({
   selector: 'app-thongtinphangio',
@@ -94,7 +94,7 @@ export class ThongtinphangioPage implements OnInit {
       }
       // push len firebase sau do thong bao va chuyen trang
       this.afDB.list('phangiogiang').push(data).then(res=>{
-        this.authService.presentAlert2('Thông báo', 'Đã gửi thông tin phân giờ thành công', 'phangiohoc', 'OK')
+        this.authService.presentAlert2('Thông báo', 'Đã gửi thông tin phân giờ thành công', 'phangiogiang', 'OK')
       }).catch(error=>{
         console.log('Lỗi ' + error)
       })  

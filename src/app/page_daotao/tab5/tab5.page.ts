@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Tab4Page } from '../tab4/tab4.page';
-import { AuthenticationService } from 'src/app/page_login/shared/authenticatin-Service';
+import { AuthenticationService } from 'src/app/shared/authenticatin-Service';
 import { AngularFireDatabase } from '@angular/fire/database';
 
 
@@ -69,7 +69,7 @@ export class Tab5Page implements OnInit {
         this.authService.setMsgv(this.tengiangvien)
         this.authService.setMagiangvien(this.magiangvien)
         //chuyen man hinh
-        this.router.navigate(['phangiohoc'])
+        this.router.navigate(['phangiogiang'])
       }
       // chưa đăng nhập
       else
@@ -81,6 +81,15 @@ export class Tab5Page implements OnInit {
     {
       this.authService.presentAlert4('Bạn vui lòng chọn đầy đủ thông tin học kỳ và giảng viên !')
     }
+  }
+
+  // logout
+  logOut()
+  {
+    this.authService.SignOut().then((res)=>{
+    }).catch((error)=>{
+      console.log(error)
+    })
   }
  
 

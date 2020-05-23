@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="dangky"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Xác thực email</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <p>
+        Chúng tôi đã gửi 1 email xác nhận tài khoản đến gmail của bạn, vui lòng kiểm tra hộp 
+        thư đến.<br><br>Nếu chưa nhận được mail, vui lòng nhấn nút gửi lại mail và kiểm tra lại!
+      </p>
+      <ion-col>
+        <ion-button type="submit" (click)="backLogin()" expand="block">Tôi đã nhận được email</ion-button>
+        <ion-button type="submit" color='danger' (click)="reSendEmail()" expand="block">gửi lại email</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

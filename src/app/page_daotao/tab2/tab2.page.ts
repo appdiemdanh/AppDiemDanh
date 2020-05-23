@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
-import { AuthenticationService } from 'src/app/page_login/shared/authenticatin-Service';
+import { AuthenticationService } from 'src/app/shared/authenticatin-Service';
 import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tab2',
@@ -13,10 +14,13 @@ export class Tab2Page implements OnInit {
   listmonhoctheohocky = []
   listhocky = ['Tất cả môn học'] // cho phần tử "tất cả môn học" đứng đầu tiên trong mảng listhocky
   tatcamonhoc : any = []
+  monhocchuaco = false
+
   constructor(
     private afDB : AngularFireDatabase,
     private authService : AuthenticationService,
-    private router : Router
+    private router : Router,
+    private toastController : ToastController
     ) { 
     }
 
@@ -55,6 +59,11 @@ export class Tab2Page implements OnInit {
         this.listmonhoctheohocky.push(mh)
       }
     }
+    // nễu listmonhoctheohocky == rỗng (không có giá trị thõa mãn 2 điều kiện trên)
+    if(this.listmonhoctheohocky.length == 0)
+    {
+      this.authService.presentToast('Xin lỗi học kỳ bạn chọn chưa có môn học', 2500)
+    }
   }
   getMonhoc(mamonhoc)
   {
@@ -62,5 +71,4 @@ export class Tab2Page implements OnInit {
     this.authService.setMsmh(mamonhoc)
     this.router.navigate(['thongtin-mh'])
   }
-
 }

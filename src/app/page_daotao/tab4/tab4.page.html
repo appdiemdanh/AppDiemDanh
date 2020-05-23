@@ -1,14 +1,13 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Danh sách Sinh Viên
+      Sinh viên
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <h4>Danh sách sinh viên</h4>
-  <br>
   <ion-list *ngFor = 'let sv of listsinhvien'>
     <ion-item (click)='gotoThongtinsv(sv.C)'> <!--sv.C : masv (firebase)-->
       <ion-label>{{sv.B}}. {{sv.D}}</ion-label>

@@ -24,7 +24,11 @@ if(email == null && password == null)
     },
     { 
       path: 'chonchucvu',
-      loadChildren: () => import('./page_login/chonchucvu/welcom.module').then( m => m.WelcomPageModule)
+      loadChildren: () => import('./page_login/chonchucvu/chonchucvu.module').then( m => m.ChonchucvuPageModule)
+    },
+    {
+      path: 'xacthuc-email',
+      loadChildren: () => import('./page_login/xacthuc-email/xacthuc-email.module').then(m => m.XacthucEmailPageModule)
     },
     {
       path: 'dangnhap',
@@ -63,14 +67,6 @@ if(email == null && password == null)
       loadChildren: () => import('./page_login/dangky/dangky.module').then( m => m.DangkyPageModule)
     },
     {
-      path: 'home',
-      loadChildren: () => import('./page_daotao/home/home.module').then( m => m.HomePageModule)
-    },
-    {
-      path: 'verify-email',
-      loadChildren: () => import('./page_login/verify-email/verify-email.module').then( m => m.VerifyEmailPageModule)
-    },
-    {
       path: 'chonmon',
       loadChildren: () => import('./page_congtacsv/chonmon/chonmon.module').then( m => m.ChonmonPageModule)
     },
@@ -95,16 +91,16 @@ if(email == null && password == null)
       loadChildren: () => import('./page_daotao/thongtinlop/thongtinlop.module').then( m => m.ThongtinlopPageModule)
     },
     {
+      path: 'phangiogiang',
+      loadChildren: () => import('./page_daotao/phangiogiang/phangiogiang.module').then(m => m.PhangiogiangPageModule)
+    },
+    {
       path: 'diemdanh',
       loadChildren: () => import('./page_giangvien/diemdanh/diemdanh.module').then( m => m.DiemdanhPageModule)
     },
     {
       path: 'thongtindiemdanh',
       loadChildren: () => import('./page_giangvien/thongtindiemdanh/thongtindiemdanh.module').then( m => m.ThongtindiemdanhPageModule)
-    },
-    {
-      path: 'phangiohoc',
-      loadChildren: () => import('./page_daotao/phangiohoc/phangiohoc.module').then( m => m.PhangiohocPageModule)
     },
     {
       path: 'thongtinphangio',
@@ -132,7 +128,11 @@ else // người dùng click nhớ mật khẩu
       },
       { 
         path: 'chonchucvu',
-        loadChildren: () => import('./page_login/chonchucvu/welcom.module').then( m => m.WelcomPageModule)
+        loadChildren: () => import('./page_login/chonchucvu/chonchucvu.module').then( m => m.ChonchucvuPageModule)
+      },
+      {
+        path: 'xacthuc-email',
+        loadChildren: () => import('./page_login/xacthuc-email/xacthuc-email.module').then(m => m.XacthucEmailPageModule)
       },
       {
         path: 'dangnhap',
@@ -171,14 +171,6 @@ else // người dùng click nhớ mật khẩu
         loadChildren: () => import('./page_login/dangky/dangky.module').then( m => m.DangkyPageModule)
       },
       {
-        path: 'home',
-        loadChildren: () => import('./page_daotao/home/home.module').then( m => m.HomePageModule)
-      },
-      {
-        path: 'verify-email',
-        loadChildren: () => import('./page_login/verify-email/verify-email.module').then( m => m.VerifyEmailPageModule)
-      },
-      {
         path: 'chonmon',
         loadChildren: () => import('./page_congtacsv/chonmon/chonmon.module').then( m => m.ChonmonPageModule)
       },
@@ -211,8 +203,8 @@ else // người dùng click nhớ mật khẩu
         loadChildren: () => import('./page_giangvien/thongtindiemdanh/thongtindiemdanh.module').then( m => m.ThongtindiemdanhPageModule)
       },
       {
-        path: 'phangiohoc',
-        loadChildren: () => import('./page_daotao/phangiohoc/phangiohoc.module').then( m => m.PhangiohocPageModule)
+        path: 'phangiogiang',
+        loadChildren: () => import('./page_daotao/phangiogiang/phangiogiang.module').then(m => m.PhangiogiangPageModule)
       },
       {
         path: 'thongtinphangio',
@@ -236,9 +228,13 @@ else // người dùng click nhớ mật khẩu
         path: '',
         loadChildren: () => import('./page_giangvien/thoikhoabieu/thoikhoabieu.module').then( m => m.ThoikhoabieuPageModule)
       },
+      {
+        path: 'xacthuc-email',
+        loadChildren: () => import('./page_login/xacthuc-email/xacthuc-email.module').then(m => m.XacthucEmailPageModule)
+      },
       { 
         path: 'chonchucvu',
-        loadChildren: () => import('./page_login/chonchucvu/welcom.module').then( m => m.WelcomPageModule)
+        loadChildren: () => import('./page_login/chonchucvu/chonchucvu.module').then( m => m.ChonchucvuPageModule)
       },
       {
         path: 'dangnhap',
@@ -277,14 +273,6 @@ else // người dùng click nhớ mật khẩu
         loadChildren: () => import('./page_login/dangky/dangky.module').then( m => m.DangkyPageModule)
       },
       {
-        path: 'home',
-        loadChildren: () => import('./page_daotao/home/home.module').then( m => m.HomePageModule)
-      },
-      {
-        path: 'verify-email',
-        loadChildren: () => import('./page_login/verify-email/verify-email.module').then( m => m.VerifyEmailPageModule)
-      },
-      {
         path: 'chonmon',
         loadChildren: () => import('./page_congtacsv/chonmon/chonmon.module').then( m => m.ChonmonPageModule)
       },
@@ -317,8 +305,8 @@ else // người dùng click nhớ mật khẩu
         loadChildren: () => import('./page_giangvien/thongtindiemdanh/thongtindiemdanh.module').then( m => m.ThongtindiemdanhPageModule)
       },
       {
-        path: 'phangiohoc',
-        loadChildren: () => import('./page_daotao/phangiohoc/phangiohoc.module').then( m => m.PhangiohocPageModule)
+        path: 'phangiogiang',
+        loadChildren: () => import('./page_daotao/phangiogiang/phangiogiang.module').then(m => m.PhangiogiangPageModule)
       },
       {
         path: 'thongtinphangio',
@@ -335,7 +323,7 @@ else // người dùng click nhớ mật khẩu
     
     ];
   }
-  else // chuc vu la congtacsinhvien
+  else if(chucvu == "congtacsinhvien") // chuc vu la congtacsinhvien
   {
     routes = [
       {
@@ -344,7 +332,11 @@ else // người dùng click nhớ mật khẩu
       },
       { 
         path: 'chonchucvu',
-        loadChildren: () => import('./page_login/chonchucvu/welcom.module').then( m => m.WelcomPageModule)
+        loadChildren: () => import('./page_login/chonchucvu/chonchucvu.module').then( m => m.ChonchucvuPageModule)
+      },
+      {
+        path: 'xacthuc-email',
+        loadChildren: () => import('./page_login/xacthuc-email/xacthuc-email.module').then(m => m.XacthucEmailPageModule)
       },
       {
         path: 'dangnhap',
@@ -383,14 +375,6 @@ else // người dùng click nhớ mật khẩu
         loadChildren: () => import('./page_login/dangky/dangky.module').then( m => m.DangkyPageModule)
       },
       {
-        path: 'home',
-        loadChildren: () => import('./page_daotao/home/home.module').then( m => m.HomePageModule)
-      },
-      {
-        path: 'verify-email',
-        loadChildren: () => import('./page_login/verify-email/verify-email.module').then( m => m.VerifyEmailPageModule)
-      },
-      {
         path: 'chonmon',
         loadChildren: () => import('./page_congtacsv/chonmon/chonmon.module').then( m => m.ChonmonPageModule)
       },
@@ -423,8 +407,8 @@ else // người dùng click nhớ mật khẩu
         loadChildren: () => import('./page_giangvien/thongtindiemdanh/thongtindiemdanh.module').then( m => m.ThongtindiemdanhPageModule)
       },
       {
-        path: 'phangiohoc',
-        loadChildren: () => import('./page_daotao/phangiohoc/phangiohoc.module').then( m => m.PhangiohocPageModule)
+        path: 'phangiogiang',
+        loadChildren: () => import('./page_daotao/phangiogiang/phangiogiang.module').then(m => m.PhangiogiangPageModule)
       },
       {
         path: 'thongtinphangio',

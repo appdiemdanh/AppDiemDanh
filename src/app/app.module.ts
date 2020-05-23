@@ -17,11 +17,10 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 import { environment } from '../environments/environment';
 
-import { AuthenticationService } from './page_login/shared/authenticatin-Service';
+import { AuthenticationService } from './shared/authenticatin-Service';
 import { DangnhapPage } from './page_login/dangnhap/dangnhap.page'
-import { WelcomPage } from './page_login/chonchucvu/welcom.page'
+import { ChonchucvuPage } from './page_login/chonchucvu/chonchucvu.page'
 import { AngularFireDatabase } from '@angular/fire/database';
-import { HomePage } from './page_daotao/home/home.page'
 import { Tab4Page } from './page_daotao/tab4/tab4.page'
 //import {  } from ''
 //import {  } from '@angular/core'
@@ -45,9 +44,8 @@ import { Tab4Page } from './page_daotao/tab4/tab4.page'
     AuthenticationService,
     AngularFirestoreModule,
     DangnhapPage,
-    WelcomPage,
+    ChonchucvuPage,
     AngularFireDatabase,
-    HomePage,
     Tab4Page
   ],
   bootstrap: [AppComponent]

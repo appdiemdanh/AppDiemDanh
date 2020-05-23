@@ -4,15 +4,15 @@ import { Router, Navigation } from '@angular/router';
 
 
 import { Platform, AlertController } from '@ionic/angular'
-import { AuthenticationService } from '../shared/authenticatin-Service'
+import { AuthenticationService } from 'src/app/shared/authenticatin-Service'
 
 
 @Component({
-  selector: 'app-welcom',
-  templateUrl: './welcom.page.html',
-  styleUrls: ['./welcom.page.scss'],
+  selector: 'app-chonchucvu',
+  templateUrl: './chonchucvu.page.html',
+  styleUrls: ['./chonchucvu.page.scss'],
 })
-export class WelcomPage implements OnInit {
+export class ChonchucvuPage implements OnInit {
 
   chucvu = ''
   

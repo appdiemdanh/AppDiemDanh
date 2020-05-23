@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Điểm danh cho giảng viên</ion-title>
+    <ion-title>Điểm danh</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -36,11 +36,19 @@
     </ion-label>
   </ion-item>
   <br>
-  <ion-button *ngIf="dadiemdanhroi == false" type='submit' (click)='sendDiemDanh()' expand='block'>Gửi điểm danh</ion-button>
+  <ion-row>
+    <ion-col>
+      <ion-button *ngIf="dadiemdanhroi == false" type='submit' (click)='sendDiemDanh()' expand='block'>Gửi điểm danh</ion-button>
+    </ion-col>
+  </ion-row>
   <br>
   <ion-label class='text-center' *ngIf='dadiemdanhroi == true'><p>Bạn đã gửi thông tin điểm danh</p></ion-label>
   <br>
-  <ion-button type='submit' *ngIf='dadiemdanhroi == true' [routerLink]="['/thongtindiemdanh']" expand='block'>Xem thông tin điểm danh</ion-button>
+  <ion-row>
+    <ion-col>
+      <ion-button type='submit' *ngIf='dadiemdanhroi == true' [routerLink]="['/thongtindiemdanh']" expand='block'>Xem thông tin điểm danh</ion-button>
+    </ion-col>
+  </ion-row>
   <br>
 </ion-content>
 

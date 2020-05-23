@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
-import { AuthenticationService } from 'src/app/page_login/shared/authenticatin-Service';
+import { AuthenticationService } from 'src/app/shared/authenticatin-Service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
@@ -40,11 +40,14 @@ export class ThoikhoabieuPage implements OnInit {
     public toastController : ToastController
   ) {
     /*
-     * magiangvien được set khi đăng nhập(magiangvien lay tu listuser) nếu chức vụ đăng nhập là giảng viên
+     * magiangvien được set vào local khi đăng nhập(magiangvien lay tu listuser) nếu chức vụ đăng nhập là giảng viên
      * sau đó qua đây thì get ra để so sánh với magiangvien (phangiogiang)
      * nếu magiangvien(listuser) == magiangvien(phangiogiang) thì hiện ra ion-card để giảng viên đó xem giờ dạy của mình, col 9 html
      */
     this.magiangvien = localStorage.getItem('magiangvien')
+    this.authService.presentLoading("Vui lòng chờ...", 1200)
+
+
     
   }
   ngOnInit() {
@@ -127,9 +130,10 @@ export class ThoikhoabieuPage implements OnInit {
           }
         }
       }
+      // Nếu tới giờ điểm danh rồi thì toast thông báo
       if(this.toigiodiemdanh == true)
       {
-        this.presentToast()
+        this.authService.presentToast("Tới giờ học môn : " + this.monhoc + ", Lớp : " + this.lophoc, 3000)
       }
     })
     // get ten giangvien điều kiện magiangvien(dangnhap truyen qua) = magiangvien(firebase)
@@ -182,13 +186,6 @@ export class ThoikhoabieuPage implements OnInit {
     }
   }
 
-  //toast
-  async presentToast() {
-    const toast = await this.toastController.create({
-      message: "Tới giờ học môn : " + this.monhoc + ", Lớp : " + this.lophoc,
-      duration: 3000
-    });
-    await toast.present();
-  }
+  
 
 }

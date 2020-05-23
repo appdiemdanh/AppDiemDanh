@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from 'src/app/page_login/shared/authenticatin-Service';
+import { AuthenticationService } from 'src/app/shared/authenticatin-Service';
 import { AngularFireDatabase } from '@angular/fire/database';
 
 @Component({
@@ -46,10 +46,11 @@ export class ThongtindiemdanhPage implements OnInit {
         {
           if(dd.lop == this.malop) // dd.lop == this.malop khác với this.malop == dd.lop nha (test thử xong console ra là biết)
           {
-            this.listdiemdanh = dd // gán tất cả giá trị thỏa điều kiện vào listdiemdanh
+            this.listdiemdanh   = dd // gán tất cả giá trị thỏa điều kiện vào listdiemdanh
           }          
         }
-        //thoát khỏi vòng lặp thì listdiemdanh sẽ trả ra giá trị cuối cùng thôi
+        //thoát khỏi vòng lặp thì listdiemdanh sẽ trả ra giá trị cuối cùng của listdiemdanh thôi
+        // lấy ra cái được điểm danh cuối cùng của lớp đó vd (diem danh 1, diem danh2, diem danh 3) thì thoát khỏi vòng lặp nó lấy ra diem danh 3
         this.listdiemdanhcuoicung.push(this.listdiemdanh)
       })
   }

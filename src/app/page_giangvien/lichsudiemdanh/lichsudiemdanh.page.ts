@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from 'src/app/page_login/shared/authenticatin-Service';
+import { AuthenticationService } from 'src/app/shared/authenticatin-Service';
 import { AngularFireDatabase } from '@angular/fire/database';
 
 @Component({
@@ -10,7 +10,10 @@ import { AngularFireDatabase } from '@angular/fire/database';
 export class LichsudiemdanhPage implements OnInit {
 
   malop = ''
-  listdiemdanh : any = []
+  listdiemdanh : any = [] 
+
+  isShowDihoc = false
+  isShowVanghoc = false
 
   constructor(
     public authService : AuthenticationService,

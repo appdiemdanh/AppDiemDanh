@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from 'src/app/page_login/shared/authenticatin-Service';
+import { AuthenticationService } from 'src/app/shared/authenticatin-Service';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
-import { DiemDanh } from 'src/app/page_login/shared/modDiemdanh'
+import { DiemDanh } from 'src/app/shared/modDiemdanh'
 
 @Component({
   selector: 'app-diemdanh',
@@ -116,7 +116,7 @@ export class DiemdanhPage implements OnInit {
     //console.log(event.detail.checked)
   }
   /**
-   * Đầu tiên listsvvangmat = listsinhvien, listsvdihoc = []
+   * Đầu tiên listsvvangmat = listsinhvien (tại vì lúc đầu listsv chưa được check nếu được sv nào được check thì là đã đi học), listsvdihoc = []
    * if 1 : nếu sv được checked thì:
    *    + listsvdihoc thêm 1 sinh viên
    *    + listsvvanghoc trừ(xóa) 1 sinh viên
@@ -168,7 +168,7 @@ export class DiemdanhPage implements OnInit {
     //alert
     const alert = await this.alert.create({
       header: 'Thông báo',
-      message: 'Danh sách điểm danh này sẽ được gửi lên sever và sẽ không thể thay đổi gì sau khi đã gửi.',
+      message: 'Danh sách điểm danh này sẽ được gửi lên sever và sẽ không thể thay đổi gì sau khi đã gửi!',
       buttons: [
         {
           text: 'Quay lại',
