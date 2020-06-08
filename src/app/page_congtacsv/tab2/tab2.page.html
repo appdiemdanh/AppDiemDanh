@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Sinh viên bị cấm thi</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <br>
+  <ion-item>
+    <ion-icon name="hourglass-outline"></ion-icon>
+    <ion-label class='textRed'>Lọc theo</ion-label>
+    <ion-select (ionChange)='getLoctheo($event)'>
+      <ion-select-option *ngFor='let loctheo of listloctheo'>
+        <ion-item >{{ loctheo }}</ion-item>
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item *ngIf="loctheo == 'Môn học' || loctheo == 'Cả 2 cái trên'">
+    <ion-label>Chọn môn học</ion-label>
+    <ion-select (ionChange)='getMonhoc($event)'>
+      <ion-select-option *ngFor='let monhoc of listmonhoc'>
+        <ion-item >{{ monhoc }}</ion-item>
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item *ngIf="loctheo == 'Lớp' || loctheo == 'Cả 2 cái trên'">
+    <ion-label>Chọn lớp</ion-label>
+    <ion-select (ionChange)='getLop($event)'>
+      <ion-select-option *ngFor='let lop of listlop'>
+        <ion-item >{{ lop }}</ion-item>
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+  <br>
+  <ion-row *ngIf="loctheo != ''">
+    <ion-col size='4'></ion-col>
+    <ion-col size='4'>
+      <ion-button type='submit' (click)='getDanhsachSVbicamthi()'>Xem kết quả</ion-button>
+    </ion-col>
+    <ion-col size='4'></ion-col>
+  </ion-row>
+  <br>
+  <ion-list *ngFor='let camthi of listcamthi_real'>
+    <ion-item *ngIf="listcamthi_real.length != 0" (click)='xemThongtinsinhvien(camthi.mssv)'>
+      <ion-col size='10.5'>
+        <p>{{ camthi.sothutu }} . {{ camthi.tensinhvien }} - {{ camthi.monhoc }}</p>
+      </ion-col>
+      <ion-col size='1.5'>
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </ion-col>
+    </ion-item>
+  </ion-list>
+  <ion-label class='textCenter' *ngIf="listcamthi_real.length == 0">
+    <p>Chưa có sinh viên nào bị cấm thi</p>
+  </ion-label>
+</ion-content>

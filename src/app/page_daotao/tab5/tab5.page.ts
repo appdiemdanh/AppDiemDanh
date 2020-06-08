@@ -32,32 +32,53 @@ export class Tab5Page implements OnInit {
 
 
   ngOnInit() {
-    // lay gia tri tren fire base gan cho listhocky va listgiangvien
-    this.afDB.list('danhsachhocky').valueChanges().subscribe(res=>this.listhocky=res)
-    this.afDB.list('danhsachgiangvien').valueChanges().subscribe(res=>this.listgiangvien=res)
+    this.getDanhsachhocky()
+    this.getDanhsachgiangvien()
+  }
+
+  getDanhsachhocky()
+  {
+    this.afDB.list('danhsachhocky').valueChanges().subscribe(res => {
+      this.listhocky = []  
+      this.listhocky = res
+    })
+  }
+  getDanhsachgiangvien()
+  {
+    this.afDB.list('danhsachgiangvien').valueChanges().subscribe(res => {
+      this.listgiangvien = []
+      this.listgiangvien = res
+    })
   }
   
   getHocky(event)
   {
     this.hocky = event.detail.value
   }
-  getGiangvien(event)
+  getTenGiangvien(event)
   {
-    let tenvamaGV = event.detail.value // tao mang hung gia tri tu event
-    this.tengiangvien = tenvamaGV.split("-")[0] // = tenvamaGV cat ra boi dau '-' se tao ra mang voi 2 phan tu thu 0 va thu 1 cua mang do
-    this.magiangvien  = tenvamaGV.split("-")[1].slice(1) // thu 0 la tengiangvien, thu 1 la magiangvien
-    /**
-     * tại sao lại split("-") rồi lại slice(1):
-     * vì tenvamaGV trả ra: tengiangvien - magiangvien 
-     * split("-") là lọc phần tử nếu phân chia nhau bởi dấu "-", khi đó trước magiangvien sẽ có 1 dấu cách
-     * thì tui dùng slice(1) là cắt dấu cách đó (slice(1) cắt từ phần tử thứ 1 cho đến hêt)
-     */
+    this.tengiangvien = event.detail.value
+    this.getMagiangvien()
   }
+  getMagiangvien()
+  {
+    this.afDB.list('danhsachgiangvien').valueChanges().subscribe(res =>
+      {
+        let listgiangvien : any = res
+        for (let gv of listgiangvien)
+        {
+          if (gv.C == this.tengiangvien)
+          {
+            this.magiangvien = gv.B
+          }
+        }
+      })
+  }
+
   nextPage()
   {
      // lấy giá trị isLogge lưu từ local(được lưu bới page dangnhap)
      this.dadangnhap = localStorage.getItem('isLogged')
-    
      // Kiểm tra người dùng chọn hết đủ chưa
     if((this.hocky && this.tengiangvien) != '')
     {
@@ -66,7 +87,7 @@ export class Tab5Page implements OnInit {
       {
          //set gia tri 
         this.authService.setHocky(this.hocky)
-        this.authService.setMsgv(this.tengiangvien)
+        this.authService.setTengiangvien(this.tengiangvien)
         this.authService.setMagiangvien(this.magiangvien)
         //chuyen man hinh
         this.router.navigate(['phangiogiang'])

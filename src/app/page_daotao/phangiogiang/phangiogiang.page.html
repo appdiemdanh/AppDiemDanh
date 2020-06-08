@@ -10,16 +10,12 @@
 <ion-content class="body">
   <br>
   <ion-item>
-    <ion-grid>
-      <ion-row>
-        <ion-col>
-          Học kỳ : {{ hk }}
-        </ion-col>
-        <ion-col>
-          Giảng viên : {{ tengiangvien }}
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+    <ion-col size='4.5'>
+      <p>Học kỳ : {{ hk }}</p>
+    </ion-col>
+    <ion-col>
+      <p>Giảng viên : {{ tengiangvien }}</p>
+    </ion-col>
   </ion-item>
 
   <ion-list *ngIf='showChonmonChongiangvien == true'> <!--show ra khi bien checkshow = true-->
@@ -27,7 +23,7 @@
       <ion-label>Chọn lớp</ion-label>
       <ion-select (ionChange)='getTenlop($event)' >
         <ion-select-option *ngFor='let lop of listlop'>
-          <ion-item>{{lop.B}}</ion-item>
+          <ion-item>{{ lop.B }}</ion-item>
         </ion-select-option>
       </ion-select>
     </ion-item>
@@ -37,7 +33,7 @@
         <ion-select-option *ngFor='let mh of listmonhoc'> 
           <ion-item>
             <ion-label >
-              {{mh.D}}
+              {{ mh.D }}
             </ion-label>
           </ion-item>
         </ion-select-option>
@@ -49,7 +45,7 @@
         <ion-select-option *ngFor='let ph of listphonghoc'> 
           <ion-item>
             <ion-label>
-              {{ph.B}}
+              {{ ph.B }}
             </ion-label>
           </ion-item>
         </ion-select-option>
@@ -60,14 +56,10 @@
   <ion-item>
     <ion-grid>
       <ion-row>
-        <ion-col size='4'>
-          Lớp : {{ tenlop }}
-        </ion-col>
-        <ion-col size='4'>
-          Môn học : {{ tenmonhoc }}
-        </ion-col>
-        <ion-col size='4'>
-          Phòng học : {{ tenphonghoc }}
+        <ion-col>
+          <p>Lớp : {{ tenlop }}</p>
+          <p>Môn học : {{ tenmonhoc }}</p>
+          <p>Phòng học : {{ tenphonghoc }}</p>
         </ion-col>
       </ion-row>
       <ion-row>
@@ -104,13 +96,13 @@
   <ion-item>
     <ion-label>Tiết bắt đầu</ion-label>
     <ion-select okText="Chọn" cancelText="Hủy" (ionChange)="getTietbatdau($event)">
-      <ion-select-option *ngFor="let th of listtiethoc">{{th.tiethoc}} - {{th.giobatdau}}</ion-select-option>
+      <ion-select-option *ngFor="let th of listtiethoc">{{ th.tiethoc }} - {{ th.giobatdau }}</ion-select-option>
     </ion-select>
   </ion-item>
   <ion-item>
     <ion-label>Tiết kết thúc</ion-label>
     <ion-select okText="Chọn" cancelText="Hủy" (ionChange)="getTietketthuc($event)">
-      <ion-select-option *ngFor="let th of listtiethoc">{{th.tiethoc}} - {{th.gioketthuc}}</ion-select-option>
+      <ion-select-option *ngFor="let th of listtiethoc">{{ th.tiethoc }} - {{ th.gioketthuc }}</ion-select-option>
     </ion-select>
   </ion-item>
   <ion-item >
@@ -118,14 +110,14 @@
     <ion-select (ionChange)="getNgayhoc($event)">
       <ion-select-option *ngFor='let nh of listngayhoc'>
         <ion-item>
-          <ion-label>{{nh}}</ion-label>
+          <ion-label>{{ nh }}</ion-label>
         </ion-item>
       </ion-select-option>
     </ion-select>
   </ion-item>
   <ion-item *ngIf="ngayhoc != ''">
-    <ion-label>Ngày học : {{ngayhoc}} </ion-label>
-    <ion-icon size="12" name="trash-outline" (click)="iconDelete()"></ion-icon> 
+    <ion-label>Ngày học : {{ ngayhoc }} </ion-label>
+    <ion-icon size="12" name="trash-outline" (click)="removeNgayhoc()"></ion-icon> 
   </ion-item>
   <br>
   <ion-row>

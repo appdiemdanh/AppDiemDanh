@@ -10,48 +10,48 @@ import { AngularFireDatabase } from '@angular/fire/database';
 export class ThongtindiemdanhPage implements OnInit {
 
   id : number
-  ngaydiemdanh  = ''
+  ngaydiemdanh = ''
   giodiemdanh = ''
   lop = ''
   monhoc = ''
   malop = ''
-  soluongSVdihoc : number
-  soluongSVvanghoc : number
-  listdiemdanh : any = []
-  listdiemdanhcuoicung : any = []
+  tengiangvien = ''
+  thongtindiemdanh  = []
 
   isshowDihoc = false
   isshowVanghoc = false
 
   constructor(
+
     public authService : AuthenticationService,
     public afDB : AngularFireDatabase
   ) { 
-    this.malop = this.authService.getMalop()
+    this.malop          = this.authService.getMalop()
+    this.tengiangvien   = this.authService.getTengiangvien()
+    this.ngaydiemdanh   = this.authService.getNgaydiemdanh()
   }
 
-  /**
-   *  đầu tiên sẽ gán tất cả giá trị của diemdanh(list trên firebase) vào mảng diemdanh
-   *  tiếp theo mình sẽ dùng for và lọc điều kiện lop(diemdanh firebase) == malop(truyền từ page thoikhoabieu)
-   * nếu điều kiện đúng thì gán giá trị cho listdiemdanh (list này đều có lop = malop)
-   *  Sau đó mình thoát ra vòng lặp for thì giá trị của listdiemdanh chỉ trả ra cái cuối cùng thôi
-   * vd : trong for nó có 100 giá trị thoát ra for thì chỉ còn 1 thôi tại vì đâu còn vòng lặp nào đâu
-   *  và mình gán giá trị cuối chính là điểm danh mới nhất của lớp đó vào mảng listdiemdanhcuoicun là xong.
-   */
+
   ngOnInit() {
+    this.getThongtindiemdanh()
+  }
+  
+  /**
+   *  thông tin điểm danh thõa 3 điều kiện : cùng tên giảng viên dạy, cùng tên lớp và cùng ngày điểm danh (của biến truyền qua và firebase)
+   */
+  getThongtindiemdanh()
+  {
     this.afDB.list('diemdanh').valueChanges().subscribe(res=>
       {
         let diemdanh : any = res
-        for(let dd of diemdanh)
+        for (let ldd of diemdanh)
         {
-          if(dd.lop == this.malop) // dd.lop == this.malop khác với this.malop == dd.lop nha (test thử xong console ra là biết)
+          
+          if ( ldd.giangvienday == this.tengiangvien && ldd.lop == this.malop && ldd.ngaydiemdanh == this.ngaydiemdanh) // dd.lop == this.malop khác với this.malop == dd.lop nha (test thử xong console ra là biết)
           {
-            this.listdiemdanh   = dd // gán tất cả giá trị thỏa điều kiện vào listdiemdanh
+            this.thongtindiemdanh.push(ldd) // gán giá trị thỏa điều kiện vào listdiemdanh
           }          
         }
-        //thoát khỏi vòng lặp thì listdiemdanh sẽ trả ra giá trị cuối cùng của listdiemdanh thôi
-        // lấy ra cái được điểm danh cuối cùng của lớp đó vd (diem danh 1, diem danh2, diem danh 3) thì thoát khỏi vòng lặp nó lấy ra diem danh 3
-        this.listdiemdanhcuoicung.push(this.listdiemdanh)
       })
   }
 

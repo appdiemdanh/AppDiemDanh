@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ThongtinsvPageRoutingModule } from './thongtinsv-routing.module';
+import { ThongtinSvPageRoutingModule } from './thongtin-sv-routing.module';
 
-import { ThongtinsvPage } from './thongtinsv.page';
+import { ThongtinSvPage } from './thongtin-sv.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ThongtinsvPageRoutingModule
+    ThongtinSvPageRoutingModule
   ],
-  declarations: [ThongtinsvPage]
+  declarations: [ThongtinSvPage]
 })
-export class ThongtinsvPageModule {}
+export class ThongtinSvPageModule {}

@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Chi tiết vắng học</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngFor='let vanghoc of chitietvanghoc'>
+    <ion-card-header>
+      <ion-card-title class="title">
+        <p>{{ vanghoc.monhoc }}</p>
+      </ion-card-title>
+    </ion-card-header>
+    <br>
+    <ion-card-content *ngFor='let chitiet of vanghoc.chitiet'>
+      <div class='border'>
+        <ion-row>
+          <ion-col>
+            <p>Giảng viên dạy : {{ chitiet.giangvienday }}</p>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <p>Ngày vắng học : {{ chitiet.ngayvanghoc }}</p>
+          </ion-col>
+        </ion-row>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

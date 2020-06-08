@@ -22,8 +22,7 @@ import { DangnhapPage } from './page_login/dangnhap/dangnhap.page'
 import { ChonchucvuPage } from './page_login/chonchucvu/chonchucvu.page'
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Tab4Page } from './page_daotao/tab4/tab4.page'
-//import {  } from ''
-//import {  } from '@angular/core'
+import { ThoikhoabieuPage } from './page_giangvien/thoikhoabieu/thoikhoabieu.page'
 
 @NgModule({
   declarations: [AppComponent,
@@ -46,7 +45,8 @@ import { Tab4Page } from './page_daotao/tab4/tab4.page'
     DangnhapPage,
     ChonchucvuPage,
     AngularFireDatabase,
-    Tab4Page
+    Tab4Page,
+    ThoikhoabieuPage
   ],
   bootstrap: [AppComponent]
 })

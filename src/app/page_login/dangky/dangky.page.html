@@ -8,16 +8,15 @@
 </ion-header>
 
 <ion-content>
+  <ion-item lines = "full">
+    <ion-label position = "floating">Mã bảo mật</ion-label>
+    <ion-input type = "text" [(ngModel)] = "mabaomat"></ion-input>
+  </ion-item>
+  <ion-label class="small-text">*Mã bảo mật được cung cấp bởi hiệu trưởng.</ion-label>
   <ion-item lines = "full" *ngIf="chucvu == 'giangvien'"> <!--view ra khi chucvu tra ve la 'giangvien'-->
     <ion-label position = "floating">Mã giảng viên</ion-label>
     <ion-input type = "text" [(ngModel)] = "magiangvien"></ion-input>
   </ion-item>
-  <ion-label class="small-text" *ngIf="chucvu == 'giangvien'">*Bạn cần nhập đúng mã giảng viên của mình nha.</ion-label>
-  <ion-item lines = "full" *ngIf="chucvu == 'daotao' || chucvu == 'congtacsinhvien'"> <!--view ra khi chucvu tra ve la 'giangvien'-->
-    <ion-label position = "floating">Mã bảo mật</ion-label>
-    <ion-input type = "text" [(ngModel)] = "mabaomat"></ion-input>
-  </ion-item>
-  <ion-label class="small-text" *ngIf="chucvu == 'daotao' || chucvu == 'congtacsinhvien'">*Mã bảo mật được cung cấp bởi hiệu trưởng.</ion-label>
   <ion-item lines = "full">
     <ion-label position = "floating">Email</ion-label>
     <ion-input type = "text" [(ngModel)] = "email"></ion-input>

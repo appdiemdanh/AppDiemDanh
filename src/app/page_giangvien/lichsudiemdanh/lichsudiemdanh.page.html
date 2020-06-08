@@ -11,34 +11,48 @@
   <ion-list *ngFor='let ldd of listdiemdanh'>
     <ion-card>
       <ion-card-header>
-          <ion-card-title class="title">{{ldd.ngaydiemdanh}}</ion-card-title>
+          <ion-card-title class="title">{{ ldd.ngaydiemdanh }}</ion-card-title>
       </ion-card-header>
       
       <ion-card-content>
-        <ion-item>Giờ điểm danh       : {{ldd.giodiemdanh}}</ion-item>
-        <ion-item>Lớp                 : {{ldd.lop}}</ion-item>
-        <ion-item>Môn học             : {{ldd.monhoc}}</ion-item>
+        <ion-item>
+          <p>Giờ điểm danh : {{ ldd.giodiemdanh }}</p>
+        </ion-item>
+        <ion-item>
+          <p>Lớp : {{ ldd.lop }}</p>
+        </ion-item>
+        <ion-item>
+          <p>Môn học : {{ ldd.monhoc }}</p>
+        </ion-item>
         <div>
-          <ion-item>
-            <ion-label> Đi học    : {{ldd.soluongSVdihoc}} sinh viên </ion-label>
-            <ion-icon name="chevron-down-outline" *ngIf='isShowDihoc == false' (click)='isShowDihoc = true' slot="end"></ion-icon>
-            <ion-icon name="chevron-up-outline" *ngIf='isShowDihoc == true' (click)='isShowDihoc = false' slot="end"></ion-icon>
+          <ion-item (click)='isShowDihoc = !isShowDihoc'>
+            <ion-col size='10.5'>
+              <p> Đi học : {{ ldd.soluongSVdihoc }} sinh viên </p>
+            </ion-col>
+            <ion-col size='1.5'>
+              <ion-icon name="chevron-down-outline" *ngIf='isShowDihoc == false'></ion-icon>
+              <ion-icon name="chevron-up-outline" *ngIf='isShowDihoc == true'></ion-icon>
+            </ion-col>
           </ion-item>
           <ion-item-sliding *ngFor='let dihoc of ldd.danhsachSVdihoc'>
             <ion-item *ngIf='isShowDihoc == true' class="danhsachsv">
-              <p> {{dihoc}} </p>
+              <p> {{ dihoc }} </p>
             </ion-item>
           </ion-item-sliding>
         </div>
          <div>
-          <ion-item>
-            <ion-label> Vắng học : {{ldd.soluongSVvanghoc}} sinh viên </ion-label>
-            <ion-icon name="chevron-down-outline" *ngIf='isShowVanghoc == false' (click)='isShowVanghoc = true' slot="end"></ion-icon>
-            <ion-icon name="chevron-up-outline" *ngIf='isShowVanghoc == true' (click)='isShowVanghoc = false' slot="end"></ion-icon>
+          <ion-item (click)='isShowVanghoc = !isShowVanghoc'>
+            <ion-col size='10.5'>
+              <p>Vắng học : {{ ldd.soluongSVvanghoc }} sinh viên</p>
+            </ion-col>
+            <ion-col size='1.5'>
+              <ion-icon name="chevron-down-outline" *ngIf='isShowVanghoc == false'></ion-icon>
+              <ion-icon name="chevron-up-outline" *ngIf='isShowVanghoc == true'></ion-icon>
+            </ion-col>
           </ion-item>
           <ion-item-sliding *ngFor='let vanghoc of ldd.danhsachSVvanghoc'>
             <ion-item *ngIf='isShowVanghoc == true' class="danhsachsv">
-              <p> {{vanghoc}} </p> 
+              <p> {{ vanghoc }} </p> 
             </ion-item>
           </ion-item-sliding>
          </div>

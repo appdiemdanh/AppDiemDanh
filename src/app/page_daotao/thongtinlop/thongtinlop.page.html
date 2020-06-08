@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref='tabs/tab3'></ion-back-button>
+      <ion-back-button></ion-back-button>
     </ion-buttons>
     <ion-title>Thông tin lớp</ion-title>
   </ion-toolbar>
@@ -12,23 +12,33 @@
   <form *ngFor='let lop of listlop'>
     <ion-list *ngIf = 'lop.B == malop'>
       <ion-item>
-        <p>Tên lớp : </p>  
-        <ion-label slot="end" >{{lop.C}}</ion-label>
+        <ion-col>
+          <p>Tên lớp : {{ lop.C }}</p>
+        </ion-col>
       </ion-item>
       <ion-item>
-        <p>Mã lớp : </p>  
-        <ion-label slot="end">{{lop.B}}</ion-label>
+        <ion-col size='4'>
+          <p>Mã lớp : </p>  
+        </ion-col>
+        <ion-col>
+          <p>{{ lop.B }}</p>
+        </ion-col>
       </ion-item>
-      <ion-item>
-        <p>Số lượng sinh viên : </p>  
-        <ion-label slot="end">{{tongsv}}</ion-label>
-        <ion-icon name="chevron-down-outline" slot="end" *ngIf="isShowListSV == false" (click)="isShowListSV = true"></ion-icon>
-        <ion-icon name="chevron-up-outline" slot="end" *ngIf="isShowListSV == true" (click)="isShowListSV = false"></ion-icon>
+      <ion-item (click)="isShowListSV = !isShowListSV">
+        <ion-col size='10.5'>
+          <p>Số lượng sinh viên : {{ tongsv }}</p>  
+        </ion-col>
+        <ion-col size='1.5'>
+          <ion-icon name="chevron-down-outline" *ngIf="isShowListSV == false" ></ion-icon>
+          <ion-icon name="chevron-up-outline" *ngIf="isShowListSV == true" ></ion-icon>
+        </ion-col>
       </ion-item>
       <br>
       <ion-list *ngFor='let sv of listsv'>
           <ion-item *ngIf="isShowListSV == true" (click)="gotoThongtinsv(sv.C)"> <!--sv.C = masv (firebase)-->
-            <ion-label>{{sv.B}}. {{sv.D}}</ion-label>
+            <ion-col>
+              <p>{{sv.B}}. {{sv.D}}</p>
+            </ion-col>
             <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
           </ion-item>
       </ion-list>

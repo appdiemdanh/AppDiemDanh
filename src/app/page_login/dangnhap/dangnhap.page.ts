@@ -29,17 +29,14 @@ export class DangnhapPage implements OnInit {
     public loadingController : LoadingController,
     public chonchucvuPage : ChonchucvuPage,
     public afStore : AngularFirestore,
-    public ngFireAuth: AngularFireAuth,
-    ) {
-    
-      
-    }
+    public ngFireAuth: AngularFireAuth
+    ) {}
 
   ngOnInit() {
      // đọc dữ liệu từ firebase tên 'listuser' sau đó gán vào this.arrayUser
      return this.afStore.collection('listuser').valueChanges().subscribe(res=>{this.arrayUser = res})
     }
-  //
+
   getNhomatkhau(event)
   {
     this.nhomatkhau = event.detail.checked
@@ -50,16 +47,13 @@ export class DangnhapPage implements OnInit {
    * Đầu tiên mình kiểm tra các điều kiện như nhập đủ chưa, có để trống ô nào không
    * Tiếp theo gọi hàm signInWithEmailAndPassword(email, password) thực hiện đăng nhập
    *    nếu thực hiện được{
-   *      chạy vòng lặp lấy ra được listuser(firebase) để so sánh : (khi vào đây tức là email và password đã đúng)
-   *       +email(nhập vào) = email(firebase) và chucvu(firebase) = "daotao" thì chuyển đến trang của đào tạo
-   *        và sau đó lưu chucvu lên local để qua app-routing mình so sánh tiếp (qua đó coi sẽ biết),
-   *        congtacsinhvien cũng tương tự như daotao.
-   *        giangvien thì mình sẽ lưu thêm magiangvien lên local cũng để qua app-routing so sánh luôn.
+   *    + nếu arrayUser thứ i có email == email người dùng nhập thì tiến hành set giá trị lên bộ nhớ máy(local) // qua app-routing module sẽ rõ mục đích
+   *    + sau đó so sánh coi arrayUser thứ i đó có chucvu là gì thì chuyển đến trang hợp lí
+   *    + riêng giảng viên thì có thêm magiangvien thì mình set lên bộ nhớ máy(local) và set qua authService.ts // qua thoikhoabieu.ts sẽ rõ mục đích
    * }
    *    không thực hiện được {
    *      mình sẽ dịch lỗi từ tiếng anh sang tiếng việt và alert ra cho người dùng đọc.
    * }
-   * 
    */
   logIn()
   {
@@ -67,41 +61,34 @@ export class DangnhapPage implements OnInit {
     {
       this.ngFireAuth.auth.signInWithEmailAndPassword(this.email, this.password).then((res)=>
       {
-        // thực hiện set user đăng nhập lên firebase nếu người dùng vừa đăng ký
-
-        // vòng lặp for sẽ duyệt qua các phần tử trong mangUser, chỉ cần khi nào thấy đúng thì nó làm
-        // vd: sai sai dung => làm, sai dung sai => làm, nhưng sai sai sai => không làm
-        for(let user of this.arrayUser) 
+        this.authService.setTuPagedangnhapqua(true) // qua thoikhoabieu.ts sẽ hiểu
+        for (let i = 0; i < this.arrayUser.length; i ++) 
         {
-          let e = user.email
-          let cv = user.chucvu
-          let mgv = user.magiangvien
-          
-          if(this.email == e && cv == "daotao") // neu email nhap vao = e (firebase) và chucvu(firebase) = 'daotao' => page dao tao
-          {                                   // khi nguoi dung dang ky => chucvu đã lưu trên firebase roi nen khong can co dieu kien cho this.chucvu
-            localStorage.setItem('chucvu', 'daotao') // luu vao bo nho local với key là chucvu giá trị là 'daotao'
-            localStorage.setItem('isLogged', 'true') // lưu người dùng đã đăng nhập lên local
-            this.authService.presentLoading('Vui lòng chờ...', 1800);
-            this.router.navigate(['tabs/tabs/tab1'])
-          }
-          else if(this.email == e && cv == 'giangvien')
+          if(this.arrayUser[i].email == this.email)
           {
-            // set chucvu va magiangvien lên local mục đích qua app_routing_module để so sánh(cứ qua coi là rõ)
-            localStorage.setItem('chucvu', 'giangvien')
-            localStorage.setItem('magiangvien', mgv)
-            //this.authService.presentLoading('Vui lòng chờ...', 1800) // vì tui đã loading ở constructor của thoikhoabieu.ts (page giangvien ) rồi
-            this.router.navigate(['thoikhoabieu'])
+            localStorage.setItem('chucvu', this.arrayUser[i].chucvu)
+            localStorage.setItem('isLogged', "true")
+            // so sánh chức vụ để chuyển đến trang của chức vụ đó
+            if (this.arrayUser[i].chucvu == 'daotao')
+            {
+              this.router.navigate(['tabs'])
+              this.authService.presentLoading('Vui lòng chờ...', 1300)
+            }
+            else if (this.arrayUser[i].chucvu == 'giangvien')
+            {
+              localStorage.setItem('magiangvien', this.arrayUser[i].magiangvien)
+              this.authService.changeMaGV(this.arrayUser[i].magiangvien + "")
+              this.router.navigate(['thoikhoabieu'])
+            }
+            else // cong tac sv
+            {
+              this.router.navigate(['tabs_ctsv'])
+              this.authService.presentLoading('Vui lòng chờ...', 1300)
+            }  
           }
-          else if(this.email == e && cv == 'congtacsinhvien')
-          {
-            localStorage.setItem('chucvu', 'congtacsinhvien')
-            this.authService.presentLoading('Vui lòng chờ...', 1800);
-            this.router.navigate(['chonmon'])
-          }
-          // vào vòng lặp for này tức là email và password đã đúng rồi vì đã qua hàm signInWithEmailAndPassword()
-          //nếu click nhớ mật khẩu thì mình gán giá trị cho local
         }     
-        // đăng nhập thành công thì thực hiện ghi nhớ mật khẩu 
+        // đăng nhập thành công thì thực hiện ghi nhớ mật khẩu
+        //nếu click nhớ mật khẩu thì mình gán giá trị cho local 
         if(this.nhomatkhau == true)
         {
           localStorage.setItem('email', this.email)
@@ -110,10 +97,9 @@ export class DangnhapPage implements OnInit {
         // nếu không click nhơ mật khẩu thì mình xóa giá trị lưu trên local  
         else if(this.nhomatkhau == false)
         {
-          localStorage.setItem('email', '')
-          localStorage.setItem('password', '')
+          localStorage.removeItem('email')
+          localStorage.removeItem('password')
         }
-
       }).catch(error=>{
         //so sanh loi phat ra tu error rồi dịch ra tiếng việt cho dễ hiểu 
         if(error == 'Error: The email address is badly formatted.')

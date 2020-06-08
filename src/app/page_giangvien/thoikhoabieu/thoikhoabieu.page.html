@@ -19,18 +19,26 @@
         </ion-card-header>
         <ion-card-content>
           <ion-list>
-            <ion-item>Ngày học      : {{tkb.ngayhoc}}</ion-item>
-            <ion-item>Môn học       : {{tkb.tenmonhoc}} </ion-item>
-            <ion-item>Phòng học     : {{tkb.tenphonghoc}}</ion-item>
-            <ion-item>Giờ bắt đầu   : {{tkb.giobatdau}}</ion-item>
-            <ion-item>Giờ kết thúc  : {{tkb.gioketthuc}}</ion-item>
+            <ion-item>
+              <p>Ngày học      : {{ tkb.ngayhoc }}</p>
+            </ion-item>
+            <ion-item>
+              <p>Môn học       : {{ tkb.tenmonhoc }}</p>
+            </ion-item>
+            <ion-item>
+              <p>Phòng học     : {{ tkb.tenphonghoc }}</p>
+            </ion-item>
+            <ion-item>
+              <p>Giờ bắt đầu   : {{ tkb.giobatdau }}</p>
+            </ion-item>
+            <ion-item>
+              <p>Giờ kết thúc  : {{ tkb.gioketthuc }}</p>
+            </ion-item>
           </ion-list>
         </ion-card-content>
       </ion-card>
   </ion-list>
   <br>
-  <ion-grid *ngIf="magvtontai == true">
-  </ion-grid>
   <ion-label *ngIf="magvtontai == false">
     <p>Bạn chưa có lịch dạy hoặc mã giảng viên bạn đăng ký chưa đúng, vui lòng liên hệ phòng hiệu trưởng để biết thêm chi tiết.</p>
   </ion-label>

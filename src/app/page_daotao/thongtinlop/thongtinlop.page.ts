@@ -50,7 +50,7 @@ export class ThongtinlopPage implements OnInit {
     this.authService.setMssv(mssv)
     
     // chuyển màn hình
-    this.router.navigate(['thongtinsv'])
+    this.router.navigate(['thongtin-sv'])
   }
 
 }

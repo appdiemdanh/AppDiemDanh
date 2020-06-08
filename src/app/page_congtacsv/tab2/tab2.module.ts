@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ChonmonPageRoutingModule } from './chonmon-routing.module';
+import { Tab2PageRoutingModule } from './tab2-routing.module';
 
-import { ChonmonPage } from './chonmon.page';
+import { Tab2Page } from './tab2.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ChonmonPageRoutingModule
+    Tab2PageRoutingModule
   ],
-  declarations: [ChonmonPage]
+  declarations: [Tab2Page]
 })
-export class ChonmonPageModule {}
+export class Tab2PageModule {}

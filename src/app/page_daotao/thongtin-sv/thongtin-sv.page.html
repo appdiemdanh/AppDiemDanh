@@ -1,0 +1,75 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Thông tin sinh viên</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <br>
+  <form *ngFor = 'let sv of thongtinsinhvien'>
+    <ion-list *ngIf = 'sv.C == mssv'>
+      <ion-item>  
+        <ion-col>
+          <p>Tên sinh viên : {{ sv.D }}</p>
+        </ion-col>
+      </ion-item>
+      <ion-item>
+        <p>MSSV : </p>  
+        <ion-label slot="end">{{ sv.C }}</ion-label>
+      </ion-item>
+      <ion-item>
+        <p>Ngày sinh : </p>  
+        <ion-label slot="end">{{ sv.E }}</ion-label>
+      </ion-item>
+      <ion-item>
+        <p>Nơi sinh : </p>  
+        <ion-label slot="end">{{ sv.F }}</ion-label>
+      </ion-item>
+      <ion-item>
+        <p>Học lớp : </p>  
+        <ion-label slot="end">{{ sv.A }}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-col>
+          <p>Nghành học : {{ sv.G }}</p>  
+        </ion-col>
+      </ion-item>
+      <ion-item (click)='isShowHocky = !isShowHocky' > 
+        <p>Tổng số buổi vắng : </p>
+        <ion-col>
+          <p>{{ tongsobuoivang }}</p>
+        </ion-col>
+        <ion-col size='1.5'>
+          <ion-icon name="chevron-down-outline" *ngIf='isShowHocky == false'></ion-icon>
+          <ion-icon name="chevron-up-outline"   *ngIf='isShowHocky == true'></ion-icon>
+        </ion-col>
+      </ion-item>
+    </ion-list>
+    <div *ngIf='isShowHocky == true'>
+      <ion-list *ngFor='let vh of thongtinvanghoc_real'>
+        <div class='textCenter'>
+          <p>{{ vh.hocky }} </p> 
+        </div>
+        <ion-item-sliding *ngFor='let mh of vh.listmonhoc'>
+          <ion-row class="item_monhoc" (click)='xemChitietvanghoc(mh.monhoc)'>
+            <ion-col size='7.5'>
+              <p>{{ mh.monhoc }}</p>
+            </ion-col>
+            <ion-col size='1'>
+              <p>-</p>
+            </ion-col>
+            <ion-col size='2.5'>
+              <p>{{ mh.chitiet.length }} buổi</p>
+            </ion-col>
+            <ion-col size='1'>
+              <p><ion-icon name="chevron-forward-outline"></ion-icon></p>
+            </ion-col>
+          </ion-row>
+        </ion-item-sliding>
+      </ion-list> 
+    </div>
+  </form>
+</ion-content>

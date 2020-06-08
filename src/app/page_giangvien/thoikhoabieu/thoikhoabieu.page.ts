@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { AuthenticationService } from 'src/app/shared/authenticatin-Service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { BehaviorSubject } from 'rxjs';
+
 
 @Component({
   selector: 'app-thoikhoabieu',
@@ -19,10 +21,11 @@ export class ThoikhoabieuPage implements OnInit {
   listlophoc = []
   magiangvien = ''
   tengiangvien = ''
+  hocky = ''
   day = new Date()
   isshowIonCard = true
   magvtontai = false
-  toigiodiemdanh = false
+  toigiodiemdanh = false 
 
   // format date time
   namthangngayhientai : Date
@@ -31,7 +34,7 @@ export class ThoikhoabieuPage implements OnInit {
 
   // view ra toast
   monhoc = ''
-  lophoc = ''
+  malop = ''
 
   constructor(
     public afDB : AngularFireDatabase,
@@ -39,22 +42,50 @@ export class ThoikhoabieuPage implements OnInit {
     public authService : AuthenticationService,
     public toastController : ToastController
   ) {
-    /*
-     * magiangvien được set vào local khi đăng nhập(magiangvien lay tu listuser) nếu chức vụ đăng nhập là giảng viên
-     * sau đó qua đây thì get ra để so sánh với magiangvien (phangiogiang)
-     * nếu magiangvien(listuser) == magiangvien(phangiogiang) thì hiện ra ion-card để giảng viên đó xem giờ dạy của mình, col 9 html
-     */
-    this.magiangvien = localStorage.getItem('magiangvien')
-    this.authService.presentLoading("Vui lòng chờ...", 1200)
-
-
     
   }
-  ngOnInit() {
-    
-    // thực hiện formatDatetime()
-    this.formatDatetime();
 
+  /**
+   * những cái hàm nào nằm trong hàm subscribe() thì khi giá trị của trả về của hàm subscribe(giá trị : magv) có sự thay đổi thì những hàm nằm trong nó sẽ được tự động gọi
+   * Mục đích : khi mã giảng viên thay đổi khi đăng nhập hàm subcribse() sẽ gọi mấy hàm trong nó để load thời khóa biểu cho file html
+   */
+  ngOnInit() {
+    this.authService.getMagv_hientai.subscribe(magv => {
+      //console.log(magv)
+      if (magv == 'rỗng')
+      {
+        this.magiangvien = localStorage.getItem('magiangvien')
+      }
+      else
+      {
+        this.magiangvien = magv
+      }
+      // loadding
+      this.authService.presentLoading('Vui lòng chờ...', 1800)
+      // thưc hiện các hàm
+      this.getTengiangvien()
+      this.formatDatetime()
+      this.getThoikhoabieu()
+    })
+  }
+
+  // get ten giangvien điều kiện magiangvien(dangnhap truyen qua) = magiangvien(firebase)
+  getTengiangvien()
+  {
+    this.afDB.list('danhsachgiangvien').valueChanges().subscribe(res=>
+      {
+        let listgianvien : any = res
+        for(let gv of listgianvien)
+        {
+          if(gv.B == this.magiangvien)
+          {
+            this.tengiangvien = gv.C 
+            this.authService.setTengiangvien(this.tengiangvien)
+          }
+        }
+      })
+  }
+  
     /**
      * Đầu tiên gán giá trị cho listfirebase - col 1
      * Sau đó tạo vòng lặp để đọc giá trị của listfirebase - col 2
@@ -67,7 +98,10 @@ export class ThoikhoabieuPage implements OnInit {
      * if 4 : điều kiện đến giờ học, hết giờ học hay chưa để truyền qua page điểm danh view danhsachsv, tenmonhoc tenlop
      *  Các điều kiện này lòng vào nhau nên qua mỗi vòng if nó sẽ lọc ra giá trị nào đúng với if rồi mới vào if tiếp theo lọc tiếp
      */
+  getThoikhoabieu()
+  {
     this.afDB.list('phangiogiang').valueChanges().subscribe((res)=>{
+      this.listthoikhoabieu = [] // gán mảng thoikhoabieu = rỗng để tránh mảng bị cộng dồn khi có dữ liệu mới trên firebase vd:có người phân giờ cho gv,.. (vì có dữ liệu mới thì hàm subcirbe() tự động gọi để cập nhật dữ liệu)
       this.listphangio = res // col 1
       for(let listpg of this.listphangio) // col 2
       {
@@ -77,7 +111,6 @@ export class ThoikhoabieuPage implements OnInit {
           this.magvtontai = true
           // gán giá trị cho listlop
           this.listlop = listpg
-
           // format ngaybatdau và ngayketthuc thành kiểu Date
           let nambatdau     = listpg.ngaybatdau.split("-")[0] // cắt listpg.ngaybatdau bằng dấu - và lấy phần tử đầu tiên được cắt ra
           let thangbatdau   = listpg.ngaybatdau.split("-")[1]
@@ -90,71 +123,55 @@ export class ThoikhoabieuPage implements OnInit {
           let ntnketthuc    = new Date(namketthuc, thangketthuc, ngayketthuc)
           
           // so sánh ngày và giờ
-          if(this.namthangngayhientai >= ntnbatdau) // if 2
+          if(this.namthangngayhientai >= ntnbatdau && this.namthangngayhientai <= ntnketthuc) // if 2
           {
-            if(this.namthangngayhientai <= ntnketthuc)
+            this.listthoikhoabieu.push(listpg)
+            this.listthu = (listpg.ngayhoc)
+            for(let thu of this.listthu)
             {
-              this.listthoikhoabieu.push(listpg)
-              this.listthu = (listpg.ngayhoc)
-              for(let thu of this.listthu)
+              if(this.thuhientai == thu)
               {
-                if(this.thuhientai == thu)
+                let giobatdau     = listpg.giobatdau.split("-")[1].split(":")[0]
+                let phutbatdau    = listpg.giobatdau.split("-")[1].split(":")[1]
+                let gioketthuc    = listpg.gioketthuc.split("-")[1].split(":")[0]
+                let phutketthuc   = listpg.gioketthuc.split("-")[1].split(":")[1]
+                //console.log(giobatdau)
+                const giophutbatdau = new Date(null,null,null, giobatdau, phutbatdau)
+                const giophutketthuc = new Date(null,null,null, gioketthuc, phutketthuc)
+                if(this.giophuthientai >= giophutbatdau && this.giophuthientai < giophutketthuc) // if2
                 {
-                  let giobatdau     = listpg.giobatdau.split("-")[1].split(":")[0]
-                  let phutbatdau    = listpg.giobatdau.split("-")[1].split(":")[1]
-                  let gioketthuc    = listpg.gioketthuc.split("-")[1].split(":")[0]
-                  let phutketthuc   = listpg.gioketthuc.split("-")[1].split(":")[1]
-                  //console.log(giobatdau)
-                  const giophutbatdau = new Date(null,null,null, giobatdau, phutbatdau)
-                  const giophutketthuc = new Date(null,null,null, gioketthuc, phutketthuc)
-                  if(this.giophuthientai >= giophutbatdau) // if2
-                  {
-                    if(this.giophuthientai < giophutketthuc)
-                    {
-                      this.toigiodiemdanh = true
-                      this.authService.setListTKB(listpg) // set listfb sau khi qua các điện để qua page diemdanh get ra so sánh
-                      //console.log(listpg)
-                      let malop = listpg.lop
-                      let monhoc = listpg.tenmonhoc
-                      // set gia trị
-                      this.authService.setMalop(malop)
-                      this.authService.setMsmh(monhoc)
-                      //set gia tri de view ra Toast
-                      this.monhoc = listpg.tenmonhoc
-                      this.lophoc = listpg.lop
-                    }
-                  }
+                  this.toigiodiemdanh = true
+                  this.authService.setListTKB(listpg) // set listfb sau khi qua các điện để qua page diemdanh get ra so sánh
+                  //console.log(listpg)
+                  this.malop   = listpg.lop
+                  this.monhoc  = listpg.tenmonhoc
+                  this.hocky   = listpg.hocky
+                  // set gia trị len authService
+                  this.authService.setMalop(this.malop)
+                  this.authService.setMsmh(this.monhoc)
+                  this.authService.setHocky(this.hocky)
+                  this.authService.setTengiangvien(this.tengiangvien)
+                }
+                else
+                {
+                  this.toigiodiemdanh = false
                 }
               }
-            }
+            }     
           }
         }
       }
       // Nếu tới giờ điểm danh rồi thì toast thông báo
       if(this.toigiodiemdanh == true)
       {
-        this.authService.presentToast("Tới giờ học môn : " + this.monhoc + ", Lớp : " + this.lophoc, 3000)
+        this.authService.presentToast("Tới giờ học môn : " + this.monhoc + ", Lớp : " + this.malop, 3000)
       }
     })
-    // get ten giangvien điều kiện magiangvien(dangnhap truyen qua) = magiangvien(firebase)
-    this.afDB.list('danhsachgiangvien').valueChanges().subscribe(res=>
-      {
-        let listgianvien : any = res
-        for(let gv of listgianvien)
-        {
-          if(gv.B == this.magiangvien)
-          {
-            this.tengiangvien = gv.C 
-            this.authService.setTengiangvien(this.tengiangvien)
-            //console.log(this.tengiangvien)
-          }
-        }
-      })
+    
   }
-  
+
   diemdanhSV()
   {   
-    
     if(this.toigiodiemdanh == true)
     {
       this.router.navigate(['diemdanh'])
@@ -182,8 +199,9 @@ export class ThoikhoabieuPage implements OnInit {
     this.giophuthientai = new Date(null,null,null, this.day.getHours(), this.day.getMinutes())
     if(this.thuhientai == "Thứ 1")
     {
-      this.thuhientai = "Chủ nhật"
+      this.thuhientai = "Chủ Nhật"
     }
+   
   }
 
   

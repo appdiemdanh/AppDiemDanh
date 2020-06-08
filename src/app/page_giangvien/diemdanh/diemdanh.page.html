@@ -46,7 +46,7 @@
   <br>
   <ion-row>
     <ion-col>
-      <ion-button type='submit' *ngIf='dadiemdanhroi == true' [routerLink]="['/thongtindiemdanh']" expand='block'>Xem thông tin điểm danh</ion-button>
+      <ion-button type='submit' *ngIf='dadiemdanhroi == true' (click)='xemThongtindiemdanh()' expand='block'>Xem thông tin điểm danh</ion-button>
     </ion-col>
   </ion-row>
   <br>

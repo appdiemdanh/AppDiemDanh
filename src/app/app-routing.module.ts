@@ -4,18 +4,25 @@ import { PreloadAllModules, RouterModule, Routes, Router } from '@angular/router
 // tạo routes
 let routes : Routes = []
 
+let email : string = null
+let password : string = null
 // lấy giá trị lưu từ local về 
-let email         = localStorage.getItem('email')
-let password      = localStorage.getItem('password')
 let chucvu        = localStorage.getItem('chucvu')
-let magiangvien   = localStorage.getItem('magiangvien')
+
+// Kiểm tra email password
+let email_local     = localStorage.getItem('email')
+let password_local  = localStorage.getItem('password') 
+if (email_local != undefined && password_local != undefined)
+{
+  email     = email_local
+  password  = password_local
+}
 
 /**
- * Nếu email và password đều rỗng (người dùng không bấm lưu mật khẩu) thì ta sẽ cho routes load page đầu tiên là page Dangnhap
- * Ngược lại nếu người dùng bấm lưu mật khẩu thì ta sẽ cho routes đi thẳng vào page của người dùng đó luôn với key để so sánh là chức vụ (vd page daotao, congtacsv,..)
- * 
+ * Nếu email và password == null (bằng giá trị ban đầu ) tức là người dùng không bấm lưu mật khẩu thì lần sau đăng nhập ta load page đăng nhập
+ * Ngược lại thì chức vụ gì thì lần sau đăng nhập load vô page của chức vụ đó
  */
-if(email == null && password == null)
+if (email == null && password == null)
 {
   routes = [
     {
@@ -39,26 +46,6 @@ if(email == null && password == null)
       loadChildren: () => import('./page_daotao/tabs/tabs.module').then(m => m.TabsPageModule)
     },
     {
-      path: 'tab1',
-      loadChildren: () => import('./page_daotao/tab1/tab1.module').then( m => m.Tab1PageModule)
-    },
-    {
-      path: 'tab2',
-      loadChildren: () => import('./page_daotao/tab2/tab2.module').then( m => m.Tab2PageModule)
-    },
-    {
-      path: 'tab3',
-      loadChildren: () => import('./page_daotao/tab3/tab3.module').then( m => m.Tab3PageModule)
-    },
-    {
-      path: 'tab4',
-      loadChildren: () => import('./page_daotao/tab4/tab4.module').then( m => m.Tab4PageModule)
-    },
-    {
-      path: 'tab5',
-      loadChildren: () => import('./page_daotao/tab5/tab5.module').then( m => m.Tab5PageModule)
-    },
-    {
       path: 'quenmatkhau',
       loadChildren: () => import('./page_login/quenmatkhau/quenmatkhau.module').then( m => m.QuenmatkhauPageModule)
     },
@@ -67,16 +54,12 @@ if(email == null && password == null)
       loadChildren: () => import('./page_login/dangky/dangky.module').then( m => m.DangkyPageModule)
     },
     {
-      path: 'chonmon',
-      loadChildren: () => import('./page_congtacsv/chonmon/chonmon.module').then( m => m.ChonmonPageModule)
-    },
-    {
       path: 'lichsu',
       loadChildren: () => import('./page_congtacsv/lichsu/lichsu.module').then( m => m.LichsuPageModule)
     },
     {
-      path: 'thongtinsv',
-      loadChildren: () => import('./page_daotao/thongtinsv/thongtinsv.module').then( m => m.ThongtinsvPageModule)
+      path: 'thongtin-sv',
+      loadChildren: () => import('./page_daotao/thongtin-sv/thongtin-sv.module').then( m => m.ThongtinSvPageModule)
     },
     {
       path: 'thongtin-gv',
@@ -114,11 +97,22 @@ if(email == null && password == null)
       path: 'lichsudiemdanh',
       loadChildren: () => import('./page_giangvien/lichsudiemdanh/lichsudiemdanh.module').then( m => m.LichsudiemdanhPageModule)
     },
-  
+    {
+      path: 'chitiet-vanghoc',
+      loadChildren: () => import('./page_daotao/chitiet-vanghoc/chitiet-vanghoc.module').then( m => m.ChitietVanghocPageModule)
+    },
+    {
+      path: 'tabs_ctsv',
+      loadChildren: () => import('./page_congtacsv/tabs/tabs.module').then( m => m.TabsPageModule)
+    },
+    {
+      path: 'thongtin-giangday',
+      loadChildren: () => import('./page_daotao/thongtin-giangday/thongtin-giangday.module').then( m => m.ThongtinGiangdayPageModule)
+    }
   ];
 }
-else // người dùng click nhớ mật khẩu
-{
+else
+{ 
   if(chucvu == "daotao") // chức vụ là đào tạo thì chuyển đến trang daotao đầu tiên
   {
     routes = [
@@ -143,26 +137,6 @@ else // người dùng click nhớ mật khẩu
         loadChildren: () => import('./page_daotao/tabs/tabs.module').then(m => m.TabsPageModule)
       },
       {
-        path: 'tab1',
-        loadChildren: () => import('./page_daotao/tab1/tab1.module').then( m => m.Tab1PageModule)
-      },
-      {
-        path: 'tab2',
-        loadChildren: () => import('./page_daotao/tab2/tab2.module').then( m => m.Tab2PageModule)
-      },
-      {
-        path: 'tab3',
-        loadChildren: () => import('./page_daotao/tab3/tab3.module').then( m => m.Tab3PageModule)
-      },
-      {
-        path: 'tab4',
-        loadChildren: () => import('./page_daotao/tab4/tab4.module').then( m => m.Tab4PageModule)
-      },
-      {
-        path: 'tab5',
-        loadChildren: () => import('./page_daotao/tab5/tab5.module').then( m => m.Tab5PageModule)
-      },
-      {
         path: 'quenmatkhau',
         loadChildren: () => import('./page_login/quenmatkhau/quenmatkhau.module').then( m => m.QuenmatkhauPageModule)
       },
@@ -171,16 +145,12 @@ else // người dùng click nhớ mật khẩu
         loadChildren: () => import('./page_login/dangky/dangky.module').then( m => m.DangkyPageModule)
       },
       {
-        path: 'chonmon',
-        loadChildren: () => import('./page_congtacsv/chonmon/chonmon.module').then( m => m.ChonmonPageModule)
-      },
-      {
         path: 'lichsu',
         loadChildren: () => import('./page_congtacsv/lichsu/lichsu.module').then( m => m.LichsuPageModule)
       },
       {
-        path: 'thongtinsv',
-        loadChildren: () => import('./page_daotao/thongtinsv/thongtinsv.module').then( m => m.ThongtinsvPageModule)
+        path: 'thongtin-sv',
+        loadChildren: () => import('./page_daotao/thongtin-sv/thongtin-sv.module').then( m => m.ThongtinSvPageModule)
       },
       {
         path: 'thongtin-gv',
@@ -218,7 +188,18 @@ else // người dùng click nhớ mật khẩu
         path: 'lichsudiemdanh',
         loadChildren: () => import('./page_giangvien/lichsudiemdanh/lichsudiemdanh.module').then( m => m.LichsudiemdanhPageModule)
       },
-    
+      {
+        path: 'chitiet-vanghoc',
+        loadChildren: () => import('./page_daotao/chitiet-vanghoc/chitiet-vanghoc.module').then( m => m.ChitietVanghocPageModule)
+      },
+      {
+        path: 'tabs_ctsv',
+        loadChildren: () => import('./page_congtacsv/tabs/tabs.module').then( m => m.TabsPageModule)
+      },
+      {
+        path: 'thongtin-giangday',
+        loadChildren: () => import('./page_daotao/thongtin-giangday/thongtin-giangday.module').then( m => m.ThongtinGiangdayPageModule)
+      }
     ];
   }
   else if(chucvu == "giangvien") // chức vụ giảng viên thì chuyển đến trang giảng viên
@@ -245,26 +226,6 @@ else // người dùng click nhớ mật khẩu
         loadChildren: () => import('./page_daotao/tabs/tabs.module').then(m => m.TabsPageModule)
       },
       {
-        path: 'tab1',
-        loadChildren: () => import('./page_daotao/tab1/tab1.module').then( m => m.Tab1PageModule)
-      },
-      {
-        path: 'tab2',
-        loadChildren: () => import('./page_daotao/tab2/tab2.module').then( m => m.Tab2PageModule)
-      },
-      {
-        path: 'tab3',
-        loadChildren: () => import('./page_daotao/tab3/tab3.module').then( m => m.Tab3PageModule)
-      },
-      {
-        path: 'tab4',
-        loadChildren: () => import('./page_daotao/tab4/tab4.module').then( m => m.Tab4PageModule)
-      },
-      {
-        path: 'tab5',
-        loadChildren: () => import('./page_daotao/tab5/tab5.module').then( m => m.Tab5PageModule)
-      },
-      {
         path: 'quenmatkhau',
         loadChildren: () => import('./page_login/quenmatkhau/quenmatkhau.module').then( m => m.QuenmatkhauPageModule)
       },
@@ -273,16 +234,12 @@ else // người dùng click nhớ mật khẩu
         loadChildren: () => import('./page_login/dangky/dangky.module').then( m => m.DangkyPageModule)
       },
       {
-        path: 'chonmon',
-        loadChildren: () => import('./page_congtacsv/chonmon/chonmon.module').then( m => m.ChonmonPageModule)
-      },
-      {
         path: 'lichsu',
         loadChildren: () => import('./page_congtacsv/lichsu/lichsu.module').then( m => m.LichsuPageModule)
       },
       {
-        path: 'thongtinsv',
-        loadChildren: () => import('./page_daotao/thongtinsv/thongtinsv.module').then( m => m.ThongtinsvPageModule)
+        path: 'thongtin-sv',
+        loadChildren: () => import('./page_daotao/thongtin-sv/thongtin-sv.module').then( m => m.ThongtinSvPageModule)
       },
       {
         path: 'thongtin-gv',
@@ -320,7 +277,18 @@ else // người dùng click nhớ mật khẩu
         path: 'lichsudiemdanh',
         loadChildren: () => import('./page_giangvien/lichsudiemdanh/lichsudiemdanh.module').then( m => m.LichsudiemdanhPageModule)
       },
-    
+      {
+        path: 'chitiet-vanghoc',
+        loadChildren: () => import('./page_daotao/chitiet-vanghoc/chitiet-vanghoc.module').then( m => m.ChitietVanghocPageModule)
+      },
+      {
+        path: 'tabs_ctsv',
+        loadChildren: () => import('./page_congtacsv/tabs/tabs.module').then( m => m.TabsPageModule)
+      },
+      {
+        path: 'thongtin-giangday',
+        loadChildren: () => import('./page_daotao/thongtin-giangday/thongtin-giangday.module').then( m => m.ThongtinGiangdayPageModule)
+      }
     ];
   }
   else if(chucvu == "congtacsinhvien") // chuc vu la congtacsinhvien
@@ -328,7 +296,7 @@ else // người dùng click nhớ mật khẩu
     routes = [
       {
         path: '',
-        loadChildren: () => import('./page_congtacsv/chonmon/chonmon.module').then( m => m.ChonmonPageModule)
+        loadChildren: () => import('./page_congtacsv/tabs/tabs.module').then( m => m.TabsPageModule)
       },
       { 
         path: 'chonchucvu',
@@ -347,26 +315,6 @@ else // người dùng click nhớ mật khẩu
         loadChildren: () => import('./page_daotao/tabs/tabs.module').then(m => m.TabsPageModule)
       },
       {
-        path: 'tab1',
-        loadChildren: () => import('./page_daotao/tab1/tab1.module').then( m => m.Tab1PageModule)
-      },
-      {
-        path: 'tab2',
-        loadChildren: () => import('./page_daotao/tab2/tab2.module').then( m => m.Tab2PageModule)
-      },
-      {
-        path: 'tab3',
-        loadChildren: () => import('./page_daotao/tab3/tab3.module').then( m => m.Tab3PageModule)
-      },
-      {
-        path: 'tab4',
-        loadChildren: () => import('./page_daotao/tab4/tab4.module').then( m => m.Tab4PageModule)
-      },
-      {
-        path: 'tab5',
-        loadChildren: () => import('./page_daotao/tab5/tab5.module').then( m => m.Tab5PageModule)
-      },
-      {
         path: 'quenmatkhau',
         loadChildren: () => import('./page_login/quenmatkhau/quenmatkhau.module').then( m => m.QuenmatkhauPageModule)
       },
@@ -375,16 +323,12 @@ else // người dùng click nhớ mật khẩu
         loadChildren: () => import('./page_login/dangky/dangky.module').then( m => m.DangkyPageModule)
       },
       {
-        path: 'chonmon',
-        loadChildren: () => import('./page_congtacsv/chonmon/chonmon.module').then( m => m.ChonmonPageModule)
-      },
-      {
         path: 'lichsu',
         loadChildren: () => import('./page_congtacsv/lichsu/lichsu.module').then( m => m.LichsuPageModule)
       },
       {
-        path: 'thongtinsv',
-        loadChildren: () => import('./page_daotao/thongtinsv/thongtinsv.module').then( m => m.ThongtinsvPageModule)
+        path: 'thongtin-sv',
+        loadChildren: () => import('./page_daotao/thongtin-sv/thongtin-sv.module').then( m => m.ThongtinSvPageModule)
       },
       {
         path: 'thongtin-gv',
@@ -422,12 +366,21 @@ else // người dùng click nhớ mật khẩu
         path: 'lichsudiemdanh',
         loadChildren: () => import('./page_giangvien/lichsudiemdanh/lichsudiemdanh.module').then( m => m.LichsudiemdanhPageModule)
       },
-    
+      {
+        path: 'chitiet-vanghoc',
+        loadChildren: () => import('./page_daotao/chitiet-vanghoc/chitiet-vanghoc.module').then( m => m.ChitietVanghocPageModule)
+      },
+      {
+        path: 'tabs_ctsv',
+        loadChildren: () => import('./page_congtacsv/tabs/tabs.module').then( m => m.TabsPageModule)
+      },
+      {
+        path: 'thongtin-giangday',
+        loadChildren: () => import('./page_daotao/thongtin-giangday/thongtin-giangday.module').then( m => m.ThongtinGiangdayPageModule)
+      }
     ];
   }
 }
-
-
 
 @NgModule({   
   imports: [

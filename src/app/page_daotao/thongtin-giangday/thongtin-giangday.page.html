@@ -1,0 +1,77 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Thông tin giảng dạy</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-row class='textCenter'>
+    <ion-col size='6'>
+      <p>Lớp : {{ malop }}</p>
+    </ion-col>
+    <ion-col size='6'>
+      <p>Môn : {{ monhoc }}</p>
+    </ion-col>
+  </ion-row>
+  <br>
+  <div class='border'>
+    <ion-list *ngFor='let giangday of listthongtingiangday'>
+      <ion-item>
+        <ion-col>
+          <p>Học kỳ : </p>
+        </ion-col>
+        <ion-col>
+          <p>{{ giangday.hocky }}</p>
+        </ion-col>  
+      </ion-item>
+      <ion-item>
+        <ion-col>
+          <p>Ngày học : {{ giangday.ngayhoc }}</p>  
+        </ion-col>
+      </ion-item>
+      <ion-item>
+        <ion-col>
+          <p>Giờ bắt đầu : </p>  
+        </ion-col>
+        <ion-col>
+          <p>{{ giangday.giobatdau }}</p>
+        </ion-col>
+      </ion-item>
+      <ion-item>
+        <ion-col>
+          <p>Giờ kết thúc : </p>  
+        </ion-col>
+        <ion-col>
+          <p>{{ giangday.gioketthuc }}</p>
+        </ion-col>
+      </ion-item>
+      <ion-item>
+        <ion-col size='9'>
+          <p>Số lượng sinh viên : </p>  
+        </ion-col>
+        <ion-col>
+          <p>{{ soluongsv }}</p>
+        </ion-col>
+      </ion-item>
+      <ion-item>
+        <ion-col>
+          <p>Ngày bắt đầu : </p>  
+        </ion-col>
+        <ion-col>
+          <p>{{ giangday.ngaybatdau }}</p>
+        </ion-col>
+      </ion-item>
+      <ion-item>
+        <ion-col size='7'>
+          <p>Ngày kết thúc : </p>  
+        </ion-col>
+        <ion-col>
+          <p>{{ giangday.ngayketthuc }}</p>
+        </ion-col>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>

@@ -9,6 +9,7 @@ import { AlertController, LoadingController, ToastController } from '@ionic/angu
 import { AngularFireDatabase } from '@angular/fire/database';
 import { map } from 'rxjs/operators';
 import { phangiogiang } from './modPhangio'
+import { BehaviorSubject } from 'rxjs';
 
 
 @Injectable({
@@ -17,6 +18,15 @@ import { phangiogiang } from './modPhangio'
 
 export class AuthenticationService {
 
+  // set và get giá trị mới nhất nhật cho magiangvien
+  private magv_bandau = new BehaviorSubject('rỗng') //BehaviorSubject hàm chứa (lưu) tất cả giá trị số, chữ, mảng, ...
+  changeMaGV(mgv : string)
+  {
+    this.magv_bandau.next(mgv)
+  }
+  getMagv_hientai = this.magv_bandau.asObservable() //asObservable lấy ra giá trị mới nhất của magv_bandau nếu thay đổi
+
+  //
   chucvu : string = ''
   magiangvien : string = ''
   mssv : string = ''
@@ -30,15 +40,35 @@ export class AuthenticationService {
   ngayketthuc : string = ''
   giobatdau : string = ''
   gioketthuc : string = ''
+  ngaydiemdanh : string = ''
   ngayhoc : any = []
   phonghoc = ''
   email = ''
   listthoikhoabieu  = []
+  tuPagedangnhapqua = false
+  tenmonhoc = ''
+  listThongtinvanghoc = []
 
   arrayUser : any 
   // tạo mảng user
   public userData: any;
   // getter and setter
+  setListthongtinvanghoc(lvh : any)
+  {
+    this.listThongtinvanghoc = lvh
+  }
+  getListthongtinvanghoc()
+  {
+    return this.listThongtinvanghoc
+  }
+  setTenmonhoc(tmh : string)
+  {
+    this.tenmonhoc = tmh
+  }
+  getTenmonhoc()
+  {
+    return this.tenmonhoc
+  }
   setChucvu(cv : string)
   {
     this.chucvu = cv
@@ -167,6 +197,22 @@ export class AuthenticationService {
   {
     return this.listthoikhoabieu
   }
+  setNgaydiemdanh(ndd : string)
+  {
+    this.ngaydiemdanh = ndd
+  }
+  getNgaydiemdanh()
+  {
+    return this.ngaydiemdanh
+  }
+  setTuPagedangnhapqua(tpdnq : boolean)
+  {
+    this.tuPagedangnhapqua = tpdnq
+  }
+  getTuPagedangnhapqua()
+  {
+    return this.tuPagedangnhapqua
+  }
 
   // add các function muốn sử dụng vào constructor
   constructor(
@@ -178,23 +224,7 @@ export class AuthenticationService {
     public loadingController : LoadingController,
     public afDB : AngularFireDatabase,
     public toastController : ToastController
-  ) {
-    // kiểm tra xem có user trên database hay chưa
-    this.ngFireAuth.authState.subscribe(user => {
-      if (user) 
-      {
-        this.userData = user;
-        localStorage.setItem('user', JSON.stringify(this.userData)); // set gia tri cho user luu trên local
-        JSON.parse(localStorage.getItem('user')); // chuyển chuỗi thành json
-      } 
-      else 
-      {
-        localStorage.setItem('user', null);
-        JSON.parse(localStorage.getItem('user'));
-      }
-    })
-
-  }
+  ) {}
 
   //thong bao
   async presentAlert(title : String, msg : String, trangmuonchuyenden : String) {
@@ -287,8 +317,6 @@ export class AuthenticationService {
     const { role, data } = await loading.onDidDismiss();
     //console.log('Loading dismissed!');
   }
-
-  // toast
    // toast
    async presentToast(msg : string, thoigianToast : number) {
     const toast = await this.toastController.create({
@@ -301,9 +329,9 @@ export class AuthenticationService {
   // Đăng ký 
   RegisterUser(email, password) {
     return this.ngFireAuth.auth.createUserWithEmailAndPassword(email, password).then((result) => {
-        this.SendVerificationMail(); // gởi mail xác nhận
-        this.presentLoading("Vui lòng chờ...", 1000)
-        this.router.navigate(['xacthuc-email']);
+        //this.SendVerificationMail(); // gởi mail xác nhận
+        this.presentToast('Bạn đã đăng ký tài khoản thành công', 2500)
+        this.router.navigate(['dangnhap']);
         // set user lên firebase
         this.SetUserData(result.user);
     }).catch((error)=>{
@@ -324,15 +352,7 @@ export class AuthenticationService {
     return this.ngFireAuth.auth.currentUser.sendEmailVerification()
   }
 
-  //reset password
-  resetPassword(email: string) {
-    var auth = firebase.auth();
-    return auth.sendPasswordResetEmail(email)
-      .then(() => console.log("email sent"))
-      .catch((error) => console.log(error))
-  }
   // Quên mật khẩu
-
  PasswordRecover(passwordResetEmail) {
   return this.ngFireAuth.auth.sendPasswordResetEmail(passwordResetEmail)
   .then(() => {
@@ -348,52 +368,6 @@ export class AuthenticationService {
     }
   })
 }
-
-  // Returns true when user is looged in
-  get isLoggedIn(): boolean {
-    const user = JSON.parse(localStorage.getItem('user'));// chuyển đổi json thành chuỗi và gán vào biến user
-    return (user !== null && user.emailVerified !== false) ? true : false; // user khác rỗng và emailFerfied trong list user khác false thì trả về true ngược lại trả về false
-  }
-
-  
-  // Returns true when user's email is verified (đã xác minh rồi)
-  get isEmailVerified(): boolean {
-    const user = JSON.parse(localStorage.getItem('user'));
-    return (user.emailVerified !== false) ? true : false;
-  }
-
-  // Sign in with Gmail
-  GoogleAuth() {
-    this.getChucvu()
-    return this.AuthLogin(new auth.GoogleAuthProvider())
-  }
-
-  // Auth providers
-  AuthLogin(provider) {
-    this.getChucvu()
-    return this.ngFireAuth.auth.signInWithPopup(provider) // xác thực người dùng
-    .then((result) => {  //(result : kết quả)
-      if(this.chucvu == "daotao")
-      {
-        this.presentLoading("Vui lòng chờ...", 2500)
-        this.router.navigate(['tabs/tab1'])
-      }
-      else if(this.chucvu == "giangvien")
-      {
-        this.presentLoading("Vui lòng chờ...", 2500)
-        this.router.navigate(['thoikhoabieu'])
-      }
-      else if(this.chucvu == "congtacsinhvien")
-      {
-        this.presentLoading("Vui lòng chờ...", 2500)
-        this.router.navigate(['chonmon'])
-      }
-      //khoi setuserData nha
-    }).catch((error) => {
-      console.log('Lỗi ' + error)
-    })
-  }
-
   // set du lieu cho mang user 
   SetUserData(user) {
     this.chucvu = this.getChucvu()

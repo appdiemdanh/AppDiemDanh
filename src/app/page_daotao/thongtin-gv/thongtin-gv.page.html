@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref='tabs/tab1'></ion-back-button>
+      <ion-back-button></ion-back-button>
     </ion-buttons>
     <ion-title>Thông tin giảng viên</ion-title>
   </ion-toolbar>
@@ -9,24 +9,42 @@
 
 <ion-content>
   <br>
-  <form *ngFor = 'let gv of listgiangvien'>
-    <ion-list *ngIf = 'gv.B == msgv'>
+  <form>
+    <ion-list *ngFor = 'let gv of thongtingiangvien'>
       <ion-item>
-        <p>Tên giảng viên : </p>  
-        <ion-label slot="end" >{{gv.C}}</ion-label>
+        <ion-col>
+          <p>Tên giảng viên : {{ gv.C }}</p>
+        </ion-col>    
       </ion-item>
       <ion-item>
         <p>MSGV : </p>  
-        <ion-label slot="end">{{gv.B}}</ion-label>
+        <ion-label slot="end">{{ gv.B }}</ion-label>
       </ion-item>
       <ion-item>
         <p>Ngày sinh : </p>  
-        <ion-label slot="end">{{gv.D}}</ion-label>
+        <ion-label slot="end">{{ gv.D }}</ion-label>
       </ion-item>
       <ion-item>
         <p>Nơi sinh : </p>  
-        <ion-label slot="end">{{gv.E}}</ion-label>
+        <ion-label slot="end">{{ gv.E }}</ion-label>
       </ion-item>
     </ion-list>
+    <div>
+      <ion-item (click)="isShowLop = !isShowLop">
+        <ion-col size='10.5'>
+          <p>Đang dạy : {{ solopdangday }} lớp</p>
+        </ion-col>
+        <ion-col size='1.5'>
+          <ion-icon name="chevron-down-outline" *ngIf="isShowLop == false" ></ion-icon>
+          <ion-icon name="chevron-up-outline" *ngIf="isShowLop == true" ></ion-icon>
+        </ion-col>
+      </ion-item>
+      <ion-list *ngFor='let lopdangday of mang_lopdangday'>
+        <ion-item *ngIf="isShowLop == true" class="danhsachlop" (click)='xemThongtingiangday(lopdangday.magiangvien, lopdangday.lop, lopdangday.tenmonhoc)'>
+          <p>{{ lopdangday.lop }} - {{ lopdangday.tenmonhoc }} </p>
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        </ion-item>
+      </ion-list>
+    </div>
   </form>
 </ion-content>

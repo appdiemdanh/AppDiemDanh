@@ -15,13 +15,14 @@ export class DiemdanhPage implements OnInit {
   day = new Date()
   malop = ''
   monhoc = ''
+  hocky = ''
+  tengiangvien = ''
   tensv : string = ''
   thungaythangnamhientai = ''
   soluongsinhvien : number
   isChecked = false
   dadiemdanhroi : boolean = false
   chontatca : boolean = false
-  listfirebase : any
   listsinhvien = [] // muc đích dấu [] để có thể sử dụng hàm push()
   listsvdihoc : any = []
   listsvvanghoc : any = []
@@ -38,83 +39,36 @@ export class DiemdanhPage implements OnInit {
     public toastController : ToastController
   ) {
     // lay gia tri tu ben thoikhoabieu truyen qua
-    this.malop = this.authService.getMalop()
+    this.malop  = this.authService.getMalop()
     this.monhoc = this.authService.getMsmh()
+    this.hocky  = this.authService.getHocky()
+    this.tengiangvien = authService.getTengiangvien()
     this.listthoikhoabieu.push(this.authService.getListTKB())
-    // gan gia tri cho ngaythangnamhientai
-    let thu = "Thứ " + (this.day.getDay() + 1) 
-    if(thu == "Thứ 1")
-    {
-      thu = "Chủ nhật"
-    }
-    this.thungaythangnamhientai = thu + "  " + this.day.getDate() + "-" + (this.day.getMonth() + 1) + "-" + this.day.getFullYear()
-    // điều kiện show ra ion-list
+   
    }
-  /**
-  *  sau khi chạy qua điều kiện malop(firebase) == malop(thoikhoabieu truyen qua)
-  *  thì list trả ra kiểu [object] nên listsinhvien hứng(push về) cũng phải kiểu [] để bên file html đọc được 
-  */
+  
   ngOnInit() {
-    // gán giá trị với điều kiện ...
-    this.afDB.list('danhsachsinhvienk18').valueChanges().subscribe((res)=>
+    this.getPresentDateTime()
+    this.getLopdiemdanh()
+    this.checkDadiemdanh()
+  }
+  // get present date time
+  getPresentDateTime()
+  {
+    // thứ hiện tại
+    let thuhientai = "Thứ " + (this.day.getDay() + 1) + ""
+    if(thuhientai == "Thứ 1")
     {
-      this.listfirebase = res
-      for(let lfb of this.listfirebase)
-      {
-        if(lfb.A == this.malop)
-        {
-          this.listsinhvien.push(lfb)
-          this.listsvvanghoc.push(lfb.D)
-          this.soluongsinhvien =  this.listsinhvien.length
-        }
-      }
-    })
-    /**
-     * Đầu tiên : listdiemdanh có item giodiemdanh
-     *            listthoikhoabieu có item giobatdau, gioketthuc
-     * Dưới đây mình sẽ trả về lớp này đã điểm danh hay chưa với biến dadiemdanhroi : boolean
-     * nếu listdiemdanh nó tồn tại: giodiemdanh >= giobatdau và giodiemdanh <= gioketthuc 
-     *    tức là đã điểm danh rồi => thì biến dadiemdanhroi = true (Khởi tạo cho nó bằng false)
-     * 
-     */
-    this.afDB.list('diemdanh').valueChanges().subscribe(res=>
-      { 
-        this.listdiemdanh = res
-        for(let ldd of this.listdiemdanh)
-        {
-          if(ldd.ngaydiemdanh == this.thungaythangnamhientai)
-          {
-           for(let ltkb of this.listthoikhoabieu)
-           {
-             //console.log(ltkb.ngaybatdau)
-             // giobatdau va gioketthuc trên firebase có dạng : Tiết x - giờ:phút => bây giờ mình sẽ cắt giờ với phút ra                                    phần tử: 012345678    
-             var giophutbatdau = ltkb.giobatdau.split("-")[1].slice(1) // giobatdau cắt ra khi gặp dấu "-" lấy phần tử thứ 1, sau đó cắt tại phần tử thứ 1 đến hết   _gio:phut (_ là khoảng trống)
-             var giophutketthuc = ltkb.gioketthuc.split("-")[1].slice(1) 
-             //
-             let giobatdau = new Date(null,null,null, giophutbatdau.split(":")[0], giophutbatdau.split(":")[1]) // nam,thang,ngay, gio, phut
-             let gioketthuc = new Date(null,null,null, giophutketthuc.split(":")[0], giophutketthuc.split(":")[1]) // nam,thang,ngay, gio, phut
-             let giodiemdanh = new Date(null,null,null, ldd.giodiemdanh.split(":")[0], ldd.giodiemdanh.split(":")[1]) // nam,thang,ngay, gio, phut
-            
-             if(giodiemdanh >= giobatdau)
-             {
-                if(giodiemdanh <= gioketthuc)
-                {
-                  //console.log(ltkb.giobatdau)
-                  this.dadiemdanhroi = true 
-                }     
-             }
-           }
-          }
-        }
-
-      })
+      thuhientai = "Chủ Nhật"
+    }
+    this.thungaythangnamhientai = thuhientai + " " + this.day.getDate() + "-" + (this.day.getMonth() + 1) + "-" + this.day.getFullYear()
   }
   // get trạng thái click của ion-checkbox
   getStatus(event)
   {
     this.chontatca = event.detail.checked
-    //console.log(event.detail.checked)
   }
+
   /**
    * Đầu tiên listsvvangmat = listsinhvien (tại vì lúc đầu listsv chưa được check nếu được sv nào được check thì là đã đi học), listsvdihoc = []
    * if 1 : nếu sv được checked thì:
@@ -151,6 +105,71 @@ export class DiemdanhPage implements OnInit {
     }
   }
 
+  /**
+   * 
+   */
+  getLopdiemdanh()
+  {
+    this.afDB.list('danhsachsinhvienk18').valueChanges().subscribe(res =>
+      {
+        let danhsachsv : any = res
+        danhsachsv.filter(item_sv =>{
+          if(item_sv.A == this.malop)
+          {
+            this.listsinhvien.push(item_sv)
+            this.listsvvanghoc.push(item_sv.D)
+            this.soluongsinhvien =  this.listsinhvien.length
+          }
+        })
+      })
+  }
+
+  /**
+     * đầu tiên : lọc ra phần tử điểm danh thõa điều kiện : lop, monhoc, ngaydiemdanh trùng nhau (của firebase và biến truyền qua) thì xuống phía dưới so sánh thời gian
+     * Dưới đây mình sẽ trả về lớp này đã điểm danh hay chưa với biến dadiemdanhroi : boolean
+     * nếu listdiemdanh nó tồn tại: giodiemdanh >= giobatdau và giodiemdanh <= gioketthuc 
+     *    tức là đã điểm danh rồi => thì biến dadiemdanhroi = true ngược lại = false
+     * 
+     */
+  checkDadiemdanh()
+  {
+    this.afDB.list('diemdanh').valueChanges().subscribe(res=>
+      { 
+        this.listdiemdanh = res
+        for(let ldd of this.listdiemdanh)
+        {
+          if(ldd.lop == this.malop && ldd.monhoc == this.monhoc && ldd.ngaydiemdanh == this.thungaythangnamhientai)
+          {
+           for(let ltkb of this.listthoikhoabieu)
+           {
+             // giobatdau va gioketthuc trên firebase có dạng : Tiết x - giờ:phút => bây giờ mình sẽ cắt giờ với phút ra                                    phần tử: 012345678    
+             var giophutbatdau = ltkb.giobatdau.split("-")[1].slice(1) // giobatdau cắt ra khi gặp dấu "-" lấy phần tử thứ 1, sau đó cắt tại phần tử thứ 1 đến hết   _gio:phut (_ là khoảng trống)
+             var giophutketthuc = ltkb.gioketthuc.split("-")[1].slice(1) 
+             // format qua dạng Date để so sánh
+             let giobatdau = new Date(null,null,null, giophutbatdau.split(":")[0], giophutbatdau.split(":")[1]) // nam,thang,ngay, gio, phut
+             let gioketthuc = new Date(null,null,null, giophutketthuc.split(":")[0], giophutketthuc.split(":")[1]) // nam,thang,ngay, gio, phut
+             let giodiemdanh = new Date(null,null,null, ldd.giodiemdanh.split(":")[0], ldd.giodiemdanh.split(":")[1]) // nam,thang,ngay, gio, phut
+             
+             if(giodiemdanh >= giobatdau && giodiemdanh <= gioketthuc)
+             {
+                this.dadiemdanhroi = true 
+             }
+             else 
+             {
+               this.dadiemdanhroi = false
+             }
+           }
+          }
+        }
+
+      })
+  }
+
+  xemThongtindiemdanh()
+  {
+    this.authService.setNgaydiemdanh(this.thungaythangnamhientai)
+    this.router.navigate(['thongtindiemdanh'])
+  }
   sendDiemDanh()
   {
       //console.log('List sv vắng học :' ,this.listsvvanghoc)
@@ -219,7 +238,8 @@ export class DiemdanhPage implements OnInit {
     let tengiangvien            = this.authService.getTengiangvien()
     // tao bien data
     let data : DiemDanh = {
-      id               : autoID,
+      id                : autoID,
+      hocky             : this.hocky,
       lop               : this.malop,
       monhoc            : this.monhoc,
       giangvienday      : tengiangvien,
@@ -235,6 +255,7 @@ export class DiemdanhPage implements OnInit {
     // push data lên firebase
     this.afDB.list('diemdanh').push(data).then(res=>
       {
+        this.authService.setNgaydiemdanh(this.thungaythangnamhientai)
         this.presentToast()
         this.router.navigate(['thongtindiemdanh'])
       })

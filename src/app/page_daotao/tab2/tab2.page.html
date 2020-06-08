@@ -7,6 +7,7 @@
 <ion-content>
   <h4>Danh sách môn học</h4>
   <ion-item>
+    <ion-icon name="hourglass-outline"></ion-icon>
     <ion-label class="txtLoctheo">Lọc theo : </ion-label>
     <ion-select (ionChange)='getHocky($event)'>
       <ion-select-option *ngFor='let hk of listhocky'>

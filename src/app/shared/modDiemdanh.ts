@@ -1,6 +1,7 @@
 export interface DiemDanh
 {
     id                  : number;
+    hocky               : string;
     lop                 : string;
     monhoc              : string;
     giangvienday        : string;

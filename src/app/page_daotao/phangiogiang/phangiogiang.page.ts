@@ -96,10 +96,10 @@ export class PhangiogiangPage implements OnInit {
     public router : Router,
   ) { 
      //gan gia tri 
-     this.hocky = this.authService.getHocky()
-     this.tengiangvien = this.authService.getMsgv()
-     this.hk = this.hocky.slice(2) // cat tu vi tri thu 2 lay het phan tu con lai
-  }
+     this.hocky         = this.authService.getHocky()
+     this.tengiangvien  = this.authService.getTengiangvien()
+     this.hk            = this.hocky.slice(2) // cat tu vi tri thu 2 lay het phan tu con lai
+    }
 
   ngOnInit() {
     // lay gia tri tren firbase gan cho listmonhoc va listgiangvien
@@ -159,7 +159,7 @@ export class PhangiogiangPage implements OnInit {
      this.ngayhoc += itemngayhoc + " "
   }
   
-  iconDelete()
+  removeNgayhoc()
   {
     this.ngayhoc = ""  // xoa ngayhoc 
     this.mangngayhoc = [] // xoa mangngayhoc
@@ -192,7 +192,7 @@ export class PhangiogiangPage implements OnInit {
       this.authService.setNgayketthuc(namthangngayketthuc)
       this.authService.setGiobatdau(this.giobatdau) 
       this.authService.setGioketthuc(this.gioketthuc)
-      this.authService.setNgayhoc(this.mangngayhoc) 
+      this.authService.setNgayhoc(this.mangngayhoc)
       //chuyen trang
       this.router.navigate(['thongtinphangio'])    
     }

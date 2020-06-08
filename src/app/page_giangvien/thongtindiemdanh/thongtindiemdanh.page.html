@@ -14,30 +14,46 @@
     </ion-card-header> 
     
     <ion-card-content>
-      <ion-list *ngFor='let ldd of listdiemdanhcuoicung'>
-        <ion-item>Ngày điểm danh      : {{ldd.ngaydiemdanh}}</ion-item>
-        <ion-item>Giờ điểm danh       : {{ldd.giodiemdanh}}</ion-item>
-        <ion-item>Lớp                 : {{ldd.lop}}</ion-item>
-        <ion-item>Môn học             : {{ldd.monhoc}}</ion-item>
+      <ion-list *ngFor='let thongtindd of thongtindiemdanh'>
+        <ion-item>
+          <p>Ngày điểm danh : {{ thongtindd.ngaydiemdanh }}</p>
+        </ion-item>
+        <ion-item>
+          <p>Giờ điểm danh : {{ thongtindd.giodiemdanh }}</p>
+        </ion-item>
+        <ion-item>
+          <p>Lớp : {{ thongtindd.lop }}</p>
+        </ion-item>
+        <ion-item>
+          <p>Môn học :{{ thongtindd.monhoc }}</p>
+        </ion-item>
         <div>
-          <ion-item>
-            <ion-label>Đi học    : {{ldd.soluongSVdihoc}} sinh viên</ion-label>
-            <ion-icon name="chevron-down-outline" *ngIf='isshowDihoc == false' (click)='isshowDihoc = true' slot="end"></ion-icon>
-            <ion-icon name="chevron-up-outline" *ngIf='isshowDihoc == true' (click)='isshowDihoc = false' slot="end"></ion-icon>
+          <ion-item (click)='isshowDihoc = !isshowDihoc'>
+            <ion-col size='10.5'>
+              <p>Đi học : {{ thongtindd.soluongSVdihoc }} sinh viên</p>
+            </ion-col>
+            <ion-col size='1.5'>
+              <ion-icon name="chevron-down-outline" *ngIf='isshowDihoc == false'></ion-icon>
+              <ion-icon name="chevron-up-outline" *ngIf='isshowDihoc == true'></ion-icon>
+            </ion-col>
           </ion-item>
-          <ion-item-sliding *ngFor='let dihoc of ldd.danhsachSVdihoc'>
+          <ion-item-sliding *ngFor='let dihoc of thongtindd.danhsachSVdihoc'>
             <ion-item *ngIf='isshowDihoc == true' class="danhsachsv">
               <p>{{dihoc}}</p>
             </ion-item>
           </ion-item-sliding>
         </div>
         <div>
-          <ion-item>
-            <ion-label>Vắng học  : {{ldd.soluongSVvanghoc}} sinh viên</ion-label>
-            <ion-icon name="chevron-down-outline" *ngIf='isshowVanghoc == false' (click)='isshowVanghoc = true' slot="end"></ion-icon>
-            <ion-icon name="chevron-up-outline" *ngIf='isshowVanghoc == true' (click)='isshowVanghoc = false' slot="end"></ion-icon>
+          <ion-item (click)='isshowVanghoc = !isshowVanghoc'>
+            <ion-col size='10.5'>
+              <p>Vắng học : {{ thongtindd.soluongSVvanghoc }} sinh viên</p>
+            </ion-col>
+            <ion-col size='1.5'>
+              <ion-icon name="chevron-down-outline" *ngIf='isshowVanghoc == false'></ion-icon>
+              <ion-icon name="chevron-up-outline" *ngIf='isshowVanghoc == true'></ion-icon>
+            </ion-col>
           </ion-item>
-          <ion-item-sliding *ngFor='let vanghoc of ldd.danhsachSVvanghoc'>
+          <ion-item-sliding *ngFor='let vanghoc of thongtindd.danhsachSVvanghoc'>
             <ion-item *ngIf='isshowVanghoc == true' class="danhsachsv">
               <p>{{vanghoc}}</p>
             </ion-item>

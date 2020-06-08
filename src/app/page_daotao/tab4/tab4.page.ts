@@ -10,8 +10,6 @@ import { AuthenticationService } from 'src/app/shared/authenticatin-Service';
 })
 export class Tab4Page implements OnInit {
 
-  isChecked = ""
-  id = ""
   listsinhvien : any
 
   public sothutu = ''
@@ -31,7 +29,7 @@ export class Tab4Page implements OnInit {
   {
     this.authService.setMssv(mssv + "")
     //console.log(mssv)
-    this.router.navigate(['thongtinsv'])
+    this.router.navigate(['thongtin-sv'])
   }
 
 }

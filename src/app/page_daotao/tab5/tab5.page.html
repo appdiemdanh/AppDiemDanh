@@ -9,18 +9,18 @@
   <ion-item>
     <ion-label>Chọn học kỳ</ion-label>
     <ion-select (ionChange)='getHocky($event)'>
-      <ion-select-option *ngFor='let hk of listhocky'>{{hk.B}}</ion-select-option>
+      <ion-select-option *ngFor='let hk of listhocky'>{{ hk.B }}</ion-select-option>
     </ion-select>
-  </ion-item><br>
+  </ion-item>
+  <br>
   <ion-item>
     <ion-label>Chọn giảng viên</ion-label>
-    <ion-select (ionChange)='getGiangvien($event)'>
-      <ion-select-option *ngFor='let gv of listgiangvien'>{{gv.C}}  - {{gv.B}}</ion-select-option>
+    <ion-select (ionChange)='getTenGiangvien($event)'>
+      <ion-select-option *ngFor='let gv of listgiangvien'>{{ gv.C }}</ion-select-option>
     </ion-select>
   </ion-item>
   <ion-grid>
     <ion-button type='submit' (click)="nextPage()" expand='block' class="btnTieptuc">Tiếp tục</ion-button>
-    <ion-button type="submit" color='danger' (click)='logOut()'expand='block'>Đăng Xuất</ion-button>
+    <ion-button type="submit" color='danger' (click)='logOut()' expand='block'>Đăng Xuất</ion-button>
   </ion-grid>
-
 </ion-content>

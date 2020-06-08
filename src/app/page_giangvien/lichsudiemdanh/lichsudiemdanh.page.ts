@@ -10,6 +10,8 @@ import { AngularFireDatabase } from '@angular/fire/database';
 export class LichsudiemdanhPage implements OnInit {
 
   malop = ''
+  monhoc = ''
+  tengiangvien = ''
   listdiemdanh : any = [] 
 
   isShowDihoc = false
@@ -19,24 +21,30 @@ export class LichsudiemdanhPage implements OnInit {
     public authService : AuthenticationService,
     public afDB : AngularFireDatabase
   ) {
-    this.malop = this.authService.getMalop()
+    this.malop          = this.authService.getMalop()
+    this.monhoc         = this.authService.getMsmh()
+    this.tengiangvien   = this.authService.getTengiangvien()
    }
 
-  /**
-   * Mảng lấy từ firebase về nếu lọc điều kiện thì mảng hứng giá trị phải dùng hảm push()
-   * nếu không lọc thì dùng dấu = luôn
-   */
   ngOnInit() {
+    this.getLichsudiemdanh()
+  }
+
+  /**
+   * lấy ra list điểm danh thỏa điều kiện : cùng lớp, cùng môn học, cùng giảng viên dạy
+   */
+  getLichsudiemdanh()
+  {
     this.afDB.list('diemdanh').valueChanges().subscribe(res=>
       {
         let diemdanh : any = res
         for(let ldd of diemdanh)
         {
-          if(ldd.lop == this.malop)
+          if(ldd.lop == this.malop && ldd.monhoc == this.monhoc && ldd.giangvienday == this.tengiangvien) 
           {
             //console.log(ldd)
             this.listdiemdanh.push(ldd)
-           }
+          }
         }
       })
   }

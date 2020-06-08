@@ -3,34 +3,77 @@
       <ion-buttons slot="start">
           <ion-back-button></ion-back-button>
         </ion-buttons>
-    <ion-title>Công tác sinh viên</ion-title>
+    <ion-title>Thống kê</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content>
+  <br>
+  <ion-item>
+    <ion-col>Lớp : {{malop}}</ion-col>
+    <ion-col>Môn học : {{monhoc}}</ion-col>
+  </ion-item>
   <ion-list *ngFor='let ldd of listdiemdanh'>
-    <ion-card>
+    <ion-card *ngIf='noData == false'>
       <ion-card-header>
-        <ion-item>
-          <ion-card-title class="title">{{ldd.ngaydiemdanh}}</ion-card-title>
-        </ion-item>
+        <ion-card-title class="title">{{ldd.ngaydiemdanh}}</ion-card-title>
       </ion-card-header>
-    
       <ion-card-content>
-        <ion-item>Ngày điểm danh      : {{ldd.ngaydiemdanh}}</ion-item>
-        <ion-item>Giờ điểm danh       : {{ldd.giodiemdanh}}</ion-item>
-        <ion-item>Lớp                 : {{ldd.lop}}</ion-item>
-        <ion-item>Môn học             : {{ldd.monhoc}}</ion-item>
         <ion-item>
-          Sinh viên đi hoc    : {{ldd.soluongSVdihoc}} sinh viên
+          <ion-col>
+            <p>Giờ điểm danh : {{ ldd.giodiemdanh }}</p>
+          </ion-col>
         </ion-item>
         <ion-item>
-          Sinh viên vắng học  : {{ldd.soluongSVvanghoc}} sinh viên
+          <ion-col>
+            <p>Giảng viên dạy : {{ ldd.giangvienday }}</p>
+          </ion-col>
         </ion-item>
+        <div>
+          <ion-item (click)='isShowDihoc = !isShowDihoc'>
+            <ion-col size='10.5'>
+              <p>Đi học : {{ ldd.soluongSVdihoc }} sinh viên</p>
+            </ion-col>
+            <ion-col size='1.5'>
+              <ion-icon name="chevron-down-outline" *ngIf='isShowDihoc == false'></ion-icon>
+              <ion-icon name="chevron-up-outline" *ngIf='isShowDihoc == true'></ion-icon>
+            </ion-col>
+          </ion-item>
+          <ion-item-sliding *ngFor='let dihoc of ldd.danhsachSVdihoc'>
+            <ion-item *ngIf='isShowDihoc == true' class="danhsachsv">
+              <p> {{dihoc}} </p>
+            </ion-item>
+          </ion-item-sliding>
+        </div>
+         <div>
+          <ion-item (click)='isShowVanghoc = !isShowVanghoc'>
+            <ion-col size='10.5'>
+              <p>Vắng học : {{ ldd.soluongSVvanghoc }} sinh viên</p>
+            </ion-col>
+            <ion-col size='1.5'>
+              <ion-icon name="chevron-down-outline" *ngIf='isShowVanghoc == false'></ion-icon>
+              <ion-icon name="chevron-up-outline" *ngIf='isShowVanghoc == true'></ion-icon>
+            </ion-col>
+          </ion-item>
+          <ion-item-sliding *ngFor='let vanghoc of ldd.danhsachSVvanghoc'>
+            <ion-item *ngIf='isShowVanghoc == true' class="danhsachsv">
+              <p> {{vanghoc}} </p>  
+            </ion-item>
+          </ion-item-sliding>
+         </div>
+         <div>
+           <ion-item>
+              <ion-col>
+                <p>
+                  Tỉ lệ đi học :
+                  {{ ((ldd.danhsachSVdihoc.length / (ldd.danhsachSVvanghoc.length + ldd.danhsachSVdihoc.length)) * 100).toFixed(0) }} % <!-- number.toFixed(0) : làm tròn ở hàng thập phân 0 chữ số -->
+                </p>
+              </ion-col>
+           </ion-item>
+         </div>
       </ion-card-content>
     </ion-card>
   </ion-list>
-  <ion-grid>
-    <ion-button type='submit' color='danger' (click)='logOut()' expand='block'>Đăng xuất</ion-button>
-  </ion-grid>
-  <br>
+  <ion-label class="text_noData" *ngIf='noData == true'>
+    <p>Chưa có thông tin điểm danh của lớp này với môn mà bạn chọn.</p>
+  </ion-label>
 </ion-content>

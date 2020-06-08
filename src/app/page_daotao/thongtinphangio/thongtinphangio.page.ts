@@ -30,22 +30,21 @@ export class ThongtinphangioPage implements OnInit {
     public authService : AuthenticationService,
     public afDB : AngularFireDatabase,
   ) { 
-    this.GanGiaTriChoBien()
   }
 
   ngOnInit() {
-    // lay ra id phangio
+    this.GanGiaTriChoBien()
     this.afDB.list('phangiogiang').valueChanges().subscribe(res=>{
-        this.listphangio = res
+      this.listphangio = res
     })
   }
   GanGiaTriChoBien()
   {
     this.hocky        = this.authService.getHocky()
-    this.tengiangvien = this.authService.getMsgv() /// ten ham cung k quan trong mà quan trọng là giá trị trả về trong hàm đó thôi :))
+    this.tengiangvien = this.authService.getTengiangvien() 
     this.magiangvien  = this.authService.getMagiangvien()
     this.lop          = this.authService.getMalop()
-    this.tenmonhoc    = this.authService.getMsmh() //sai chung voi ham getMsmh() cho khoe đỡ tao ham getTenmonhoc() moi
+    this.tenmonhoc    = this.authService.getMsmh() 
     this.tenphonghoc  = this.authService.getPhonghoc()
     this.ngaybatdau   = this.authService.getNgaybatdau()
     this.ngayketthuc  = this.authService.getNgayketthuc()
@@ -63,6 +62,7 @@ export class ThongtinphangioPage implements OnInit {
     }
     else
     {
+      // get id hiện tại
       let id = 0
       for(let pg of this.listphangio)
       {
@@ -99,7 +99,7 @@ export class ThongtinphangioPage implements OnInit {
         console.log('Lỗi ' + error)
       })  
     }  
-  }
+  } 
 
 }
 

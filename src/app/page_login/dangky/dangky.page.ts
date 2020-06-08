@@ -89,8 +89,15 @@ export class DangkyPage implements OnInit {
         {
           if(this.repassword == this.password) // nhap lai mat khau phai dung
           {
+            if (this.mabaomat == this.mabaomatFirebase)
+            {
               localStorage.setItem('magiangvien', this.magiangvien) // luu mã giảng viên lên local
               this.authService.RegisterUser(this.email, this.password)
+            }
+            else
+            {
+              this.authService.presentAlert4('Mã bảo mật bạn nhập chưa chính xác')
+            }
           }
           else
           {

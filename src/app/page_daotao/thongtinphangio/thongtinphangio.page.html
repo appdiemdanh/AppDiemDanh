@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref='phangiogiang'></ion-back-button>
+      <ion-back-button></ion-back-button>
     </ion-buttons>
     <ion-title></ion-title>
   </ion-toolbar>
@@ -13,18 +13,65 @@
         <ion-card-title class="title">Thông tin phân giờ</ion-card-title>
       </ion-card-header>
     <ion-card-content>
-        <ion-item>Học kỳ        : {{hocky}}</ion-item>
-        <ion-item>Giảng viên    : {{tengiangvien}}</ion-item>
-        <ion-item>Mã giảng viên : {{magiangvien}}</ion-item>
-        <ion-item>Lớp           : {{lop}}</ion-item>
-        <ion-item>Môn học       : {{tenmonhoc}}</ion-item>
-        <ion-item> Phòng học     : {{tenphonghoc}}</ion-item>
-        <ion-item>Ngày bắt đầu  : {{ngaybatdau}}</ion-item>
-        <ion-item>Ngày kết thúc : {{ngayketthuc}}</ion-item>
-        <ion-item>Giờ bắt đầu   : {{giobatdau}}</ion-item>
-        <ion-item>Giờ kết thúc  : {{gioketthuc}}</ion-item>
-        <ion-item>Ngày học      : {{ngayhoc}}</ion-item>
-
+        <ion-item>
+          <ion-col>
+            <p>Học kỳ :</p>
+          </ion-col>
+          <ion-col>
+            <p>{{ hocky }}</p>
+          </ion-col> 
+        </ion-item>
+        <ion-item>
+          <ion-col>
+            <p>Giảng viên : {{ tengiangvien }}</p>
+          </ion-col>
+        </ion-item>
+        <ion-item>
+          <ion-col>
+            <p>Mã giảng viên : {{ magiangvien }}</p>
+          </ion-col>
+        </ion-item>
+        <ion-item>
+          <ion-col>
+            <p>Lớp :</p>
+          </ion-col>
+          <ion-col>
+            <p>{{ lop }}</p>
+          </ion-col>
+        </ion-item>
+        <ion-item>
+          <ion-col>
+            <p>Môn học : {{ tenmonhoc }}</p>
+          </ion-col>
+        </ion-item>
+        <ion-item> 
+          <ion-col>
+            <p>Phòng học :</p>
+          </ion-col>
+          <ion-col>
+            <p>{{ tenphonghoc }}</p>
+          </ion-col>
+        </ion-item>
+        <ion-item>
+          <ion-col>
+            <p>Ngày bắt đầu : {{ ngaybatdau }}</p>
+          </ion-col>
+        </ion-item>
+        <ion-item>
+          <ion-col>
+            <p>Ngày kết thúc : {{ ngayketthuc }}</p>
+          </ion-col>
+        </ion-item>
+        <ion-item>
+          <ion-col>
+            <p>Giờ bắt đầu : {{ giobatdau }}</p>
+          </ion-col>
+        </ion-item>
+        <ion-item>
+          <ion-col>
+            <p>Giờ kết thúc : {{ gioketthuc }}</p>
+          </ion-col>
+        </ion-item>
         <br>
         <ion-row>
           <ion-col>

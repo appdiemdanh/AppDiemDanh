@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Home</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <br>
+  <ion-item>
+    <ion-label>Chọn học kỳ</ion-label>
+    <ion-select (ionChange)="getHocky($event)">
+    <ion-select-option *ngFor='let hocky of mangHocky' >{{hocky}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label>Chọn lớp</ion-label>
+    <ion-select (ionChange)="getLophoc($event)">
+    <ion-select-option *ngFor='let lop of mangLophoc' >{{lop}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label>Chọn môn</ion-label>
+    <ion-select (ionChange)="getMonhoc($event)">
+    <ion-select-option *ngFor='let mon of mangMonhoc' >{{mon}}</ion-select-option>
+    </ion-select>
+  </ion-item><br><br>
+  <ion-row>
+    <ion-col>
+      <ion-button type="submit" (click)='xemLichsudiemdanh()' expand='block'>Lịch sử điểm danh</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-content>
