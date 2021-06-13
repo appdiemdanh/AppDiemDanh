@@ -58,11 +58,16 @@ export class ThongtinGvPage implements OnInit {
           })     
       })
   }
+
+  /**
+   * Trả ra lớp nào đang dạy của giảng viên được chọn và thõa điều kiện môn đó đang trong thời gian hiệu lực (ngaybatdau <= ngayhientai <= ngayketthuc)
+   */
   getLopdangday()
   {
     this.getNgayThanghientai()
     this.afDB.list('phangiogiang').valueChanges().subscribe(res =>
       {
+        this.mang_lopdangday = []
         let mang_phangio : any = res
         // lọc theo từng điều kiên msgv -> ngaydiemdanh
         mang_phangio.filter(item_phangio =>

@@ -3,7 +3,6 @@ import { AuthenticationService } from 'src/app/shared/authenticatin-Service';
 import { runInThisContext } from 'vm';
 
 import { AngularFireDatabase } from '@angular/fire/database';
-import { phangiogiang } from 'src/app/shared/modPhangio'
 
 @Component({
   selector: 'app-thongtinphangio',
@@ -25,6 +24,7 @@ export class ThongtinphangioPage implements OnInit {
   ngayhoc : any = [] 
   listngayhoc : any
   listphangio : any
+  autoID = 0
 
   constructor(
     public authService : AuthenticationService,
@@ -34,9 +34,10 @@ export class ThongtinphangioPage implements OnInit {
 
   ngOnInit() {
     this.GanGiaTriChoBien()
-    this.afDB.list('phangiogiang').valueChanges().subscribe(res=>{
+    this.afDB.list('phangiogiang').valueChanges().subscribe(res => {
       this.listphangio = res
     })
+    this.getAutoID()
   }
   GanGiaTriChoBien()
   {
@@ -62,24 +63,9 @@ export class ThongtinphangioPage implements OnInit {
     }
     else
     {
-      // get id hiện tại
-      let id = 0
-      for(let pg of this.listphangio)
-      {
-        // neu id tren firebase != null thi gan id = id cua firebase els id = -1
-        if(pg.id != null) 
-        {
-          id = pg.id // ra khoi vòng lặp for thì this.id sẽ gán bằng pg.id thứ cuối cùng của mảng
-        }
-        else
-        {
-          id = -1
-        }
-      }
-      let autoID = id + 1  // tao id tu dong tang len 1 so voi id tren firebase
-      // tao bien data theo mode phangiogiang ben shared/modPhangiogiang.ts
-      let data : phangiogiang = {
-        id            : autoID,
+      this.getAutoID()
+      let modelPhangio = {
+        id            : this.autoID,
         hocky         : this.hocky,
         tengiangvien  : this.tengiangvien,
         magiangvien   : this.magiangvien,
@@ -93,13 +79,23 @@ export class ThongtinphangioPage implements OnInit {
         ngayhoc       : this.ngayhoc
       }
       // push len firebase sau do thong bao va chuyen trang
-      this.afDB.list('phangiogiang').push(data).then(res=>{
+      this.afDB.object(`phangiogiang/${this.autoID}`).set(modelPhangio).then(res => {
         this.authService.presentAlert2('Thông báo', 'Đã gửi thông tin phân giờ thành công', 'phangiogiang', 'OK')
-      }).catch(error=>{
-        console.log('Lỗi ' + error)
-      })  
+      })
     }  
   } 
+
+  getAutoID()
+  {
+    this.afDB.list('phangiogiang').valueChanges().subscribe(res => {
+      let listphangio = []
+      listphangio.push(res)
+      for (let lpg of listphangio)
+      {
+        this.autoID = lpg.length
+      }
+    })
+  }
 
 }
 

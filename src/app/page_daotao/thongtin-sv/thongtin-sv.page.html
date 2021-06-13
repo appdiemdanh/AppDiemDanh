@@ -17,20 +17,36 @@
         </ion-col>
       </ion-item>
       <ion-item>
-        <p>MSSV : </p>  
-        <ion-label slot="end">{{ sv.C }}</ion-label>
+        <ion-col>
+          <p>MSSV : </p>  
+        </ion-col>
+        <ion-col>
+          <p>{{ sv.C }}</p>
+        </ion-col>
       </ion-item>
       <ion-item>
-        <p>Ngày sinh : </p>  
-        <ion-label slot="end">{{ sv.E }}</ion-label>
+        <ion-col>
+          <p>Ngày sinh : </p>  
+        </ion-col>
+        <ion-col>
+          <p>{{ sv.E }}</p>
+        </ion-col>
       </ion-item>
       <ion-item>
-        <p>Nơi sinh : </p>  
-        <ion-label slot="end">{{ sv.F }}</ion-label>
+        <ion-col>
+          <p>Nơi sinh : </p>  
+        </ion-col>
+        <ion-col>
+          <p>{{ sv.F }}</p>
+        </ion-col>
       </ion-item>
       <ion-item>
-        <p>Học lớp : </p>  
-        <ion-label slot="end">{{ sv.A }}</ion-label>
+        <ion-col>
+          <p>Học lớp : </p>  
+        </ion-col>
+        <ion-col>
+          <p>{{ sv.A }}</p>
+        </ion-col>
       </ion-item>
       <ion-item>
         <ion-col>
@@ -38,9 +54,8 @@
         </ion-col>
       </ion-item>
       <ion-item (click)='isShowHocky = !isShowHocky' > 
-        <p>Tổng số buổi vắng : </p>
-        <ion-col>
-          <p>{{ tongsobuoivang }}</p>
+        <ion-col size='10.5'>
+          <p>Tổng số buổi vắng : {{ tongsobuoivang }}</p>
         </ion-col>
         <ion-col size='1.5'>
           <ion-icon name="chevron-down-outline" *ngIf='isShowHocky == false'></ion-icon>

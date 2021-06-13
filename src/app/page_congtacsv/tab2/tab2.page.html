@@ -32,12 +32,10 @@
     </ion-select>
   </ion-item>
   <br>
-  <ion-row *ngIf="loctheo != ''">
-    <ion-col size='4'></ion-col>
-    <ion-col size='4'>
+  <ion-row *ngIf="loctheo != ''" class='btnXemketqua'>
+    <ion-col>
       <ion-button type='submit' (click)='getDanhsachSVbicamthi()'>Xem kết quả</ion-button>
     </ion-col>
-    <ion-col size='4'></ion-col>
   </ion-row>
   <br>
   <ion-list *ngFor='let camthi of listcamthi_real'>
@@ -53,4 +51,6 @@
   <ion-label class='textCenter' *ngIf="listcamthi_real.length == 0">
     <p>Chưa có sinh viên nào bị cấm thi</p>
   </ion-label>
+  <br>
+  <p *ngIf="listcamthi_real.length != 0" class="small-text">*Những sinh viên nào vắng từ 3 buổi trở lên sẽ có trong danh sách này.</p>
 </ion-content>

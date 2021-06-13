@@ -9,10 +9,8 @@ import { AuthenticationService } from 'src/app/shared/authenticatin-Service';
   styleUrls: ['./tab4.page.scss'],
 })
 export class Tab4Page implements OnInit {
-
-  listsinhvien : any
-
-  public sothutu = ''
+  
+  listsinhvien = []
 
   constructor(
     private afDB : AngularFireDatabase,
@@ -22,13 +20,25 @@ export class Tab4Page implements OnInit {
    }
 
   ngOnInit() {
-    this.afDB.list(`/danhsachsinhvienk18/`).valueChanges().subscribe(res=>{this.listsinhvien = res}) 
-    
+    this.afDB.list(`/danhsachsinhvienk18/`).valueChanges().subscribe(res => {
+      let listsv : any = res
+      for (let i = 0; i < listsv.length; i ++)
+      {
+        this.listsinhvien.push({
+          sothutu : i + 1,
+          tensinhvien : listsv[i].D,
+          mssv : listsv[i].C
+        })
+      }
+    }) 
   }
+  /**
+   * 
+   * @param mssv : là mã sinh viên truyền khi click vào từng item sinh viên trong list
+   */
   gotoThongtinsv(mssv)
   {
-    this.authService.setMssv(mssv + "")
-    //console.log(mssv)
+    this.authService.setMssv(mssv)
     this.router.navigate(['thongtin-sv'])
   }
 

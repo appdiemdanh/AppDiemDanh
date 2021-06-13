@@ -30,6 +30,9 @@ export class ThongtinGiangdayPage implements OnInit {
     this.getSoluongsinhvien()
   }
 
+  /**
+   * Lấy ra được thông tin dạy của gv theo môn học của lớp học, dựa vào magiangvien, lop và tenmonhoc
+   */
   getThongtinlopdangday()
   {
     this.afDB.list('phangiogiang').valueChanges().subscribe(res =>
@@ -37,7 +40,7 @@ export class ThongtinGiangdayPage implements OnInit {
         let listphangio : any = res
         for (let lpg of listphangio)
         {
-          if (lpg.magiangvien == this.magiangvien && lpg.lop == this.malop)
+          if (lpg.magiangvien == this.magiangvien && lpg.lop == this.malop && lpg.tenmonhoc == this.monhoc)
           {
             this.listthongtingiangday.push(lpg)
           }

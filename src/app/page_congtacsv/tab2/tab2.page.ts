@@ -67,6 +67,9 @@ export class Tab2Page implements OnInit {
   getLoctheo(event)
   {
     this.loctheo = event.detail.value
+    // nếu người dùng click vô thì tự động trả về giá trị ban đầu của lớp và môn do có khi người dùng không chọn hay thay đổi từ chọn môn sang chọn lớp 
+    this.monhoc = ' Tất cả môn học '
+    this.malop  = 'Tất cả lớp'
   }
   getMonhoc(event)
   {
@@ -86,6 +89,16 @@ export class Tab2Page implements OnInit {
         this.listsinhvien = res
       })
   }
+
+  /**
+   * Chạy qua từng sinh viên => tạo mảng vanghoc_temp chứa tất cả dữ liệu vắng học từ ('diemdanh')
+   * => gán giá trị đầu tiên của mảng vanghoc_temp cho mảng vanghoc_real sau đó xóa giá trị đó đi
+   * => so sánh mảng vanghoc_real và vanghoc_temp xem nếu môn học trùng học kỳ thì kiểm tra có trùng môn không để push cho hợp lý,
+   *    nếu không trùng thì push thẳng phần tử từ mảng vanghoc_temp vô mảng vanghoc_real (đầy đủ thông tin bao gồm cả học kỳ)
+   * => khi đã có được mảng vanghoc_real rồi thì kiểm tra nếu vắng trên 3 buổi(dựa vào length của chitiet, console ra mảng vanghoc_real sẽ rõ)
+   *    thì push vô mảng camthi_temp sau đó chuyển qua sinh viên tiếp theo để làm tương tự
+   * => cuối cùng gọi hàm lọc mảng camthi_temp khi người dùng chọn lọc theo môn học hoặc lớp trên giao diện thì mình push mảng camthi_temp lọc được vào mảng camthi_real
+   */
   getDanhsachSVbicamthi()
   {
     let sothutu : number = 0
@@ -239,6 +252,7 @@ export class Tab2Page implements OnInit {
    */
   filterListcamthi()
   {
+    let stt = 0
     this.listcamthi_real = [] // khởi tạo = rỗng và nếu vô vòng for mà không thõa if nào thì nó vẫn là rỗng
     for (let i = 0; i < this.listcamthi_temp.length; i ++)
     {
@@ -251,7 +265,13 @@ export class Tab2Page implements OnInit {
         }
         else if (this.listcamthi_temp[i].lop == this.malop)
         {
-          this.listcamthi_real.push(this.listcamthi_temp[i])
+          stt += 1
+          this.listcamthi_real.push({
+            sothutu : stt,
+            tensinhvien : this.listcamthi_temp[i].tensinhvien,
+            mssv : this.listcamthi_temp[i].mssv,
+            monhoc : this.listcamthi_temp[i].monhoc
+          })
         }
       }
       // Ngược lại nếu list_temp nào có môn học == monhoc thì đi vào trong
@@ -259,20 +279,36 @@ export class Tab2Page implements OnInit {
       {
         if (this.malop == 'Tất cả lớp')
         {
-          this.listcamthi_real.push(this.listcamthi_temp[i])
+          stt += 1
+          this.listcamthi_real.push({
+            sothutu : stt,
+            tensinhvien : this.listcamthi_temp[i].tensinhvien,
+            mssv : this.listcamthi_temp[i].mssv,
+            monhoc : this.listcamthi_temp[i].monhoc
+          })
         }
         else if (this.listcamthi_temp[i].lop == this.malop)
         {
-          this.listcamthi_real.push(this.listcamthi_temp[i])
+          stt += 1
+          this.listcamthi_real.push({
+            sothutu : stt,
+            tensinhvien : this.listcamthi_temp[i].tensinhvien,
+            mssv : this.listcamthi_temp[i].mssv,
+            monhoc : this.listcamthi_temp[i].monhoc,
+          })
         }
       }
       // ngược lại tự thoát vòng for
+    }
+    // toast ra số lượng sinh viên bị cấm thi
+    if (this.listcamthi_real.length != 0)
+    {
+      this.authService.presentToast('Có ' + this.listcamthi_real.length + ' sinh viên bị cấm thi', 1400)
     }
     console.log('sinh viên vắng từ 3 buổi ', this.listcamthi_real)
   }
 
   /**
-   * 
    * @param masv : mã sinh viên được truyền qua khi click từng item của list cấm thi
    */
   xemThongtinsinhvien(masv)

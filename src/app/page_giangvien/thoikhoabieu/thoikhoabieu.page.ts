@@ -25,7 +25,7 @@ export class ThoikhoabieuPage implements OnInit {
   day = new Date()
   isshowIonCard = true
   magvtontai = false
-  toigiodiemdanh = false 
+  toigiodiemdanh : boolean 
 
   // format date time
   namthangngayhientai : Date
@@ -101,6 +101,7 @@ export class ThoikhoabieuPage implements OnInit {
   getThoikhoabieu()
   {
     this.afDB.list('phangiogiang').valueChanges().subscribe((res)=>{
+      this.toigiodiemdanh = false
       this.listthoikhoabieu = [] // gán mảng thoikhoabieu = rỗng để tránh mảng bị cộng dồn khi có dữ liệu mới trên firebase vd:có người phân giờ cho gv,.. (vì có dữ liệu mới thì hàm subcirbe() tự động gọi để cập nhật dữ liệu)
       this.listphangio = res // col 1
       for(let listpg of this.listphangio) // col 2
@@ -141,20 +142,16 @@ export class ThoikhoabieuPage implements OnInit {
                 if(this.giophuthientai >= giophutbatdau && this.giophuthientai < giophutketthuc) // if2
                 {
                   this.toigiodiemdanh = true
-                  this.authService.setListTKB(listpg) // set listfb sau khi qua các điện để qua page diemdanh get ra so sánh
                   //console.log(listpg)
                   this.malop   = listpg.lop
                   this.monhoc  = listpg.tenmonhoc
                   this.hocky   = listpg.hocky
                   // set gia trị len authService
+                  this.authService.setListTKB(listpg) // set listfb sau khi qua các điện để qua page diemdanh get ra so sánh
                   this.authService.setMalop(this.malop)
                   this.authService.setMsmh(this.monhoc)
                   this.authService.setHocky(this.hocky)
                   this.authService.setTengiangvien(this.tengiangvien)
-                }
-                else
-                {
-                  this.toigiodiemdanh = false
                 }
               }
             }     
@@ -203,7 +200,5 @@ export class ThoikhoabieuPage implements OnInit {
     }
    
   }
-
   
-
 }

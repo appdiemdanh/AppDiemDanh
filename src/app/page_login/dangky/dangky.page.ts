@@ -20,6 +20,8 @@ export class DangkyPage implements OnInit {
   chucvu = ''
   arraymabaomat : any = []
   mabaomatFirebase = ''
+  isSeePassword = false
+  inputType = 'password'
 
   constructor(
     public router : Router,
@@ -92,6 +94,7 @@ export class DangkyPage implements OnInit {
             if (this.mabaomat == this.mabaomatFirebase)
             {
               localStorage.setItem('magiangvien', this.magiangvien) // luu mã giảng viên lên local
+              this.authService.setMagiangvien(this.magiangvien)
               this.authService.RegisterUser(this.email, this.password)
             }
             else

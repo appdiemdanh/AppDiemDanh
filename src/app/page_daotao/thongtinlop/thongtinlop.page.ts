@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class ThongtinlopPage implements OnInit {
 
   listlop : any
-  listsv : any = []
+  listsv  = []
   tongsv : number
   malop = ''
   isShowListSV : boolean = false
@@ -21,23 +21,26 @@ export class ThongtinlopPage implements OnInit {
     private authService : AuthenticationService,
     private router : Router
   ) {
-    //gan gia tri 
     this.malop = this.authService.getMalop()
-    //this.tongsv = this.authService.gettongsv()
-    //console.log(this.malop + "  " + this.tongsv)
-    
   }
 
   ngOnInit() {
     this.afDB.list('danhsachlop').valueChanges().subscribe(res=>this.listlop=res)
     this.afDB.list('danhsachsinhvienk18').valueChanges().subscribe(res=>
     {
+      let stt = 0
       let danhsachsinhvienk18 : any = res
-      for(let sv of danhsachsinhvienk18)
+      for (let i = 0; i < danhsachsinhvienk18.length; i ++)
       {
-        if(sv.A == this.malop) // sv.A là malop tren firebase 
+        // lấy ra sinh viên thõa điều kiện có mã lớp(firebase) == this.malop
+        if (danhsachsinhvienk18[i].A == this.malop)
         {
-          this.listsv.push(sv)
+          stt += 1
+          this.listsv.push({
+            sothutu : stt,
+            tensinhvien : danhsachsinhvienk18[i].D,
+            mssv : danhsachsinhvienk18[i].C
+          })
         }
       }
       this.tongsv = this.listsv.length

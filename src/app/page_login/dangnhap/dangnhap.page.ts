@@ -9,6 +9,7 @@ import { QuenmatkhauPage } from '../quenmatkhau/quenmatkhau.page';
 import { AngularFirestore} from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { User } from 'src/app/shared/modUser';
+import { AngularFireDatabase } from '@angular/fire/database';
 
 @Component({
   selector: 'app-dangnhap',
@@ -21,6 +22,8 @@ export class DangnhapPage implements OnInit {
   password = ''
   nhomatkhau : boolean = true
   arrayUser : any = []
+  isSeePassword = false
+  inputType = 'password'
 
   constructor(
     public navCtrl : NavController,
@@ -29,7 +32,8 @@ export class DangnhapPage implements OnInit {
     public loadingController : LoadingController,
     public chonchucvuPage : ChonchucvuPage,
     public afStore : AngularFirestore,
-    public ngFireAuth: AngularFireAuth
+    public ngFireAuth: AngularFireAuth,
+    public afDB : AngularFireDatabase
     ) {}
 
   ngOnInit() {
@@ -80,8 +84,7 @@ export class DangnhapPage implements OnInit {
               this.authService.changeMaGV(this.arrayUser[i].magiangvien + "")
               this.router.navigate(['thoikhoabieu'])
             }
-            else // cong tac sv
-            {
+            else {
               this.router.navigate(['tabs_ctsv'])
               this.authService.presentLoading('Vui lòng chờ...', 1300)
             }  
@@ -120,8 +123,7 @@ export class DangnhapPage implements OnInit {
     {
       this.authService.presentAlert4('Bạn chưa nhập đầy đủ thông tin!')
     } 
+
   }
-
-
   
 }

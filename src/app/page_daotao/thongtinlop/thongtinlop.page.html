@@ -13,11 +13,14 @@
     <ion-list *ngIf = 'lop.B == malop'>
       <ion-item>
         <ion-col>
-          <p>Tên lớp : {{ lop.C }}</p>
+          <p>Tên lớp :</p>
+        </ion-col>
+        <ion-col>
+          <p>{{ lop.C }}</p>
         </ion-col>
       </ion-item>
       <ion-item>
-        <ion-col size='4'>
+        <ion-col>
           <p>Mã lớp : </p>  
         </ion-col>
         <ion-col>
@@ -35,9 +38,9 @@
       </ion-item>
       <br>
       <ion-list *ngFor='let sv of listsv'>
-          <ion-item *ngIf="isShowListSV == true" (click)="gotoThongtinsv(sv.C)"> <!--sv.C = masv (firebase)-->
+          <ion-item *ngIf="isShowListSV == true" (click)="gotoThongtinsv(sv.mssv)"> <!--sv.C = masv (firebase)-->
             <ion-col>
-              <p>{{sv.B}}. {{sv.D}}</p>
+              <p>{{ sv.sothutu }}. {{ sv.tensinhvien }}</p>
             </ion-col>
             <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
           </ion-item>

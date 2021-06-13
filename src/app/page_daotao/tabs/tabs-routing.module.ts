@@ -61,14 +61,14 @@ const routes: Routes = [
       // load path nào đầu tiên
       {
         path: '',
-        redirectTo: 'tabs/tab1',
+        redirectTo: 'tabs/tab5',
         pathMatch: 'full'
       }
     ]
   },
   {
     path: '',
-    redirectTo: 'tabs/tab1',
+    redirectTo: 'tabs/tab5',
     pathMatch: 'full'
   }
 ];

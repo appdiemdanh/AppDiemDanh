@@ -8,8 +8,8 @@ import * as firebase from 'firebase';
 import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { map } from 'rxjs/operators';
-import { phangiogiang } from './modPhangio'
 import { BehaviorSubject } from 'rxjs';
+import { listLazyRoutes } from '@angular/compiler/src/aot/lazy_routes';
 
 
 @Injectable({
@@ -48,6 +48,7 @@ export class AuthenticationService {
   tuPagedangnhapqua = false
   tenmonhoc = ''
   listThongtinvanghoc = []
+  autoID = 0
 
   arrayUser : any 
   // tạo mảng user
@@ -224,7 +225,9 @@ export class AuthenticationService {
     public loadingController : LoadingController,
     public afDB : AngularFireDatabase,
     public toastController : ToastController
-  ) {}
+  ) {
+    this.getAutoID()
+  }
 
   //thong bao
   async presentAlert(title : String, msg : String, trangmuonchuyenden : String) {
@@ -368,8 +371,8 @@ export class AuthenticationService {
     }
   })
 }
-  // set du lieu cho mang user 
-  SetUserData(user) {
+  SetUserData(user)
+  {
     this.chucvu = this.getChucvu()
     if(this.getMagiangvien() == '')
     {
@@ -379,16 +382,26 @@ export class AuthenticationService {
     {
       this.magiangvien = this.getMagiangvien()
     }
-    const userRef: AngularFirestoreDocument<any> = this.afStore.doc(`listuser/${user.uid}`);
-
-    const userData: User = {
-      uid           : user.uid,
-      email         : user.email,
-      chucvu        : this.chucvu,
-      magiangvien   : this.magiangvien
+    // model dang ky
+    let modelRegisterUser = {
+      id : this.autoID,
+      email : user.email,
+      chucvu : this.chucvu,
+      magiangvien : this.magiangvien
     }
-    return userRef.set(userData, {
-      merge: true //set gia tri trong database cua firebase
+    // set data to firebase
+    this.afStore.doc(`listuser/${this.autoID}`).set(modelRegisterUser)
+  }
+
+  getAutoID()
+  {
+    this.afStore.collection('listuser').valueChanges().subscribe(res => {
+      let listuser = []
+      listuser.push(res)
+      for (let lu of listuser)
+      {
+        this.autoID = lu.length
+      }
     })
   }
 

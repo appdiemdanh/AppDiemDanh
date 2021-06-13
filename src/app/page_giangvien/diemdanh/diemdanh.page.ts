@@ -29,6 +29,7 @@ export class DiemdanhPage implements OnInit {
   //
   listdiemdanh : any
   listthoikhoabieu : any = []
+  autoID = 0
 
 
   constructor(
@@ -44,7 +45,6 @@ export class DiemdanhPage implements OnInit {
     this.hocky  = this.authService.getHocky()
     this.tengiangvien = authService.getTengiangvien()
     this.listthoikhoabieu.push(this.authService.getListTKB())
-   
    }
   
   ngOnInit() {
@@ -170,6 +170,7 @@ export class DiemdanhPage implements OnInit {
     this.authService.setNgaydiemdanh(this.thungaythangnamhientai)
     this.router.navigate(['thongtindiemdanh'])
   }
+
   sendDiemDanh()
   {
       //console.log('List sv vắng học :' ,this.listsvvanghoc)
@@ -214,21 +215,13 @@ export class DiemdanhPage implements OnInit {
     });
     await toast.present();
   }
+  
 
   // push data to firebase
   sendtoSever()
   {
-    // get gia tri id
-    let id = 0
-    for(let dd of this.listdiemdanh)
-    {
-      if(dd.id != null)
-      {
-        id = dd.id
-      } 
-    }
+    this.getAutoID()
     // gan gia tri 
-    let autoID                  = id + 1
     let giodiemdanh             = this.day.getHours() + ":" + this.day.getMinutes()
     let soluongsinhviendihoc    = this.listsvdihoc.length
     let soluongsinhvienvanghoc  = this.listsvvanghoc.length
@@ -236,9 +229,9 @@ export class DiemdanhPage implements OnInit {
     let danhsachsinhvienvanghoc = this.listsvvanghoc
     let tongsinhvien            = this.soluongsinhvien
     let tengiangvien            = this.authService.getTengiangvien()
-    // tao bien data
-    let data : DiemDanh = {
-      id                : autoID,
+    // tao model
+    let modelDiemdanh = {
+      id                : this.autoID,
       hocky             : this.hocky,
       lop               : this.malop,
       monhoc            : this.monhoc,
@@ -251,14 +244,25 @@ export class DiemdanhPage implements OnInit {
       soluongSVvanghoc  : soluongsinhvienvanghoc,
       tongsoSV          : tongsinhvien
     }
-    console.log(data)
+    console.log(modelDiemdanh)
     // push data lên firebase
-    this.afDB.list('diemdanh').push(data).then(res=>
+    this.afDB.object(`diemdanh/${this.autoID}`).set(modelDiemdanh).then(res => {
+      this.authService.setNgaydiemdanh(this.thungaythangnamhientai)
+      this.presentToast()
+      this.router.navigate(['thongtindiemdanh'])
+    })
+  }  
+  
+  getAutoID()
+  {
+    this.afDB.list('diemdanh').valueChanges().subscribe(res => {
+      let diemdanh = []
+      diemdanh.push(res)
+      for (let dd of diemdanh)
       {
-        this.authService.setNgaydiemdanh(this.thungaythangnamhientai)
-        this.presentToast()
-        this.router.navigate(['thongtindiemdanh'])
-      })
-  }    
+        this.autoID = dd.length
+      }
+    })
+  }
   
 }
